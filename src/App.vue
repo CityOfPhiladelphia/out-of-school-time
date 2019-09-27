@@ -1,223 +1,222 @@
 <template>
   <div id="ost-app">
-    <div class="row">
-      <div class="small-24 columns">
-        <div
-          v-if="ready"
-          class="row columns"
+    <div
+      v-if="ready"
+      class="row"
+    >
+      <div class="search">
+        <label 
+          for="search-bar"
+          aria-label="Search Bar"
         >
-          <div class="row columns">
-              <div class="search">
-                <label 
-                  for="search-bar"
-                  aria-label="Search Bar"
+          <input
+            id="search-bar"
+            v-model="search"
+            class="search-field"
+            type="text"
+            placeholder="Search by keyword, services offered, focus areas, or zip code"
+            @keydown.enter="updateResultsList();"
+            @keyup.enter="hideMobileKeyboard($event); updateResultsList()"
+          ><input
+            ref="ost-search-bar"
+            type="submit"
+            class="search-submit"
+            value="Search"
+            @click="updateResultsList();"
+          >
+          <button
+            v-if="search.length > 0"
+            class="ost-clear-search-btn"
+            @click="clearSearchBar"
+          >
+            <i class="fal fa-times-square" />
+          </button>
+        </label>
+      </div>
+        <!-- Filters -->
+        <template v-if="isMq(['md', 'lg'])">
+          <div class="columns small-24 medium-7 ost-sidebar-filters">
+            <program-filters
+              :update-results-list="updateResultsList"
+              :clear-all-filters="clearAllFilters"
+              :programage.sync="programage"
+              :programgrade.sync="programgrade"
+              :programterm.sync="programterm"
+              :programfocus.sync="programfocus"
+              :programdays.sync="programdays"
+              :programfees.sync="programfees"
+              :programtransit.sync="programtransit"
+              v-bind="{ 
+                programTransportationFilters, 
+                programAgeFilters, 
+                programGradeFilters,
+                programTermFilters,
+                programFocusFilters,
+                programDaysFilters,
+                programFeesFilters, 
+                hasFilters, 
+                vModal: false }"
+            />
+          </div>
+        </template>
+        <template v-if="isMq(['sm'])">
+          <div class="columns small-24">
+            <div class="grid-x align-middle">
+              <div class="cell small-12">
+                <button @click="$modal.show('program-filters')">
+                  <i
+                    class="fa-filter"
+                    :class="filterCount > 0 ? 'fas' : 'fal'"
+                  /> Filters {{ filterCount > 0 ? `(${filterCount})` : `` }}
+                </button>
+              </div>
+              <div class="cell small-12 text-right">
+                <button
+                  class="ost-clear-all-filters-btn-link"
+                  :disabled="!hasFilters"
+                  @click="clearAllFilters()"
                 >
-                  <input
-                    id="search-bar"
-                    v-model="search"
-                    class="search-field"
-                    type="text"
-                    placeholder="Search by keyword, services offered, focus areas, or zip code"
-                    @keydown.enter="updateResultsList();"
-                    @keyup.enter="hideMobileKeyboard($event); updateResultsList()"
-                  ><input
-                    ref="jb-search-bar"
-                    type="submit"
-                    class="search-submit"
-                    value="Search"
-                    @click="updateResultsList();"
-                  >
-                  <button
-                    v-if="search.length > 0"
-                    class="jb-clear-search-btn"
-                    @click="clearSearchBar"
-                  >
-                    <i class="fal fa-times-square" />
-                  </button>
-                </label>
+                  Clear All Filters
+                </button> &nbsp;
+              </div>
             </div>
           </div>
-          <div class="row">
-            <!-- Filters -->
-            <template v-if="isMq(['md', 'lg'])">
-              <div class="columns small-24 medium-7">
-                <program-filters
-                  :update-results-list="updateResultsList"
-                  :clear-all-filters="clearAllFilters"
-                  :programage.sync="programage"
-                  :programgrade.sync="programgrade"
-                  :programterm.sync="programterm"
-                  :programfocus.sync="programfocus"
-                  :programtransit.sync="programtransit"
-                  v-bind="{ 
-                    programTransportationFilters, 
-                    programAgeFilters, 
-                    programGradeFilters,
-                    programTermFilters,
-                    programFocusFilters,
-                    hasFilters, 
-                    vModal: false }"
-                />
-              </div>
-            </template>
-            <template v-if="isMq(['sm'])">
-              <div class="columns small-24">
-                <div class="grid-x align-middle">
-                  <div class="cell small-12">
-                    <button @click="$modal.show('program-filters')">
-                      <i
-                        class="fa-filter"
-                        :class="filterCount > 0 ? 'fas' : 'fal'"
-                      /> Filters {{ filterCount > 0 ? `(${filterCount})` : `` }}
-                    </button>
-                  </div>
-                  <div class="cell small-12 text-right">
-                    <button
-                      class="jb-clear-all-filters-btn-link"
-                      :disabled="!hasFilters"
-                      @click="clearAllFilters()"
-                    >
-                      Clear All Filters
-                    </button> &nbsp;
-                  </div>
-                </div>
-              </div>
-              <modal
-                name="program-filters"
-                adaptive
-                click-to-close
-                height="auto"
-                @before-open="vModalBeforeOpen"
-                @before-close="vModalBeforeClose"
-              >
-                <program-filters
-                  :class="isMobile.Android() ? 'os-android' : ''"
-                  :update-results-list="updateResultsList"
-                  :clear-all-filters="clearAllFilters"
-                  :programage.sync="programage"
-                  :programgrade.sync="programgrade"
-                  :programterm.sync="programterm"
-                  :programfocus.sync="programfocus"
-                  :programtransit.sync="programtransit"
-                  v-bind="{ jobTranportationFilters, 
-                    programAgeFilters,
-                    programGradeFilters, 
-                    programTermFilters,
-                    programFocusFilters,
-                    hasFilters, 
-                    vModal: true }"
-                />
-              </modal>
-            </template>
+          <modal
+            name="program-filters"
+            adaptive
+            click-to-close
+            height="auto"
+            @before-open="vModalBeforeOpen"
+            @before-close="vModalBeforeClose"
+          >
+            <program-filters
+              :class="isMobile.Android() ? 'os-android' : ''"
+              :update-results-list="updateResultsList"
+              :clear-all-filters="clearAllFilters"
+              :programage.sync="programage"
+              :programgrade.sync="programgrade"
+              :programterm.sync="programterm"
+              :programfocus.sync="programfocus"
+              :programdays.sync="programdays"
+              :programfees.sync="programfees"
+              :programtransit.sync="programtransit"
+              v-bind="{ programAgeFilters,
+                programGradeFilters, 
+                programTermFilters,
+                programFocusFilters,
+                programDaysFilters,
+                programFeesFilters,
+                hasFilters, 
+                vModal: true }"
+            />
+          </modal>
+        </template>
 
-            <!-- Results -->
-            <div class="columns small-24 medium-17">
+        <!-- Results -->
+        <div class="columns small-24 medium-17">
+          <div
+            v-if="!hasFilters"
+            class="row"
+          >
+          </div>
+          <div class="grid-x align-top">
+            <!-- Results Count -->
+            <div class="cell small-24 medium-14 small-order-2 medium-order-1">
               <div
-                v-if="!hasFilters"
-                class="row"
-              >
-              </div>
-              <div class="grid-x align-top">
-                <!-- Results Count -->
-                <div class="cell small-24 medium-14 small-order-2 medium-order-1">
-                  <div
-                    class="jb-results-count"
-                    v-html="programCount"
-                  />
-                </div>
-              </div>
-              <!-- Program List -->
-              <ul class="jb-programs no-bullet">
-                <li
-                  v-for="program in results"
-                  :key="program.id"
-                >
-                  <!-- Program -->
-                  <div class="jb-job">
-                    <!-- Program Title -->
-                    <div class="jb-job-title-wrap bg-ghost-gray clearfix">
-                      <div class="jb-job-title h3">
-                        <a
-                          :href="program.WEBSITE_ADDRESS"
-                          target="_blank"
-                        >{{ program.name }} - {{ program.agency }}</a>
-                      </div>
-                    </div>
-                    <!-- Program Body -->
-                    <div class="ost-location">
-                      <div class="ost-address">
-                        {{ program.address }}<br>
-                        {{ program.city }}, {{ program.state }} {{ program.zip }}
-
-                      </div>
-                      <div class="ost-phone">
-                        {{program.phone}}
-                      </div>
-                    </div>
-                    <div class="ost-program-contact">
-                      {{ program.staff.title }}<br>
-                      {{ program.staff.firstName }}<br>
-                      {{ program.staff.lastName }}<br>
-                      {{ program.staff.email }}<br>
-                      {{ program.online.web }}<br>
-                      {{ program.online.facebook }}<br>
-                      {{ program.online.instagram }}<br>
-                      {{ program.online.twitter }}<br>
-                    </div>
-                    <div class="ost-registration-information">
-                      <b>Registration open:</b> {{ program.registration.startDate }} - {{ program.registration.endDate }} <br>
-                      <b>Program runs from:</b> {{ program.timeDetails.startDate }} - {{ program.timeDetails.endDate}}<br>
-                      <b>Days offered:</b>  {{ program.timeDetails.days }}<br>
-                      <b>Times offered:</b> {{ program.timeDetails.startTime }} - {{ program.timeDetails.Endtime }}<br>
-                    </div>
-                    <div class="ost-focus-areas">
-                      <h3>Focus areas</h3>
-                      
-                      {{ program.focus_isCommunityService }}<br>
-                      {{ program.focus_isCharacterDevelopment }}<br>
-                      {{ program.focus_isCollegeCareer }}<br>
-                      {{ program.focus_isArt }}<br>
-                      {{ program.focus_isAcademic }}<br>
-                      {{ program.focus_isHealth }}<br>
-
-                      <span v-html="program.subcats"></span>
-                    </div>
-                    <div class="details">
-                      <h3>Details</h3>
-                      <b>Ages:</b> 
-                        {{program.age_isUnder5 }}<br>
-                        {{program.age_is5to10}}  <br>
-                        {{program.age_is11to13}}<br>
-                        {{program.age_is14to18 }}<br>
-                        {{program.age_isAbove18}}
-                        <br>
-                      <b>Grades:</b>
-                        {{program.grade_prek }}<br>
-                        {{program.grade_kto4 }}<br>
-                        {{program.grade_5to8 }}<br>
-                        {{program.grade_9to12 }}<br>
-
-                      <b>Costs:</b> {{ program.costs }} <br>
-                      <b>Term: </b> {{program.term}} <br>
-                      <b>Services:</b> {{ program.services }}<br>
-                      <b>Transportation:</b> {{ program.transport }} <br>
-                      <b>Meals:</b> {{ program.meals }}
-
-                    </div>
-                    {{ program }}
-                  </div>
-                </li>
-              </ul>
+                class="ost-results-count"
+                v-html="programCount"
+              />
             </div>
           </div>
-        </div>
-        <div
-          v-else
-          class="row columns text-center"
-        >
-          <i class="fas fa-spinner fa-spin fa-3x loadingdir" />
+          <!-- Program List -->
+          <ul class="ost-programs no-bullet">
+            <li
+              v-for="program in results"
+              :key="program.id"
+            >
+              <!-- Program -->
+              <div class="ost-job">
+                <!-- Program Title -->
+                <div class="ost-job-title-wrap bg-ghost-gray clearfix">
+                  <div class="ost-job-title h3">
+                    <a
+                      :href="program.WEBSITE_ADDRESS"
+                      target="_blank"
+                    >{{ program.name }} - {{ program.agency }}</a>
+                  </div>
+                </div>
+                <!-- Program Body -->
+                <div class="ost-location">
+                  <div class="ost-address">
+                    {{ program.address }}<br>
+                    {{ program.city }}, {{ program.state }} {{ program.zip }}
+
+                  </div>
+                  <div class="ost-phone">
+                    {{program.phone}}
+                  </div>
+                </div>
+                <div class="ost-program-contact">
+                  {{ program.staff.title }}<br>
+                  {{ program.staff.firstName }}<br>
+                  {{ program.staff.lastName }}<br>
+                  {{ program.staff.email }}<br>
+                  {{ program.online.web }}<br>
+                  {{ program.online.facebook }}<br>
+                  {{ program.online.instagram }}<br>
+                  {{ program.online.twitter }}<br>
+                </div>
+                <div class="ost-registration-information">
+                  <b>Registration open:</b> {{ program.registration.startDate }} - {{ program.registration.endDate }} <br>
+                  <b>Program runs from:</b> {{ program.timeDetails.startDate }} - {{ program.timeDetails.endDate}}<br>
+                  <b>Days offered:</b>  {{ program.day_mon }}, {{ program.day_tues }}, {{ program.day_wed }}, {{ program.day_thurs }}, {{ program.day_fri }}, {{ program.day_sat }}, {{ program.day_sun }}<br>
+                  <b>Times offered:</b> {{ program.timeDetails.startTime }} - {{ program.timeDetails.Endtime }}<br>
+                </div>
+                <div class="ost-focus-areas">
+                  <h3>Focus areas</h3>
+                  
+                  {{ program.focus_isCommunityService }}<br>
+                  {{ program.focus_isCharacterDevelopment }}<br>
+                  {{ program.focus_isCollegeCareer }}<br>
+                  {{ program.focus_isArt }}<br>
+                  {{ program.focus_isAcademic }}<br>
+                  {{ program.focus_isHealth }}<br>
+
+                  <span v-html="program.subcats"></span>
+                </div>
+                <div class="details">
+                  <h3>Details</h3>
+                  <b>Ages:</b> 
+                    {{program.age_isUnder5 }}<br>
+                    {{program.age_is5to10}}  <br>
+                    {{program.age_is11to13}}<br>
+                    {{program.age_is14to18 }}<br>
+                    {{program.age_isAbove18}}
+                    <br>
+                  <b>Grades:</b>
+                    {{program.grade_prek }}<br>
+                    {{program.grade_kto4 }}<br>
+                    {{program.grade_5to8 }}<br>
+                    {{program.grade_9to12 }}<br>
+
+                  <b>Costs:</b> {{ program.costs }} <br>
+                  <b>Term: </b> {{program.term}} <br>
+                  <b>Services:</b> {{ program.services }}<br>
+                  <b>Transportation:</b> {{ program.transport }} <br>
+                  <b>Meals:</b> {{ program.meals }}
+
+                </div>
+                {{ program }}
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
+    <div
+      v-else
+      class="row columns text-center"
+    >
+      <i class="fas fa-spinner fa-spin fa-3x loadingdir" />
     </div>
   </div>
 </template>
@@ -385,6 +384,21 @@ export default {
           valueStore: 'programgrade',
         },
       ],
+      programterm: [],
+      programTermFilters: [
+        {
+          label: 'School Year',
+          matchKey: 'term',
+          matchValue: 'School Year',
+          valueStore: 'programterm',
+        },
+        {
+          label: 'Summer',
+          matchKey: 'term',
+          matchValue: 'Summer',
+          valueStore: 'programterm',
+        },
+      ],
       programfocus: [],
       programFocusFilters: [
         {
@@ -424,19 +438,76 @@ export default {
           valueStore: 'programfocus',
         },
       ],
-      programterm: [],
-      programTermFilters: [
+      programdays: [],
+      programDaysFilters: [
         {
-          label: 'School Year',
-          matchKey: 'term',
-          matchValue: 'School Year',
-          valueStore: 'programterm',
+          label: 'Monday',
+          matchKey: 'day_mon',
+          matchValue: 'day_mon',
+          valueStore: 'programdays',
         },
         {
-          label: 'Summer',
-          matchKey: 'term',
-          matchValue: 'Summer',
-          valueStore: 'programterm',
+          label: 'Tuesday',
+          matchKey: 'day_tues',
+          matchValue: 'day_tues',
+          valueStore: 'programdays',
+        },
+        {
+          label: 'Wednesday',
+          matchKey: 'day_wed',
+          matchValue: 'day_wed',
+          valueStore: 'programdays',
+        },
+        {
+          label: 'Thursday',
+          matchKey: 'day_thurs',
+          matchValue: 'day_thurs',
+          valueStore: 'programdays',
+        },
+        {
+          label: 'Friday',
+          matchKey: 'day_fri',
+          matchValue: 'day_fri',
+          valueStore: 'programdays',
+        },
+        {
+          label: 'Saturday',
+          matchKey: 'day_sat',
+          matchValue: 'day_sat',
+          valueStore: 'programdays',
+        },
+        {
+          label: 'Sunday',
+          matchKey: 'day_sun',
+          matchValue: 'day_sun',
+          valueStore: 'programdays',
+        },
+      ],
+      programfees: [],
+      programFeesFilters: [
+        {
+          label: 'Free',
+          matchKey: 'fee_free',
+          matchValue: 'fee_free',
+          valueStore: 'programfees',
+        },
+        {
+          label: 'CCIS approved',
+          matchKey: 'fee_ccis',
+          matchValue: 'fee_ccis',
+          valueStore: 'programfees',
+        },
+        {
+          label: 'Fee based',
+          matchKey: 'fee_has_fee',
+          matchValue: 'fee_has_fee',
+          valueStore: 'programfees',
+        },
+        {
+          label: 'Scholarships/financial assistance',
+          matchKey: 'fee_scholarship',
+          matchValue: 'fee_scholarship',
+          valueStore: 'programfees',
         },
       ],
       programtransit: [],
@@ -487,8 +558,6 @@ export default {
   },
 
   computed: {
-
-
     /**
     * @desc checks if ready for display
     * @return { Boolean }
@@ -504,7 +573,7 @@ export default {
     filterCount () {
       let count = 0;
       for (let key in this.routerQuery) {
-        if ([ 'programage', 'programgrade', 'programterm', 'programfocus','programtransit' ].includes(key)) {
+        if ([ 'programage', 'programgrade', 'programterm', 'programfocus', 'programdays', 'programfees', 'programtransit' ].includes(key)) {
           count = parseInt(count) + this.returnArray(this.routerQuery[key]).length;
         }
       }
@@ -578,6 +647,24 @@ export default {
       } else {
         console.log('programfocus', value)
         this.updateRouterQuery('programfocus');
+      }
+    },
+    programdays (value) {
+      if (value.length > 0) {
+        console.log('programdays', value)
+        this.updateRouterQuery('programdays', value);
+      } else {
+        console.log('programdays', value)
+        this.updateRouterQuery('programdays');
+      }
+    },
+    programfees (value) {
+      if (value.length > 0) {
+        console.log('programfees', value)
+        this.updateRouterQuery('programfees', value);
+      } else {
+        console.log('programfees', value)
+        this.updateRouterQuery('programfees');
       }
     },
     programtransit (value) {
@@ -731,6 +818,28 @@ export default {
             focus_isHealth: (program.isHealth) ? 'focus_isHealth' : null,
             focus_isAcademic: (program.isAcademic) ? 'focus_isAcademic' : null,
 
+            daynames: program.daynames, 
+            day_mon: null,
+            day_tues: null, 
+            day_wed: null, 
+            day_thurs: null, 
+            day_fri: null, 
+            day_sat: null, 
+            day_sun: null,
+
+            costs: program.COSTS,
+            
+            //check for null values
+            fee_free: (program.COSTS) ? program.COSTS : '',
+            fee_ccis:(program.COSTS) ? program.COSTS : '',
+            fee_has_fee:(program.COSTS) ? program.COSTS : '',
+            fee_scholarship: (program.COSTS) ? program.COSTS : '',
+
+            transit_none: (program.TRANSPORTATION) ? program.TRANSPORTATION : '',
+            transit_bus:(program.TRANSPORTATION) ? program.TRANSPORTATION : '',
+            transit_to_site:(program.TRANSPORTATION) ? program.TRANSPORTATION : '',
+            transit_from_home: (program.TRANSPORTATION) ? program.TRANSPORTATION : '',
+
             lat: program.latitude,
             long: program.longitude,
             name: program.programname,
@@ -763,9 +872,7 @@ export default {
               endDate: program.enddate_str,
               startTime: program.begintime,
               endTime: program.endtime,
-              days: program.daynames
             },
-            costs: program.COSTS,
             services: program.SERVICES,
             meals: program.MEALS
 
@@ -777,7 +884,6 @@ export default {
         self.results = self.allPrograms;
         self.programs = self.allPrograms;
 
-
         return true;
       }).catch((error) => {
         console.log(error);
@@ -787,34 +893,30 @@ export default {
 
     cleanPrograms (program) {
 
-      if ( program.age_isUnder5 ){
-        program.age_isUnder5 = 'age_isUnder5'
-      }
-      if ( program.age_is5to10 ) {
-        program.age_is5to10 = 'age_is5to10'
-      }
-      if ( program.age_is11to13 ) {
-        program.age_is11to13 = 'age_is11to13'
-      }
-      if ( program.age_is14to18 ) {
-        program.age_is14to18 = 'age_is14to18'
-      }
-      if ( program.age_isAbove18 ) {
-        program.age_isAbove18 = 'age_isAbove18'
-      }
+      program.age_isUnder5 = (program.age_isUnder5) ? 'age_isUnder5' : null;
+      program.age_is5to10 = (program.age_is5to10) ? 'age_is5to10' : null;
+      program.age_is11to13 = (program.age_is11to13) ? 'age_is11to13' : null;
+      program.age_is14to18 = (program.age_is14to18) ? 'age_is14to18' : null;
+      program.age_isAbove18 = (program.age_isAbove18) ? 'age_isAbove18' : null;
 
-      if ( program.grade_prek ){
-        program.grade_prek = 'grade_prek' 
-      }
-      if ( program.grade_kto4 ){
-        program.grade_kto4 = 'grade_kto4' 
-      }
-      if ( program.grade_5to8 ){
-        program.grade_5to8 = 'grade_5to8' 
-      }
-      if ( program.grade_9to12 ){
-        program.grade_9to12 = 'grade_9to12' 
-      }
+      program.grade_prek = (program.grade_prek) ? 'grade_prek' : null;
+      program.grade_kto4 = (program.grade_kto4) ? 'grade_kto4' : null;
+      program.grade_5to8 = (program.grade_5to8) ? 'grade_5to8' : null;
+      program.grade_9to12 = (program.grade_9to12) ? 'grade_9to12' : null;
+
+      program.day_mon = program.daynames.includes('M') ? 'day_mon' : null;
+      program.day_tues = program.daynames.includes('Tu') ? 'day_tues' : null;
+      program.day_wed = program.daynames.includes('W') ? 'day_wed' : null;
+      program.day_thurs = program.daynames.includes('Th') ? 'day_thurs' : null;
+      program.day_fri = program.daynames.includes('F') ? 'day_fri' : null;
+      program.day_sat = program.daynames.includes('Sa') ? 'day_sat' : null;
+      program.day_sun = program.daynames.includes('Su') ? 'day_sun' : null;
+
+      program.fee_free = (program.fee_free.includes('Free')) ? 'fee_free' : null;
+      program.fee_ccis = (program.fee_ccis.includes('CCIS') )? 'fee_ccis' : null;
+      program.fee_has_fee =  (program.fee_has_fee.includes('based') )  ? 'fee_has_fee' : null;
+      program.fee_scholarship =  (program.fee_scholarship.includes('Scholarships')) ? 'fee_scholarship' : null;
+
       return program
     },
 
@@ -893,6 +995,8 @@ export default {
         ...this.programGradeFilters,
         ...this.programTermFilters,
         ...this.programFocusFilters,
+        ...this.programDaysFilters,
+        ...this.programFeesFilters,
         ...this.programTransportationFilters,
       ];
 
@@ -934,6 +1038,8 @@ export default {
       this.programgrade = [],
       this.programterm = [],
       this.programfocus = [],
+      this.programdays = [],
+      this.programfees = [],
       this.search = '';
       // this.sort = this.defaultSort;
     },
@@ -981,86 +1087,6 @@ export default {
       return programs;
       
     },
-
-    /**
-    * @desc sorts programs { Array } by sort drop-down
-    */
-    // sortResults () {
-    //   switch (this.sort) {
-    //   case 'Alphabetical':
-    //     this.results.sort((a, b) => {
-    //       if (a.title < b.title) {
-    //         return -1;
-    //       }
-    //       if (a.title > b.title) {
-    //         return 1;
-    //       }
-    //       return 0;
-    //     });
-    //     break;
-    //   case 'Closing soon':
-    //     this.results.sort((a, b) => {
-    //       if (a.closeDate === null) {
-    //         return 1;
-    //       }
-    //       if (b.closeDate === null) {
-    //         return -1;
-    //       }
-    //       if (a.closeDate < b.closeDate) {
-    //         return -1;
-    //       }
-    //       if (a.closeDate > b.closeDate) {
-    //         return 1;
-    //       }
-    //       return 0;
-    //     });
-    //     break;
-    //   case 'Salary (high to low)':
-    //     this.results.sort((a, b) => {
-    //       let aS = parseFloat(a.salaryStart.replace(/,/g, '.'));
-    //       let bS = parseFloat(b.salaryStart.replace(/,/g, '.'));
-
-    //       if (isNaN(aS)) {
-    //         return 1;
-    //       }
-
-    //       if (isNaN(bS)) {
-    //         return -1;
-    //       }
-
-    //       return bS - aS;
-    //     });
-    //     break;
-    //   case 'Salary (low to high)':
-    //     this.results.sort((a, b) => {
-    //       let aS = parseFloat(a.salaryStart.replace(/,/g, '.'));
-    //       let bS = parseFloat(b.salaryStart.replace(/,/g, '.'));
-
-    //       if (isNaN(aS)) {
-    //         return 1;
-    //       }
-
-    //       if (isNaN(bS)) {
-    //         return -1;
-    //       }
-
-    //       return aS - bS;
-    //     });
-    //     break;
-    //   default:
-    //     this.results.sort((a, b) => {
-    //       if (a.published > b.published) {
-    //         return -1;
-    //       }
-    //       if (a.published < b.published) {
-    //         return 1;
-    //       }
-    //       return 0;
-    //     });
-    //     break;
-    //   }
-    // },
-
     /**
     * @desc it does what it says it does.
     */
@@ -1124,10 +1150,18 @@ export default {
 </script>
 
 <style lang="scss">
+@media screen and (min-width: 40em) {
+    header.site-header{
+      border-bottom: 3px solid #25cef7;
+      position: sticky;
+      top:0;
+      z-index: 5;
+    }
+  }
   //Scoped Css that depends on Phila.gov Standards
   //@todo remove Standard on prod
   #ost-app {
-    overflow: hidden;
+    display:block;
     .card.action-panel .panel {
       padding-bottom: 0;
     }
@@ -1171,7 +1205,7 @@ export default {
         }
       }
     }
-    .jb-clear-search-btn {
+    .ost-clear-search-btn {
       position: absolute;
       top: 12px;
       right: 52px;
@@ -1185,10 +1219,10 @@ export default {
         color: #444;
       }
     }
-    .jb-clear-all-btn {
+    .ost-clear-all-btn {
       margin-top: 30px;
     }
-    .jb-clear-all-filters-btn-link {
+    .ost-clear-all-filters-btn-link {
       background-color: #fff;
       color: #0f4d90;
       text-transform: none;
@@ -1196,21 +1230,21 @@ export default {
         opacity: 0.5;
       }
     }
-    h2.jb-featured-programs-title {
+    h2.ost-featured-programs-title {
       margin-top: 0;
     }
-    .jb-featured-programs {
+    .ost-featured-programs {
       margin-bottom: 30px;
     }
     .in-modal {
-      .jb-apply-filters-btn {
+      .ost-apply-filters-btn {
         position: fixed;
         bottom: 42px;
         width: 100%;
         display: block;
         line-height: 20px;
       }
-      .jb-clear-all-btn {
+      .ost-clear-all-btn {
         width: 100%;
         display: block;
         background-color: #fff;
@@ -1227,32 +1261,27 @@ export default {
         }
       }
     }
-    .jb-feat-job {
-      margin-bottom: 20px;
-      .card {
-        h3 {
-          font-size: 1.42857rem !important;
-          margin: 0;
-          font-weight: 400;
-        }
-      }
-    }
-    .jb-sidebar-filters {
-      .jb-sidebar-header {
+    .ost-sidebar-filters {
+      position: sticky; 
+      top: 80px;
+      height: 100vh;
+      overflow: scroll;
+      padding: 2rem 0 10rem 0;
+
+      .ost-sidebar-header {
         margin-top: 40px;
         text-transform: uppercase;
-        color: #444;
         font-size: 17px;
+        margin-top:1rem,;
         font-weight: 700;
-        padding: 1.15rem 1rem;
-        border-bottom: 1px solid #ccc;
-        &.jb-first-sidebar-header {
+        &.ost-first-sidebar-header {
           margin-top: 0;
         }
       }
       @media screen and (max-width: 39.9375em) {
+        position: relative;
         height: 100vh;
-        .jb-sidebar-filters-wrap {
+        .ost-sidebar-filters-wrap {
           min-height: auto;
           max-height: calc(100vh - 85px);
           overflow-y: scroll;
@@ -1260,69 +1289,24 @@ export default {
           padding-bottom: 20px;
         }
         &.os-android {
-          .jb-sidebar-filters-wrap {
+          .ost-sidebar-filters-wrap {
             max-height: calc(100vh - 141px);
           }
         }
       }
     }
-    .jb-programs ul {
+    .ost-programs ul {
       list-style-type: none;
       margin: 0;
       padding: 0;
     }
-    .jb-job {
-      margin-bottom: 20px;
-    }
-    .jb-job-body {
-      padding: 10px;
-      &:after {
-        content: ' ';
-        display: table;
-        clear: both;
-      }
-    }
-    .jb-job-date {
-      margin-bottom: 10px;
-    }
-    .jb-job-exam {
-      margin-bottom: 10px;
-    }
-    .jb-job-dept {
-      margin-bottom: 10px;
-    }
-    .jb-job-tag {
-      display: inline-block;
-      line-height: 1;
-      padding: 2px 10px;
-      background-color: #a1a1a1;
-      margin: 3px 2px;
-      font-weight: 700;
-      color: #fff;
-      text-transform: uppercase;
-      font-size: 12px;
-    }
-    .jb-job-tags {
-      margin: 10px 0 15px;
-      line-height: 1.1;
-    }
-    .jb-job-title {
-      margin: 0 10px 0 0;
-      line-height: 1.2;
-    }
-    .jb-job-title-wrap {
-      padding: 7px 10px;
-    }
-    .jb-job-url {
-      float: right;
-    }
-    .jb-pagination {
+    .ost-pagination {
       text-align: right;
       .paginate-links {
         text-align: center;
       }
     }
-    .jb-sort-by {
+    .ost-sort-by {
       text-align: right;
       span {
         font-weight: 700;
@@ -1332,13 +1316,7 @@ export default {
         display: inline-block;
       }
     }
-    .jb-job-specialty {
-      display: inline-block;
-      font-size: 14px;
-      color: #444;
-      margin: 0 5px;
-    }
-    .jb-results-count {
+    .ost-results-count {
       @media screen and (max-width: 39.9375em) {
         line-height: 1.3;
       }

@@ -1,10 +1,9 @@
 <template>
   <div
-    class="jb-sidebar-filters"
     :class="{ 'in-modal': vModal }"
   >
-    <div class="jb-sidebar-filters-wrap">
-      <h2 class="jb-sidebar-header jb-first-sidebar-header bg-ghost-gray">
+    <div class="ost-sidebar-filters-wrap">
+      <h2 class="ost-sidebar-header ost-first-sidebar-header">
         Age
       </h2>
       <div
@@ -21,7 +20,7 @@
         >
         <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
       </div>
-      <h2 class="jb-sidebar-header jb-first-sidebar-header bg-ghost-gray">
+      <h2 class="ost-sidebar-header ost-sidebar-header">
         Grade
       </h2>
       <div
@@ -38,7 +37,7 @@
         >
         <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
       </div>
-      <h2 class="jb-sidebar-header jb-first-sidebar-header bg-ghost-gray">
+      <h2 class="ost-sidebar-header ost-sidebar-header">
         Program term
       </h2>
       <div
@@ -55,7 +54,7 @@
         >
         <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
       </div>
-      <h2 class="jb-sidebar-header jb-first-sidebar-header bg-ghost-gray">
+      <h2 class="ost-sidebar-header ost-sidebar-header">
         Focus Area
       </h2>
       <div
@@ -72,7 +71,41 @@
         >
         <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
       </div>
-      <h2 class="jb-sidebar-header bg-ghost-gray">
+      <h2 class="ost-sidebar-header ost-sidebar-header">
+        Days offered
+      </h2>
+      <div
+        v-for="filter in programDaysFilters"
+        :key="filter.label"
+        class="checkbox-wrap"
+      >
+        <input
+          :id="filter.matchValue"
+          type="checkbox"
+          :value="filter.matchValue"
+          :checked="isFilterChecked(filter.matchValue, 'programdays')"
+          @change="updateFilters('programdays', $event)"
+        >
+        <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
+      </div>
+      <h2 class="ost-sidebar-header ost-sidebar-header">
+        Fee
+      </h2>
+      <div
+        v-for="filter in programFeesFilters"
+        :key="filter.label"
+        class="checkbox-wrap"
+      >
+        <input
+          :id="filter.matchValue"
+          type="checkbox"
+          :value="filter.matchValue"
+          :checked="isFilterChecked(filter.matchValue, 'programfees')"
+          @change="updateFilters('programfees', $event)"
+        >
+        <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
+      </div>
+      <h2 class="ost-sidebar-header">
         Transportation
       </h2>
       <div
@@ -89,38 +122,20 @@
         >
         <label :for="filter.label"><div>{{ filter.label }}</div></label>
       </div>
-      <h2 class="jb-sidebar-header bg-ghost-gray">
-        Not Focus Area
-      </h2>
-      <div
-        v-for="filter in jobCompetitionFilters"
-        :key="filter.label"
-        class="checkbox-wrap"
-      >
-        <input
-          :id="filter.label"
-          :ref="`checkbox-${filter.matchValue}`"
-          type="checkbox"
-          :value="filter.matchValue"
-          :checked="isFilterChecked(filter.matchValue, 'jobcompt')"
-          @change="updateFilters('jobcompt', $event)"
-        >
-        <label :for="filter.label"><div>{{ filter.label }}</div></label>
-      </div>
     </div>
     <div
       v-if="vModal"
       class="v-modal-btns"
     >
       <input
-        class="jb-apply-filters-btn button"
+        class="ost-apply-filters-btn button"
         type="button"
         value="Apply Filters"
         @click="$modal.hide('job-filters')"
       > &nbsp;
     </div>
     <input
-      class="jb-clear-all-btn button"
+      class="ost-clear-all-btn button"
       type="button"
       :disabled="!hasFilters"
       value="Clear All Filters"
@@ -151,6 +166,18 @@ export default {
       },
     },
     programFocusFilters: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    programDaysFilters: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    programFeesFilters: {
       type: Array,
       default: () => {
         return [];
@@ -187,6 +214,18 @@ export default {
       },
     },
     programfocus: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    programdays: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    programfees: {
       type: Array,
       default: () => {
         return [];
