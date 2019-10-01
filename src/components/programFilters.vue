@@ -55,6 +55,36 @@
         <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
       </div>
       <h2 class="ost-sidebar-header ost-sidebar-header">
+        Zip
+        </h2>
+        <div
+          v-for="filter in programZipFilters"
+          :key="filter.label">
+          <label 
+            for="search-bar"
+            :aria-label="filter.label"
+          >
+            <input
+              :id="filter.matchValue"
+              class="search-field"
+              type="text"
+              :placeholder="filter.label"
+              @keydown.enter="updateFilters('programzip', $event, 'zip');"
+            ><input
+              ref="ost-zip-search"
+              type="submit"
+              class="search-submit"
+              value="Search"
+            >
+          <button
+            class="ost-clear-search-btn"
+            @click="clearAllFilters()"
+          >
+            <i class="fal fa-times-square" />
+          </button>
+          </label>
+        </div>
+      <h2 class="ost-sidebar-header ost-sidebar-header">
         Focus Area
       </h2>
       <div
@@ -165,6 +195,12 @@ export default {
         return [];
       },
     },
+    programZipFilters: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
     programFocusFilters: {
       type: Array,
       default: () => {
@@ -208,6 +244,12 @@ export default {
       },
     },
     programterm: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    programzip: {
       type: Array,
       default: () => {
         return [];
@@ -277,24 +319,29 @@ export default {
     * @param { String } filter name to eval
     * @param { Object } $event object
     */
-    updateFilters (filter, e) {
+    updateFilters (filter, e, name) {
       let newFilters = this[filter];
 
-      if (e.target.checked) {
-        console.log(e.target.value)
+      console.log(e.target.value)
+
+      if (e.target.checked ) {
+        
         if (!this[filter].includes(e.target.value)) {
           newFilters.push(e.target.value);
-          console.log('target-checked:', newFilters);
         }
-      } else {
+      } else if (typeof e.target.value === 'string'){
+        if (!this[filter].includes(e.target.value)) {
+          newFilters.push(name, e.target.value);
+        }
+      }else {
         newFilters = this[filter].filter(item => item !== e.target.value);
-        console.log(newFilters);
+        console.log(`newfilters: ${newfilters}`);
 
       }
       this.$emit(`update:${filter}`, newFilters);
       this.updateResultsList();
     },
 
-  },
-};
+  }
+}
 </script>

@@ -42,6 +42,7 @@
               :programage.sync="programage"
               :programgrade.sync="programgrade"
               :programterm.sync="programterm"
+              :programzip.sync="programzip"
               :programfocus.sync="programfocus"
               :programdays.sync="programdays"
               :programfees.sync="programfees"
@@ -51,6 +52,7 @@
                 programAgeFilters, 
                 programGradeFilters,
                 programTermFilters,
+                programZipFilters,
                 programFocusFilters,
                 programDaysFilters,
                 programFeesFilters, 
@@ -96,6 +98,7 @@
               :programage.sync="programage"
               :programgrade.sync="programgrade"
               :programterm.sync="programterm"
+              :programzip.sync="programzip"
               :programfocus.sync="programfocus"
               :programdays.sync="programdays"
               :programfees.sync="programfees"
@@ -103,6 +106,7 @@
               v-bind="{ programAgeFilters,
                 programGradeFilters, 
                 programTermFilters,
+                programZipFilters,
                 programFocusFilters,
                 programDaysFilters,
                 programFeesFilters,
@@ -137,22 +141,22 @@
               <!-- Program -->
               <div class="ost-job">
                 <!-- Program Title -->
-                <div class="ost-job-title-wrap bg-ghost-gray clearfix">
-                  <div class="ost-job-title h3">
-                    <a
-                      :href="program.WEBSITE_ADDRESS"
-                      target="_blank"
-                    >{{ program.name }} - {{ program.agency }}</a>
+                <div class="ost-program-title-wrap bg-ghost-gray clearfix">
+                  <div class="ost-program-title h3">
+                      {{ program.name }} - <span class="ost-program-agency">{{ program.agency }}</span>
                   </div>
                 </div>
                 <!-- Program Body -->
                 <div class="ost-location">
-                  <div class="ost-address">
-                    {{ program.address }}<br>
-                    {{ program.city }}, {{ program.state }} {{ program.zip }}
+                  <div class="ost-address-wrap">
+                    <i class="fas fa-map-marker-alt fa-fw"></i>
+                    <div class="program-address">{{ program.address }}<br>
+                      {{ program.city }}, {{ program.state }} {{ program.zip }}
+                    </div>
 
                   </div>
                   <div class="ost-phone">
+                    <i class="fas fa-phone fa-fw"></i>
                     {{program.phone}}
                   </div>
                 </div>
@@ -169,20 +173,21 @@
                 <div class="ost-registration-information">
                   <b>Registration open:</b> {{ program.registration.startDate }} - {{ program.registration.endDate }} <br>
                   <b>Program runs from:</b> {{ program.timeDetails.startDate }} - {{ program.timeDetails.endDate}}<br>
-                  <b>Days offered:</b>  {{ program.day_mon }}, {{ program.day_tues }}, {{ program.day_wed }}, {{ program.day_thurs }}, {{ program.day_fri }}, {{ program.day_sat }}, {{ program.day_sun }}<br>
+                  <b>Days offered:</b>  
+                    <span v-if="program.day_mon">Monday, </span> 
+                    <span v-if="program.day_tues">Tuesday, </span> 
+                    <span v-if="program.day_wed">Wednesday, </span> 
+                    <span v-if="program.day_thurs">Thursday </span> 
+                    <span v-if="program.day_fri">Friday, </span> 
+                    <span v-if="program.day_sat">Saturday, </span> 
+                    <span v-if="program.day_sun">Sunday</span> <br>
                   <b>Times offered:</b> {{ program.timeDetails.startTime }} - {{ program.timeDetails.Endtime }}<br>
                 </div>
-                <div class="ost-focus-areas">
+                <div 
+                  v-if="program.focus_areas"
+                  class="ost-focus-areas">
                   <h3>Focus areas</h3>
-                  
-                  {{ program.focus_isCommunityService }}<br>
-                  {{ program.focus_isCharacterDevelopment }}<br>
-                  {{ program.focus_isCollegeCareer }}<br>
-                  {{ program.focus_isArt }}<br>
-                  {{ program.focus_isAcademic }}<br>
-                  {{ program.focus_isHealth }}<br>
-
-                  <span v-html="program.subcats"></span>
+                  <span v-html="program.focus_areas"></span>
                 </div>
                 <div class="details">
                   <h3>Details</h3>
@@ -398,6 +403,15 @@ export default {
           matchValue: 'Summer',
           valueStore: 'programterm',
         },
+      ],
+      programzip: [],
+      programZipFilters: [
+        {
+          label: 'Search by zip',
+          matchKey: 'zip',
+          matchValue: 'zip',
+          valueStore: 'programzip',
+        }
       ],
       programfocus: [],
       programFocusFilters: [
@@ -640,6 +654,15 @@ export default {
         this.updateRouterQuery('programterm');
       }
     },
+    programzip (value) {
+      if (value.length > 0) {
+        console.log('programzip', value)
+        this.updateRouterQuery('programzip', value);
+      } else {
+        console.log('programzip', value)
+        this.updateRouterQuery('programzip');
+      }
+    },
     programfocus (value) {
       if (value.length > 0) {
         console.log('programfocus', value)
@@ -712,77 +735,6 @@ export default {
     },
 
     /**
-    * @desc filters programs by departments (drop-down)
-    * @param { Array } programs
-    * @returns { Array } of filtered programs
-    */
-    // departmentFilter (programs) {
-    //   if (this.dept !== '') {
-    //     return programs.filter((job) => {
-    //       return this.dept === job.department;
-    //     }, this);
-    //   }
-    //   return programs;
-    // },
-
-    /**
-    * @desc join salaries into single string
-    * @param { String } salaryStart
-    * @param { String } salaryEnd
-    * @returns { String }
-    */
-    // displaySalary (salaryStart, salaryEnd) {
-    //   let display = [];
-    //   if (salaryStart !== 'Not Available') {
-    //     display.push(`$${salaryStart}`);
-    //   }
-    //   if (salaryEnd !== 'Not Available') {
-    //     display.push(` - $${salaryEnd}`);
-    //   }
-    //   return display.join(' ');
-    // },
-
-    /**
-    * @desc get official list of departments from phila.gov
-    * @returns { Promise }
-    */
-    // async getAllDepartments () {
-    //   let depts = [];
-    //   let self = this;
-    //   return axios.get(this.api.getAllDepartments).then((result) => {
-    //     result.data.forEach((dept) => {
-    //       depts.push(dept.short_name || dept.name);
-    //     });
-    //     depts.push('Multiple departments');
-    //     self.departments = depts;
-    //     return;
-    //   }).catch(error => {
-    //     console.log(error);
-    //   });
-    // },
-
-    /**
-    * @desc Get a max of two featured programs from phila.gov
-    * Featured programs are only displayed if also available on all programs feed
-    * @returns { Promise }
-    */
-    // getFeatprograms () {
-    //   let self = this;
-    //   return axios.get(this.api.featprograms).then((response) => {
-    //     let fprograms = response.data;
-    //     self.featprograms = fprograms.filter((fjob) => {
-    //       return self.programs.some((job) => {
-    //         let tempUrl = job.url.replace(/https?:\/\//gi, '');
-    //         let tempFeatUrl = fjob.link.replace(/https?:\/\//gi, '');
-    //         return tempUrl === tempFeatUrl;
-    //       });
-    //     });
-    //   }).catch(error => {
-    //     console.log(error);
-    //   });
-    // },
-
-    /**
     * @desc Get a list of all programs from api
     * @returns { Boolean }
     */
@@ -840,6 +792,8 @@ export default {
             transit_to_site:(program.TRANSPORTATION) ? program.TRANSPORTATION : '',
             transit_from_home: (program.TRANSPORTATION) ? program.TRANSPORTATION : '',
 
+            focus_areas: program.subcats,
+
             lat: program.latitude,
             long: program.longitude,
             name: program.programname,
@@ -850,7 +804,6 @@ export default {
             state: program.state, 
             zip: program.zip, 
             phone: program.program_phone,
-            categories: program.subcats,
             staff: {
               title: program.staffTitle,
               firstName: program.stafffirstname,
@@ -994,6 +947,7 @@ export default {
         ...this.programAgeFilters,
         ...this.programGradeFilters,
         ...this.programTermFilters,
+        ...this.programZipFilters,
         ...this.programFocusFilters,
         ...this.programDaysFilters,
         ...this.programFeesFilters,
@@ -1004,29 +958,13 @@ export default {
         if (this[programFilter.valueStore].length > 0 && 
         this[programFilter.valueStore].includes(programFilter.matchValue)) {
           programs = programs.filter(program => {
-            return this[programFilter.valueStore].includes(program[programFilter.matchKey]);
+            return this[programFilter.valueStore].includes(program[programFilter.matchKey])
           });
         }
       });
 
       return programs;
     },
-
-    /**
-    * @todo part of this functionality has been moved to the server side, could build this list differently now
-    * @desc used by @method getPrograms to make list of all departments that have availabe positions.
-    * which is displayed on the departments drop-down
-    * @param { Array } programs
-    */
-    // matchDepartments (programs) {
-    //   let self = this;
-    //   programs.forEach((job, index) => {
-    //     if (job.department && !self.departmentsWithprograms.includes(job.department) && self.departments.includes(job.department)) {
-    //       self.departmentsWithprograms.push(job.department);
-    //     }
-    //   });
-    //   // self.departmentsWithprograms.sort();
-    // },
 
     /**
     * @desc resets all filters
@@ -1037,11 +975,11 @@ export default {
       this.programage = [];
       this.programgrade = [],
       this.programterm = [],
+      this.programzip = [],
       this.programfocus = [],
       this.programdays = [],
       this.programfees = [],
       this.search = '';
-      // this.sort = this.defaultSort;
     },
 
     /**
@@ -1087,6 +1025,17 @@ export default {
       return programs;
       
     },
+
+    zipCodeFilter(programs){
+      if (this.zipsearch. length >= 3){
+        this.updateRouterQuery('zipsearch', this.zipsearch);
+        console.log('zipsearch!!')
+        return this.$search(this.zipsearch, programs, this.fuseSearchOptions)
+      }
+      this.updateRouterQuery('zipsearch');
+      Vue.delete(this.routerQuery, 'zipsearch');
+      return programs;
+    },
     /**
     * @desc it does what it says it does.
     */
@@ -1106,6 +1055,7 @@ export default {
 
       //filteredprograms = this.departmentFilter(filteredprograms);
       filteredprograms = await this.searchBarFilter(filteredprograms);
+      // filteredprograms = this.zipCodeFilter(filteredprograms);
       filteredprograms = this.programFilters(filteredprograms);
 
       this.results = filteredprograms;
@@ -1164,46 +1114,6 @@ export default {
     display:block;
     .card.action-panel .panel {
       padding-bottom: 0;
-    }
-    .combo-search {
-      select {
-        float: left;
-        width: 27.8%;
-        margin-bottom: 40px;
-      }
-      .search {
-        float: left;
-        width: 72.2%;
-        .search-field {
-          min-height: 3.15rem;
-          border-left: 0;
-          padding-right: 5.15rem;
-          &:focus {
-            min-height: 3.15rem;
-            border-left: 0;
-          }
-        }
-        &:after {
-          height: 3.15rem;
-          width: 3.15rem;
-          font-size: 1.5rem;
-        }
-      }
-      @media screen and (max-width: 39.9375em) {
-        select {
-          width: 100%;
-          float: none;
-          margin-bottom: 5px;
-        }
-        .search {
-          width: 100%;
-          float: none;
-          margin-bottom: 5px;
-          .search-field {
-            border-left: 2px solid #0f4d90 !important;
-          }
-        }
-      }
     }
     .ost-clear-search-btn {
       position: absolute;
@@ -1267,6 +1177,7 @@ export default {
       height: 100vh;
       overflow: scroll;
       padding: 2rem 0 10rem 0;
+      border-right:1px solid #444;
 
       .ost-sidebar-header {
         margin-top: 40px;
@@ -1294,6 +1205,10 @@ export default {
           }
         }
       }
+    }
+    .ost-program-agency{
+      font-size: 1rem;
+      font-style: italic;
     }
     .ost-programs ul {
       list-style-type: none;
