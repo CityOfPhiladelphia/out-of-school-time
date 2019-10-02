@@ -587,7 +587,7 @@ export default {
     filterCount () {
       let count = 0;
       for (let key in this.routerQuery) {
-        if ([ 'programage', 'programgrade', 'programterm', 'programfocus', 'programdays', 'programfees', 'programtransit' ].includes(key)) {
+        if ([ 'programage', 'programgrade', 'programterm', 'programzip', 'programfocus', 'programdays', 'programfees', 'programtransit' ].includes(key)) {
           count = parseInt(count) + this.returnArray(this.routerQuery[key]).length;
         }
       }
@@ -629,64 +629,50 @@ export default {
     // },
     programage (value) {
       if (value.length > 0) {
-        console.log('programage', value)
         this.updateRouterQuery('programage', value);
       } else {
-        console.log('programage', value)
         this.updateRouterQuery('programage');
       }
     },
     programgrade (value) {
       if (value.length > 0) {
-        console.log('programgrade', value)
         this.updateRouterQuery('programgrade', value);
       } else {
-        console.log('programgrade', value)
         this.updateRouterQuery('programgrade');
       }
     },
     programterm (value) {
       if (value.length > 0) {
-        console.log('programterm', value)
         this.updateRouterQuery('programterm', value);
       } else {
-        console.log('programterm', value)
         this.updateRouterQuery('programterm');
       }
     },
     programzip (value) {
       if (value.length > 0) {
-        console.log('programzip', value)
         this.updateRouterQuery('programzip', value);
       } else {
-        console.log('programzip', value)
         this.updateRouterQuery('programzip');
       }
     },
     programfocus (value) {
       if (value.length > 0) {
-        console.log('programfocus', value)
         this.updateRouterQuery('programfocus', value);
       } else {
-        console.log('programfocus', value)
         this.updateRouterQuery('programfocus');
       }
     },
     programdays (value) {
       if (value.length > 0) {
-        console.log('programdays', value)
         this.updateRouterQuery('programdays', value);
       } else {
-        console.log('programdays', value)
         this.updateRouterQuery('programdays');
       }
     },
     programfees (value) {
       if (value.length > 0) {
-        console.log('programfees', value)
         this.updateRouterQuery('programfees', value);
       } else {
-        console.log('programfees', value)
         this.updateRouterQuery('programfees');
       }
     },
@@ -1117,8 +1103,8 @@ export default {
     }
     .ost-clear-search-btn {
       position: absolute;
-      top: 12px;
-      right: 52px;
+      top: 16px;
+      right: 68px;
       padding: 0;
       font-size: 20px;
       background-color: #fff;

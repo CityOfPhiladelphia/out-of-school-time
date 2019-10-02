@@ -59,7 +59,8 @@
         </h2>
         <div
           v-for="filter in programZipFilters"
-          :key="filter.label">
+          :key="filter.label"
+          class="search">
           <label 
             for="search-bar"
             :aria-label="filter.label"
@@ -67,9 +68,10 @@
             <input
               :id="filter.matchValue"
               class="search-field"
-              type="text"
+              type="number"
               :placeholder="filter.label"
               @keydown.enter="updateFilters('programzip', $event, 'zip');"
+              :checked="isFilterChecked(filter.matchValue, 'programzip')"
             ><input
               ref="ost-zip-search"
               type="submit"
@@ -319,23 +321,21 @@ export default {
     * @param { String } filter name to eval
     * @param { Object } $event object
     */
+   //TODO refactor all filters to not require the filter name to be the match
     updateFilters (filter, e, name) {
       let newFilters = this[filter];
 
-      console.log(e.target.value)
+      console.log('e.target', e.target.id)
 
-      if (e.target.checked ) {
+      if ( e.target.checked || (e.target.id === 'zip' && e.target.value ) )  {
         
         if (!this[filter].includes(e.target.value)) {
-          newFilters.push(e.target.value);
-        }
-      } else if (typeof e.target.value === 'string'){
-        if (!this[filter].includes(e.target.value)) {
+          //newFilters.push(e.target.value);
           newFilters.push(name, e.target.value);
         }
+
       }else {
         newFilters = this[filter].filter(item => item !== e.target.value);
-        console.log(`newfilters: ${newfilters}`);
 
       }
       this.$emit(`update:${filter}`, newFilters);
