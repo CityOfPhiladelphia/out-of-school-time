@@ -139,79 +139,126 @@
               :key="program.id"
             >
               <!-- Program -->
-              <div class="ost-job">
+              <div class="ost-program">
                 <!-- Program Title -->
                 <div class="ost-program-title-wrap bg-ghost-gray clearfix">
-                  <div class="ost-program-title h3">
-                      {{ program.name }} - <span class="ost-program-agency">{{ program.agency }}</span>
+                  <div class="ost-program-title h3 phm mas">
+                      <b>{{ program.name }}</b>    <span class="ost-program-agency">{{ program.agency }}</span>
                   </div>
                 </div>
-                <!-- Program Body -->
-                <div class="ost-location">
-                  <div class="ost-address-wrap">
-                    <i class="fas fa-map-marker-alt fa-fw"></i>
-                    <div class="program-address">{{ program.address }}<br>
-                      {{ program.city }}, {{ program.state }} {{ program.zip }}
+              <!-- Program Body -->
+                <div class="row phm">
+                  <div class="grid-x grid-margin-x grid-padding-x mtl">
+                    <div class="ost-location cell medium-8">
+                      <div 
+                        v-if="program.address"
+                        class="program-address group mbl">
+                        <i class="fas fa-map-marker-alt fa-fw"></i>
+                        <div class="program-icon-content">{{ program.address }}<br>
+                          {{ program.city }}, {{ program.state }} {{ program.zip }}
+                        </div>
+                      </div>
+                      <div 
+                        v-if="program.phone"
+                        class="program-phone group mbl">
+                        <i class="fas fa-phone fa-fw"></i>
+                          <div class="program-icon-content">
+                          {{program.phone}}
+                        </div>
+                      </div>
                     </div>
+                    <div class="ost-program-contact cell medium-8">
+                      <div 
+                        v-if="program.staff.firstName"
+                        class="program-contact group mbl">
+                        <i class="fas fa-user fa-fw"></i>
+                          <div class="program-icon-content">
+                            <span v-if="program.staff.firstName">
+                            {{ program.staff.firstName }}
+                            {{ program.staff.lastName }}</span>
+                            <span v-if="program.staff.title">, {{ program.staff.title }}</span>
+                          </div>
+                      </div>
+                      <div 
+                        v-if="program.staff.email"
+                        class="program-email group mbl">
+                        <i class="fas fa-envelope fa-fw"></i>
+                          <div class="program-icon-content">
+                            <a :href="`mailto:${program.staff.email}`">{{ program.staff.email }}</a><br>
+                          </div>
+                      </div>
+                      <div 
+                        v-if="program.online.web"
+                        class="program-website group mbl">
+                        <i class="fas fa-globe fa-fw"></i>
+                          <div class="program-icon-content">
+                          <a :href="program.online.web" class="external" target="_blank">Website</a>
+                        </div>
+                      </div>
+                      <div class="social-media">
+                        <div 
+                          v-if="program.online.facebook"
+                          class="facebook"><a :href="program.online.facebook"><i class="fab fa-facebook fa-fw"></i></a></div>
+                        <div
+                          v-if="program.online.instagram"
+                          class="instagram"><a :href="program.online.instagram"><i class="fab fa-instagram fa-fw"></i></a></div>
+                        <div 
+                          v-if="program.online.twitter"
+                        class="twitter"><a :href="program.online.twitter"><i class="fab fa-twitter fa-fw"></i></a></div>
+                      </div>
+                    </div>
+                    <div class="ost-registration-information cell medium-8">
+                      <div 
+                        v-if="program.registration.startDate"
+                        class="mbl"><b>Registration open:</b> {{ program.registration.startDate }} - {{ program.registration.endDate }}</div>
+                      <div 
+                        v-if="program.timeDetails.startDate"
+                        class="mbl"><b>Program runs from:</b> {{ program.timeDetails.startDate }} - {{ program.timeDetails.endDate}}</div>
+                      <div class="mbl"><b>Days offered: </b>  
+                        <span v-if="program.day_mon">Monday, </span> 
+                        <span v-if="program.day_tues">Tuesday, </span> 
+                        <span v-if="program.day_wed">Wednesday, </span> 
+                        <span v-if="program.day_thurs">Thursday </span> 
+                        <span v-if="program.day_fri">Friday, </span> 
+                        <span v-if="program.day_sat">Saturday, </span> 
+                        <span v-if="program.day_sun">Sunday</span></div>
+                      <div 
+                        v-if="program.timeDetails.startTime"
+                        class="mbl"><b>Times offered:</b> {{ program.timeDetails.startTime }} - {{ program.timeDetails.Endtime }}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="phm">
+                  <div 
+                    v-if="program.focus_areas"
+                    class="ost-focus-areas mbm">
+                    <h3><b>Focus areas</b></h3>
+                    <span v-html="program.focus_areas"></span>
+                  </div>
+                  <div class="details">
+                    <h3><b>Details</b></h3>
+                    <b>Ages:</b> 
+                      {{program.age_isUnder5 }}<br>
+                      {{program.age_is5to10}}  <br>
+                      {{program.age_is11to13}}<br>
+                      {{program.age_is14to18 }}<br>
+                      {{program.age_isAbove18}}
+                      <br>
+                    <b>Grades:</b>
+                      {{program.grade_prek }}<br>
+                      {{program.grade_kto4 }}<br>
+                      {{program.grade_5to8 }}<br>
+                      {{program.grade_9to12 }}<br>
+
+                    <b>Costs:</b> {{ program.costs }} <br>
+                    <b>Term: </b> {{program.term}} <br>
+                    <b>Services:</b> {{ program.services }}<br>
+                    <b>Transportation:</b> {{ program.transport }} <br>
+                    <b>Meals:</b> {{ program.meals }}
 
                   </div>
-                  <div class="ost-phone">
-                    <i class="fas fa-phone fa-fw"></i>
-                    {{program.phone}}
-                  </div>
+                  {{ program }}
                 </div>
-                <div class="ost-program-contact">
-                  {{ program.staff.title }}<br>
-                  {{ program.staff.firstName }}<br>
-                  {{ program.staff.lastName }}<br>
-                  {{ program.staff.email }}<br>
-                  {{ program.online.web }}<br>
-                  {{ program.online.facebook }}<br>
-                  {{ program.online.instagram }}<br>
-                  {{ program.online.twitter }}<br>
-                </div>
-                <div class="ost-registration-information">
-                  <b>Registration open:</b> {{ program.registration.startDate }} - {{ program.registration.endDate }} <br>
-                  <b>Program runs from:</b> {{ program.timeDetails.startDate }} - {{ program.timeDetails.endDate}}<br>
-                  <b>Days offered:</b>  
-                    <span v-if="program.day_mon">Monday, </span> 
-                    <span v-if="program.day_tues">Tuesday, </span> 
-                    <span v-if="program.day_wed">Wednesday, </span> 
-                    <span v-if="program.day_thurs">Thursday </span> 
-                    <span v-if="program.day_fri">Friday, </span> 
-                    <span v-if="program.day_sat">Saturday, </span> 
-                    <span v-if="program.day_sun">Sunday</span> <br>
-                  <b>Times offered:</b> {{ program.timeDetails.startTime }} - {{ program.timeDetails.Endtime }}<br>
-                </div>
-                <div 
-                  v-if="program.focus_areas"
-                  class="ost-focus-areas">
-                  <h3>Focus areas</h3>
-                  <span v-html="program.focus_areas"></span>
-                </div>
-                <div class="details">
-                  <h3>Details</h3>
-                  <b>Ages:</b> 
-                    {{program.age_isUnder5 }}<br>
-                    {{program.age_is5to10}}  <br>
-                    {{program.age_is11to13}}<br>
-                    {{program.age_is14to18 }}<br>
-                    {{program.age_isAbove18}}
-                    <br>
-                  <b>Grades:</b>
-                    {{program.grade_prek }}<br>
-                    {{program.grade_kto4 }}<br>
-                    {{program.grade_5to8 }}<br>
-                    {{program.grade_9to12 }}<br>
-
-                  <b>Costs:</b> {{ program.costs }} <br>
-                  <b>Term: </b> {{program.term}} <br>
-                  <b>Services:</b> {{ program.services }}<br>
-                  <b>Transportation:</b> {{ program.transport }} <br>
-                  <b>Meals:</b> {{ program.meals }}
-
-                </div>
-                {{ program }}
               </div>
             </li>
           </ul>
@@ -1195,6 +1242,10 @@ export default {
     .ost-program-agency{
       font-size: 1rem;
       font-style: italic;
+    }
+    .program-icon-content{
+      width: calc(100% - 45px);
+      float:right;
     }
     .ost-programs ul {
       list-style-type: none;
