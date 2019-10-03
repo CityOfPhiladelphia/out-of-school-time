@@ -3,40 +3,56 @@
     :class="{ 'in-modal': vModal }"
   >
     <div class="ost-sidebar-filters-wrap">
-      <h2 class="ost-sidebar-header ost-first-sidebar-header">
-        Age
-      </h2>
-      <div
-        v-for="filter in programAgeFilters"
-        :key="filter.label"
-        class="checkbox-wrap"
-      >
-        <input
-          :id="filter.matchValue"
-          type="checkbox"
-          :value="filter.matchValue"
-          :checked="isFilterChecked(filter.matchValue, 'programage')"
-          @change="updateFilters('programage', $event)"
-        >
-        <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
-      </div>
-      <h2 class="ost-sidebar-header ost-sidebar-header">
-        Grade
-      </h2>
-      <div
-        v-for="filter in programGradeFilters"
-        :key="filter.label"
-        class="checkbox-wrap"
-      >
-        <input
-          :id="filter.matchValue"
-          type="checkbox"
-          :value="filter.matchValue"
-          :checked="isFilterChecked(filter.matchValue, 'programgrade')"
-          @change="updateFilters('programgrade', $event)"
-        >
-        <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
-      </div>
+      <accordion>
+        <template v-slot:title>
+          <h2 
+            @click="toggle"
+            class="ost-sidebar-header ost-first-sidebar-header accordion-header">
+            Age
+          </h2>
+        </template>
+        <template v-slot:content>
+          <div
+            v-for="filter in programAgeFilters"
+            :key="filter.label"
+            class="checkbox-wrap"
+          >
+            <input
+              :id="filter.matchValue"
+              type="checkbox"
+              :value="filter.matchValue"
+              :checked="isFilterChecked(filter.matchValue, 'programage')"
+              @change="updateFilters('programage', $event)"
+            >
+            <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
+          </div>
+          </template>
+        </accordion>
+
+      <accordion>
+        <template v-slot:title>
+          <h2 
+            class="ost-sidebar-header ost-sidebar-header">
+            Grade
+          </h2>
+        </template>
+        <template v-slot:content>
+          <div
+            v-for="filter in programGradeFilters"
+            :key="filter.label"
+            class="checkbox-wrap"
+          >
+            <input
+              :id="filter.matchValue"
+              type="checkbox"
+              :value="filter.matchValue"
+              :checked="isFilterChecked(filter.matchValue, 'programgrade')"
+              @change="updateFilters('programgrade', $event)"
+            >
+            <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
+          </div>
+        </template>
+      </accordion>
       <h2 class="ost-sidebar-header ost-sidebar-header">
         Program term
       </h2>
@@ -70,74 +86,98 @@
 
           </label>
         </div>
-      <h2 class="ost-sidebar-header ost-sidebar-header">
-        Focus Area
-      </h2>
-      <div
-        v-for="filter in programFocusFilters"
-        :key="filter.label"
-        class="checkbox-wrap"
-      >
-        <input
-          :id="filter.matchValue"
-          type="checkbox"
-          :value="filter.matchValue"
-          :checked="isFilterChecked(filter.matchValue, 'programfocus')"
-          @change="updateFilters('programfocus', $event)"
-        >
-        <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
-      </div>
-      <h2 class="ost-sidebar-header ost-sidebar-header">
-        Days offered
-      </h2>
-      <div
-        v-for="filter in programDaysFilters"
-        :key="filter.label"
-        class="checkbox-wrap"
-      >
-        <input
-          :id="filter.matchValue"
-          type="checkbox"
-          :value="filter.matchValue"
-          :checked="isFilterChecked(filter.matchValue, 'programdays')"
-          @change="updateFilters('programdays', $event)"
-        >
-        <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
-      </div>
-      <h2 class="ost-sidebar-header ost-sidebar-header">
-        Fee
-      </h2>
-      <div
-        v-for="filter in programFeesFilters"
-        :key="filter.label"
-        class="checkbox-wrap"
-      >
-        <input
-          :id="filter.matchValue"
-          type="checkbox"
-          :value="filter.matchValue"
-          :checked="isFilterChecked(filter.matchValue, 'programfees')"
-          @change="updateFilters('programfees', $event)"
-        >
-        <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
-      </div>
-      <h2 class="ost-sidebar-header">
-        Transportation
-      </h2>
-      <div
-        v-for="filter in programTransportationFilters"
-        :key="filter.label"
-        class="checkbox-wrap"
-      >
-        <input
-          :id="filter.label"
-          type="checkbox"
-          :value="filter.matchValue"
-          :checked="isFilterChecked(filter.matchValue, 'programtransit')"
-          @change="updateFilters('programtransit', $event)"
-        >
-        <label :for="filter.label"><div>{{ filter.label }}</div></label>
-      </div>
+        <accordion>
+          <template v-slot:title>
+            <h2 class="ost-sidebar-header ost-sidebar-header">
+              Focus Area
+            </h2>
+          </template>
+          <template v-slot:content>
+            <div
+              v-for="filter in programFocusFilters"
+              :key="filter.label"
+              class="checkbox-wrap"
+            >
+              <input
+                :id="filter.matchValue"
+                type="checkbox"
+                :value="filter.matchValue"
+                :checked="isFilterChecked(filter.matchValue, 'programfocus')"
+                @change="updateFilters('programfocus', $event)"
+              >
+              <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
+            </div>
+          </template>
+        </accordion>
+        <accordion>
+        <template v-slot:title>
+          <h2 class="ost-sidebar-header ost-sidebar-header">
+            Days offered
+          </h2>
+        </template>
+        <template v-slot:content>
+          <div
+            v-for="filter in programDaysFilters"
+            :key="filter.label"
+            class="checkbox-wrap"
+          >
+            <input
+              :id="filter.matchValue"
+              type="checkbox"
+              :value="filter.matchValue"
+              :checked="isFilterChecked(filter.matchValue, 'programdays')"
+              @change="updateFilters('programdays', $event)"
+            >
+            <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
+          </div>
+        </template>
+      </accordion>
+      <accordion>
+        <template v-slot:title>
+          <h2 class="ost-sidebar-header ost-sidebar-header">
+            Fee
+          </h2>
+        </template>
+        <template v-slot:content>
+          <div
+            v-for="filter in programFeesFilters"
+            :key="filter.label"
+            class="checkbox-wrap"
+          >
+            <input
+              :id="filter.matchValue"
+              type="checkbox"
+              :value="filter.matchValue"
+              :checked="isFilterChecked(filter.matchValue, 'programfees')"
+              @change="updateFilters('programfees', $event)"
+            >
+            <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
+          </div>
+        </template>
+      </accordion>
+      <accordion>
+        <template v-slot:title>
+          <h2 class="ost-sidebar-header">
+            Transportation
+          </h2>
+        </template>
+        <template v-slot:content>
+          <div
+            v-for="filter in programTransportationFilters"
+            :key="filter.label"
+            class="checkbox-wrap"
+          >
+            <input
+              :id="filter.label"
+              type="checkbox"
+              :value="filter.matchValue"
+              :checked="isFilterChecked(filter.matchValue, 'programtransit')"
+              @change="updateFilters('programtransit', $event)"
+            >
+            <label :for="filter.label"><div>{{ filter.label }}</div></label>
+          </div>
+        </template>
+      </accordion>
     </div>
     <div
       v-if="vModal"
@@ -163,14 +203,16 @@
 <script>
 import axios from 'axios';
 import vSelect from 'vue-select'
-
+import accordion from './accordion';
 export default {
   components: {
-    vSelect
+    vSelect,
+    accordion
   },
   data() {
     return {
       zipcodes: [],
+      showSection: true,
     }
   },
   props: {
@@ -305,7 +347,6 @@ export default {
     async init () {
       await this.getOptions();
     },
-    
     getOptions() {
       return axios.get('./zipcodes.json').then(async (result) => {
 
@@ -320,6 +361,9 @@ export default {
     emptySearchBar(){
       this.zipSearch = ''
       return 
+    },
+    toggle() {
+      this.showSection = !this.showSection
     },
     /**
     * @desc is checkbox checked
@@ -366,7 +410,7 @@ export default {
 }
 </script>
 <style lang="scss">
-@import "vue-select/src/scss/vue-select.scss";
+  @import "vue-select/src/scss/vue-select.scss";
   .vs__clear{
     display:none !important;
   }
