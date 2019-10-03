@@ -139,17 +139,17 @@
               :key="program.id"
             >
               <!-- Program -->
-              <div class="ost-program">
+              <div class="ost-program mtl">
                 <!-- Program Title -->
                 <div class="ost-program-title-wrap bg-ghost-gray clearfix">
-                  <div class="ost-program-title h3 phm mas">
+                  <div class="ost-program-title h3 phs mas">
                       <b>{{ program.name }}</b>    <span class="ost-program-agency">{{ program.agency }}</span>
                   </div>
                 </div>
               <!-- Program Body -->
                 <div class="row phm">
                   <div class="grid-x grid-margin-x grid-padding-x mtl">
-                    <div class="ost-location cell medium-8">
+                    <div class="ost-contact cell medium-12">
                       <div 
                         v-if="program.address"
                         class="program-address group mbl">
@@ -166,8 +166,6 @@
                           {{program.phone}}
                         </div>
                       </div>
-                    </div>
-                    <div class="ost-program-contact cell medium-8">
                       <div 
                         v-if="program.staff.firstName"
                         class="program-contact group mbl">
@@ -207,7 +205,10 @@
                         class="twitter"><a :href="program.online.twitter"><i class="fab fa-twitter fa-fw"></i></a></div>
                       </div>
                     </div>
-                    <div class="ost-registration-information cell medium-8">
+                    <!-- <div class="ost-program-contact cell medium-8">
+                   
+                    </div> -->
+                    <div class="ost-registration-information cell medium-12">
                       <div 
                         v-if="program.registration.startDate"
                         class="mbl"><b>Registration open:</b> {{ program.registration.startDate }} - {{ program.registration.endDate }}</div>
@@ -224,7 +225,7 @@
                         <span v-if="program.day_sun">Sunday</span></div>
                       <div 
                         v-if="program.timeDetails.startTime"
-                        class="mbl"><b>Times offered:</b> {{ program.timeDetails.startTime }} - {{ program.timeDetails.Endtime }}</div>
+                        class="mbl"><b>Time offered:</b> {{ program.timeDetails.startTime }}<span v-if="program.timeDetails.Endtime"> - {{ program.timeDetails.Endtime }}</span></div>
                     </div>
                   </div>
                 </div>
@@ -238,17 +239,17 @@
                   <div class="details">
                     <h3><b>Details</b></h3>
                     <b>Ages:</b> 
-                      {{program.age_isUnder5 }}<br>
-                      {{program.age_is5to10}}  <br>
-                      {{program.age_is11to13}}<br>
-                      {{program.age_is14to18 }}<br>
+                      {{program.age_isUnder5 }}
+                      {{program.age_is5to10}} 
+                      {{program.age_is11to13}}
+                      {{program.age_is14to18 }}
                       {{program.age_isAbove18}}
                       <br>
                     <b>Grades:</b>
-                      {{program.grade_prek }}<br>
-                      {{program.grade_kto4 }}<br>
-                      {{program.grade_5to8 }}<br>
-                      {{program.grade_9to12 }}<br>
+                      {{program.grade_prek }}
+                      {{program.grade_kto4 }}
+                      {{program.grade_5to8 }}
+                      {{program.grade_9to12 }} 
 
                     <b>Costs:</b> {{ program.costs }} <br>
                     <b>Term: </b> {{program.term}} <br>
@@ -257,7 +258,7 @@
                     <b>Meals:</b> {{ program.meals }}
 
                   </div>
-                  {{ program }}
+                  <!-- {{ program }} -->
                 </div>
               </div>
             </li>
@@ -856,8 +857,8 @@ export default {
             timeDetails: {
               startDate: program.begindate_str,
               endDate: program.enddate_str,
-              startTime: program.begintime,
-              endTime: program.endtime,
+              startTime: program.begintime_str,
+              endTime: program.endtime_str,
             },
             services: program.SERVICES,
             meals: program.MEALS
@@ -902,6 +903,22 @@ export default {
       program.fee_ccis = (program.fee_ccis.includes('CCIS') )? 'fee_ccis' : null;
       program.fee_has_fee =  (program.fee_has_fee.includes('based') )  ? 'fee_has_fee' : null;
       program.fee_scholarship =  (program.fee_scholarship.includes('Scholarships')) ? 'fee_scholarship' : null;
+
+      let startDate =  new Date(program.timeDetails.startDate)
+      let endDate =  new Date(program.timeDetails.endDate)
+      let registrationStart = new Date(program.timeDetails.startDate)
+      let registrationEnd = new Date(program.timeDetails.endDate)
+
+      let options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+
+      program.registration.startDate = registrationStart.toLocaleDateString('en-US', options)
+      program.registration.endDate = registrationEnd.toLocaleDateString('en-US', options)
+
+      program.timeDetails.startDate = startDate.toLocaleDateString('en-US', options)
+      program.timeDetails.endDate = endDate.toLocaleDateString('en-US', options)
+
+  
+
 
       return program
     },
@@ -1012,6 +1029,7 @@ export default {
       this.programfocus = [],
       this.programdays = [],
       this.programfees = [],
+      this.programzip = [],
       this.search = '';
     },
 
@@ -1058,17 +1076,6 @@ export default {
       return programs;
       
     },
-
-    zipCodeFilter(programs){
-      if (this.zipsearch. length >= 3){
-        this.updateRouterQuery('zipsearch', this.zipsearch);
-        console.log('zipsearch!!')
-        return this.$search(this.zipsearch, programs, this.fuseSearchOptions)
-      }
-      this.updateRouterQuery('zipsearch');
-      Vue.delete(this.routerQuery, 'zipsearch');
-      return programs;
-    },
     /**
     * @desc it does what it says it does.
     */
@@ -1086,14 +1093,11 @@ export default {
     async updateResultsList () {
       let filteredprograms = this.programs;
 
-      //filteredprograms = this.departmentFilter(filteredprograms);
       filteredprograms = await this.searchBarFilter(filteredprograms);
-      // filteredprograms = this.zipCodeFilter(filteredprograms);
       filteredprograms = this.programFilters(filteredprograms);
 
       this.results = filteredprograms;
 
-      //this.sortResults();
     },
 
     /**
@@ -1104,7 +1108,6 @@ export default {
     updateRouterQuery (key, value) {
       if (typeof value === 'undefined') {
         Vue.delete(this.routerQuery, key);
-        console.log('is this undefined?')
       } else {
         //this.$ga.event('ost-programs', key, this.returnArray(value).join('|'));
         Vue.set(this.routerQuery, key, value);
@@ -1238,6 +1241,9 @@ export default {
           }
         }
       }
+    }
+    .ost-contact{
+      border-right: 1px solid #ccc;
     }
     .ost-program-agency{
       font-size: 1rem;

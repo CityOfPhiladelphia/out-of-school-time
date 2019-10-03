@@ -59,31 +59,15 @@
         </h2>
         <div
           v-for="filter in programZipFilters"
-          :key="filter.label"
-          class="search">
+          :key="filter.label">
           <label 
             for="search-bar"
             :aria-label="filter.label"
           >
-            <input
-              :id="filter.matchValue"
-              class="search-field"
-              type="number"
-              :placeholder="filter.label"
-              @keydown.enter="updateFilters('programzip', $event, 'zip');"
-              :checked="isFilterChecked(filter.matchValue, 'programzip')"
-            ><input
-              ref="ost-zip-search"
-              type="submit"
-              class="search-submit"
-              value="Search"
-            >
-          <button
-            class="ost-clear-search-btn"
-            @click="clearAllFilters()"
-          >
-            <i class="fal fa-times-square" />
-          </button>
+          <v-select 
+            :options="zipcodes"
+            @input="updateFilters('programzip', $event, 'zip');"></v-select>
+
           </label>
         </div>
       <h2 class="ost-sidebar-header ost-sidebar-header">
@@ -177,7 +161,18 @@
 </template>
 
 <script>
+import axios from 'axios';
+import vSelect from 'vue-select'
+
 export default {
+  components: {
+    vSelect
+  },
+  data() {
+    return {
+      zipcodes: [],
+    }
+  },
   props: {
     programAgeFilters: {
       type: Array,
@@ -302,12 +297,35 @@ export default {
       default: false,
     },
   },
+  created () {
+    this.init();
+  },
+
   methods: {
+    async init () {
+      await this.getOptions();
+    },
+    
+    getOptions() {
+      return axios.get('./zipcodes.json').then(async (result) => {
+
+        this.zipcodes = result.data
+        console.log(this.zipcodes)
+        return true;
+      }).catch((error) => {
+        console.log(error);
+        return false;
+      });
+    },
+    emptySearchBar(){
+      this.zipSearch = ''
+      return 
+    },
     /**
     * @desc is checkbox checked
     * @param { String } value
     * @param { String } filter name to eval
-    * @returns { Boolean }
+    * @returns { Booleaan }
     */
     isFilterChecked (value, filter) {
       if (this[filter].includes(value)) {
@@ -321,22 +339,24 @@ export default {
     * @param { String } filter name to eval
     * @param { Object } $event object
     */
-   //TODO refactor all filters to not require the filter name to be the match
+
     updateFilters (filter, e, name) {
       let newFilters = this[filter];
 
-      console.log('e.target', e.target.id)
+      //handle zip dropdown
+      if (typeof e === 'number'){
 
-      if ( e.target.checked || (e.target.id === 'zip' && e.target.value ) )  {
-        
-        if (!this[filter].includes(e.target.value)) {
-          //newFilters.push(e.target.value);
-          newFilters.push(name, e.target.value);
+        let s = e.toString()
+        if (!this[filter].includes(e)) {
+          newFilters = [ 'zip', s ];
         }
 
+      }else if( e.target.checked )  {
+        if (!this[filter].includes(e.target.value)) {
+          newFilters.push(name, e.target.value);
+        }
       }else {
         newFilters = this[filter].filter(item => item !== e.target.value);
-
       }
       this.$emit(`update:${filter}`, newFilters);
       this.updateResultsList();
@@ -345,3 +365,9 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+@import "vue-select/src/scss/vue-select.scss";
+  .vs__clear{
+    display:none !important;
+  }
+</style>
