@@ -23,6 +23,7 @@
               :value="filter.matchValue"
               :checked="isFilterChecked(filter.matchValue, 'programage')"
               @change="updateFilters('programage', $event)"
+              tabindex="0"
             >
             <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
           </div>
