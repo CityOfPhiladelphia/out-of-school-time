@@ -1469,4 +1469,8 @@ export default {
       }
     }
   }
+  .app-footer.anchor{
+    position: sticky;
+    bottom:0;
+  }
 </style>
