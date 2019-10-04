@@ -147,7 +147,7 @@
                 <!-- Program Title -->
                 <div class="ost-program-title-wrap bg-ghost-gray clearfix">
                   <div class="ost-program-title h3 phs mas">
-                      <b>{{ program.name }}</b>    <span class="ost-program-agency">{{ program.agency }}</span>
+                      <b>{{ program.name }}</b>  -  <span class="ost-program-agency">{{ program.agency }}</span>
                   </div>
                 </div>
               <!-- Program Body -->
@@ -219,13 +219,8 @@
                         v-if="program.timeDetails.startDate"
                         class="mbl"><b>Program runs from:</b> {{ program.timeDetails.startDate }} - {{ program.timeDetails.endDate}}</div>
                       <div class="mbl"><b>Days offered: </b>  
-                        <span v-if="program.day_mon">Monday</span> 
-                        <span v-if="program.day_tues">Tuesday</span> 
-                        <span v-if="program.day_wed">Wednesday</span> 
-                        <span v-if="program.day_thurs">Thursday</span> 
-                        <span v-if="program.day_fri">Friday</span> 
-                        <span v-if="program.day_sat">Saturday</span> 
-                        <span v-if="program.day_sun">Sunday</span></div>
+                        {{ program.daynames }}
+                        </div>
                       <div 
                         v-if="program.timeDetails.startTime"
                         class="mbl"><b>Time offered:</b> {{ program.timeDetails.startTime }}<span v-if="program.timeDetails.Endtime"> - {{ program.timeDetails.Endtime }}</span></div>
@@ -773,15 +768,6 @@ export default {
     },
 
     /**
-    * @desc it does what it says it does.
-    */
-    scrollToTop () {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    },
-    /**
     * @desc Get a list of all programs from api
     * @returns { Boolean }
     */
@@ -912,6 +898,9 @@ export default {
       program.day_sat = program.daynames.includes('Sa') ? 'day_sat' : null;
       program.day_sun = program.daynames.includes('Su') ? 'day_sun' : null;
 
+
+      program.daynames = program.daynames.replace('M','Monday').replace('Tu', 'Tuesday').replace('W', 'Wednesday').replace('Th', 'Thursday').replace('F', 'Friday').replace('Sa', 'Saturday').replace('Su', 'Sunday');
+
       program.fee_free = (program.fee_free.includes('Free')) ? 'fee_free' : null;
       program.fee_ccis = (program.fee_ccis.includes('CCIS') )? 'fee_ccis' : null;
       program.fee_has_fee =  (program.fee_has_fee.includes('based') )  ? 'fee_has_fee' : null;
@@ -966,8 +955,8 @@ export default {
       for (let key in this.$route.query) {
         switch (key) {
         case 'search':
-          // Vue.set(this, key, this.$route.query[key]);
-          // break;
+          Vue.set(this, key, this.$route.query[key]);
+          break;
         default:
           Vue.set(this, key, this.returnArray(this.$route.query[key]));
           break;
@@ -1081,7 +1070,6 @@ export default {
       if (this.search.length >= 3) {
         this.updateRouterQuery('search', this.search);
         //doesn't even get here
-        console.log(this.$search(this.search, programs, this.fuseSearchOptions))
         return this.$search(this.search, programs, this.fuseSearchOptions);
       } 
       this.updateRouterQuery('search');
