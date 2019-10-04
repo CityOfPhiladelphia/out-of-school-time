@@ -1,5 +1,9 @@
 <template>
   <div id="ost-app">
+    <div class="intro-text row">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   
+    </div>
     <div
       v-if="ready"
       class="row"
@@ -1148,6 +1152,10 @@ export default {
   //@todo remove Standard on prod
   #ost-app {
     display:block;
+
+    .intro-text{
+      padding: 2rem 0;
+    }
     .card.action-panel .panel {
       padding-bottom: 0;
     }
@@ -1212,18 +1220,14 @@ export default {
       top: 80px;
       height: 100vh;
       overflow: scroll;
-      padding: 2rem 0 10rem 0;
-      border-right:1px solid #444;
+      padding: 0 1rem 10rem 0;
+      border-right:1px solid #ccc;
 
-      .ost-sidebar-header {
-        margin-top: 40px;
+      h2.ost-sidebar-header {
+        margin: 0;
         text-transform: uppercase;
         font-size: 17px;
-        margin-top:1rem,;
         font-weight: 700;
-        &.ost-first-sidebar-header {
-          margin-top: 0;
-        }
       }
       @media screen and (max-width: 39.9375em) {
         position: relative;

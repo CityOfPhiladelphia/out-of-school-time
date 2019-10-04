@@ -3,6 +3,9 @@
     :class="{ 'in-modal': vModal }"
   >
     <div class="ost-sidebar-filters-wrap">
+      <div class="mbl">
+          Refine by
+      </div>
       <accordion>
         <template v-slot:title>
           <h2 
@@ -54,39 +57,51 @@
           </div>
         </template>
       </accordion>
-      <h2 class="ost-sidebar-header ost-sidebar-header">
-        Program term
-      </h2>
-      <div
-        v-for="filter in programTermFilters"
-        :key="filter.label"
-        class="checkbox-wrap"
-      >
-        <input
-          :id="filter.matchValue"
-          type="checkbox"
-          :value="filter.matchValue"
-          :checked="isFilterChecked(filter.matchValue, 'programterm')"
-          @change="updateFilters('programterm', $event)"
-        >
-        <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
-      </div>
-      <h2 class="ost-sidebar-header ost-sidebar-header">
-        Zip
-        </h2>
-        <div
-          v-for="filter in programZipFilters"
-          :key="filter.label">
-          <label 
-            for="search-bar"
-            :aria-label="filter.label"
-          >
-          <v-select 
-            :options="zipcodes"
-            @input="updateFilters('programzip', $event, 'zip');"></v-select>
+      <accordion>
+        <template v-slot:title>
+          <h2 class="ost-sidebar-header ost-sidebar-header">
+            Program term
+          </h2>
+        </template>
+        <template v-slot:content>
 
+          <div
+            v-for="filter in programTermFilters"
+            :key="filter.label"
+            class="checkbox-wrap"
+          >
+            <input
+              :id="filter.matchValue"
+              type="checkbox"
+              :value="filter.matchValue"
+              :checked="isFilterChecked(filter.matchValue, 'programterm')"
+              @change="updateFilters('programterm', $event)"
+            >
+            <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
+          </div>
+        </template>
+      </accordion>
+      <accordion>
+        <template v-slot:title>
+          <h2 class="ost-sidebar-header ost-sidebar-header">
+            Zip
+          </h2>
+        </template>
+        <template v-slot:content>
+          <div
+            v-for="filter in programZipFilters"
+            :key="filter.label">
+            <label 
+              for="search-bar"
+              :aria-label="filter.label"
+            >
+            <v-select 
+              :options="zipcodes"
+              @input="updateFilters('programzip', $event, 'zip');"></v-select>
           </label>
         </div>
+      </template>
+      </accordion>
         <accordion>
           <template v-slot:title>
             <h2 class="ost-sidebar-header ost-sidebar-header">

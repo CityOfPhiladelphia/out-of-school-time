@@ -35,7 +35,6 @@ export default {
 <style lang="scss" scoped>
 .accordion-title{
   cursor: pointer;
-  margin-top: 40px;
   text-transform: uppercase;
   color: #444;
   font-size: 17px;
@@ -56,5 +55,8 @@ export default {
       content: '\f077'
     }
   }
+}
+.accordion-content{
+  padding: 1rem;
 }
 </style>
