@@ -8,38 +8,38 @@
       v-if="ready"
       class="row"
     >
-      <div class="search">
-        <label 
-          for="search-bar"
-          aria-label="Search Bar"
-        >
-          <input
-            id="search-bar"
-            v-model="search"
-            class="search-field"
-            type="text"
-            placeholder="Search by keyword, services offered, focus areas, or zip code"
-            @keydown.enter="updateResultsList();"
-            @keyup.enter="hideMobileKeyboard($event); updateResultsList()"
-          ><input
-            ref="ost-search-bar"
-            type="submit"
-            class="search-submit"
-            value="Search"
-            @click="updateResultsList();"
-          >
-          <button
-            v-if="search.length > 0"
-            class="ost-clear-search-btn"
-            @click="clearSearchBar"
-          >
-            <i class="fal fa-times-square" />
-          </button>
-        </label>
-      </div>
         <!-- Filters -->
         <template v-if="isMq(['md', 'lg'])">
           <div class="columns small-24 medium-7 ost-sidebar-filters">
+            <div class="search">
+              <label 
+                for="search-bar"
+                aria-label="Search Bar"
+              >
+                <input
+                  id="search-bar"
+                  v-model="search"
+                  class="search-field"
+                  type="text"
+                  placeholder="Search by keyword"
+                  @keydown.enter="updateResultsList();"
+                  @keyup.enter="hideMobileKeyboard($event); updateResultsList()"
+                ><input
+                  ref="ost-search-bar"
+                  type="submit"
+                  class="search-submit"
+                  value="Search"
+                  @click="updateResultsList();"
+                >
+                <button
+                  v-if="search.length > 0"
+                  class="ost-clear-search-btn"
+                  @click="clearSearchBar"
+                >
+                  <i class="fal fa-times-square" />
+                </button>
+              </label>
+            </div>
             <program-filters
               :update-results-list="updateResultsList"
               :clear-all-filters="clearAllFilters"
@@ -210,7 +210,6 @@
                       </div>
                     </div>
                     <!-- <div class="ost-program-contact cell medium-8">
-                   
                     </div> -->
                     <div class="ost-registration-information cell medium-12">
                       <div 
@@ -220,12 +219,12 @@
                         v-if="program.timeDetails.startDate"
                         class="mbl"><b>Program runs from:</b> {{ program.timeDetails.startDate }} - {{ program.timeDetails.endDate}}</div>
                       <div class="mbl"><b>Days offered: </b>  
-                        <span v-if="program.day_mon">Monday, </span> 
-                        <span v-if="program.day_tues">Tuesday, </span> 
-                        <span v-if="program.day_wed">Wednesday, </span> 
-                        <span v-if="program.day_thurs">Thursday </span> 
-                        <span v-if="program.day_fri">Friday, </span> 
-                        <span v-if="program.day_sat">Saturday, </span> 
+                        <span v-if="program.day_mon">Monday</span> 
+                        <span v-if="program.day_tues">Tuesday</span> 
+                        <span v-if="program.day_wed">Wednesday</span> 
+                        <span v-if="program.day_thurs">Thursday</span> 
+                        <span v-if="program.day_fri">Friday</span> 
+                        <span v-if="program.day_sat">Saturday</span> 
                         <span v-if="program.day_sun">Sunday</span></div>
                       <div 
                         v-if="program.timeDetails.startTime"
@@ -242,24 +241,24 @@
                   </div>
                   <div class="details">
                     <h3><b>Details</b></h3>
-                    <b>Ages:</b> 
-                      {{program.age_isUnder5 }}
-                      {{program.age_is5to10}} 
-                      {{program.age_is11to13}}
-                      {{program.age_is14to18 }}
-                      {{program.age_isAbove18}}
+                    <b>Ages: </b> 
+                      <span v-if="program.age_isUnder5">Under 5</span> 
+                      <span v-if="program.age_is5to10">5 - 10</span> 
+                      <span v-if="program.age_is11to13">11 -13</span> 
+                      <span v-if="program.age_is14to18">14 - 18</span> 
+                      <span v-if="program.age_isAbove18">above 18</span> 
                       <br>
-                    <b>Grades:</b>
-                      {{program.grade_prek }}
-                      {{program.grade_kto4 }}
-                      {{program.grade_5to8 }}
-                      {{program.grade_9to12 }} 
+                    <b>Grades: </b>
+                      <span v-if="program.grade_prek">Pre-k</span>  
+                      <span v-if="program.grade_kto4">K -4 </span>  
+                      <span v-if="program.grade_5to8">5 - 8 </span>
+                      <span v-if="program.grade_9to12">9 - 12</span>
 
-                    <b>Costs:</b> {{ program.costs }} <br>
-                    <b>Term: </b> {{program.term}} <br>
-                    <b>Services:</b> {{ program.services }}<br>
-                    <b>Transportation:</b> {{ program.transport }} <br>
-                    <b>Meals:</b> {{ program.meals }}
+                    <div v-if="program.costs"><b>Costs:</b> {{ program.costs }}</div>
+                    <div v-if="program.term"><b>Term: </b> {{program.term}}</div>
+                    <div v-if="program.services"><b>Services:</b> {{ program.services }}</div>
+                    <div v-if="program.transport"><b>Transportation:</b> {{ program.transport }}</div>
+                    <div v-if="program.meals"><b>Meals:</b> {{ program.meals }}</div>
 
                   </div>
                   <!-- {{ program }} -->
@@ -762,6 +761,7 @@ export default {
       this.resetFilters();
       this.resetRouterQuery();
       this.updateResultsList();
+      this.scrollToTop();
     },
 
     /**
@@ -772,6 +772,15 @@ export default {
       this.updateResultsList();
     },
 
+    /**
+    * @desc it does what it says it does.
+    */
+    scrollToTop () {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    },
     /**
     * @desc Get a list of all programs from api
     * @returns { Boolean }
@@ -1140,7 +1149,11 @@ export default {
 </script>
 
 <style lang="scss">
-@media screen and (min-width: 40em) {
+  //override maxwidth on app 
+  .row {
+    max-width:90rem;
+  }
+  @media screen and (min-width: 40em) {
     header.site-header{
       border-bottom: 3px solid #25cef7;
       position: sticky;
@@ -1152,9 +1165,18 @@ export default {
   //@todo remove Standard on prod
   #ost-app {
     display:block;
+    
 
     .intro-text{
       padding: 2rem 0;
+    }
+    .search-row{
+      position: sticky;
+      top: 76px;
+      width: 100%;
+      z-index: 10;
+      padding: 1rem 0;
+      background: white;
     }
     .card.action-panel .panel {
       padding-bottom: 0;
@@ -1217,7 +1239,7 @@ export default {
     }
     .ost-sidebar-filters {
       position: sticky; 
-      top: 80px;
+      top: 100px;
       height: 100vh;
       overflow: scroll;
       padding: 0 1rem 10rem 0;
@@ -1427,10 +1449,11 @@ export default {
       label {
         line-height: 1.2;
         margin-bottom: 10px;
+        width: 100%;
         div {
           display: inline-block;
           vertical-align: top;
-          max-width: 230px;
+          max-width: calc(100% - 23px);
         }
       }
       @media screen and (max-width: 39.9375em) {

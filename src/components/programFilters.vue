@@ -3,9 +3,7 @@
     :class="{ 'in-modal': vModal }"
   >
     <div class="ost-sidebar-filters-wrap">
-      <div class="mbl">
-          Refine by
-      </div>
+      Refine by
       <accordion>
         <template v-slot:title>
           <h2 
