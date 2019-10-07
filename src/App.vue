@@ -129,137 +129,156 @@
           </div>
           <div class="grid-x align-top">
             <!-- Results Count -->
-            <div class="cell small-24 medium-14 small-order-2 medium-order-1">
+            <div class="cell small-24 medium-12">
               <div
                 class="ost-results-count"
                 v-html="programCount"
               />
             </div>
+            <div
+              v-if="results.length > 0"
+              class="pagination cell medium-12"
+            >
+            Showing page:
+              <paginate-links
+                for="results"
+                :show-step-links="true"
+                :async="true"
+                :limit="3"
+                :step-links="paginateStepLinks"
+                @change="scrollToTop"
+              />
+          </div>
           </div>
           <!-- Program List -->
           <ul class="ost-programs no-bullet">
-            <li
-              v-for="program in results"
-              :key="program.id"
-            >
-              <!-- Program -->
-              <div class="ost-program mtl">
-                <!-- Program Title -->
-                <div class="ost-program-title-wrap bg-ghost-gray clearfix">
-                  <div class="ost-program-title h3 phs mas">
-                      <b>{{ program.name }}</b>  -  <span class="ost-program-agency">{{ program.agency }}</span>
-                  </div>
-                </div>
-              <!-- Program Body -->
-                <div class="row phm">
-                  <div class="grid-x grid-margin-x grid-padding-x mtl">
-                    <div class="ost-contact cell medium-12">
-                      <div 
-                        v-if="program.address"
-                        class="program-address group mbl">
-                        <i class="fas fa-map-marker-alt fa-fw"></i>
-                        <div class="program-icon-content">{{ program.address }}<br>
-                          {{ program.city }}, {{ program.state }} {{ program.zip }}
-                        </div>
-                      </div>
-                      <div 
-                        v-if="program.phone"
-                        class="program-phone group mbl">
-                        <i class="fas fa-phone fa-fw"></i>
-                          <div class="program-icon-content">
-                          {{program.phone}}
-                        </div>
-                      </div>
-                      <div 
-                        v-if="program.staff.firstName"
-                        class="program-contact group mbl">
-                        <i class="fas fa-user fa-fw"></i>
-                          <div class="program-icon-content">
-                            <span v-if="program.staff.firstName">
-                            {{ program.staff.firstName }}
-                            {{ program.staff.lastName }}</span>
-                            <span v-if="program.staff.title">, {{ program.staff.title }}</span>
-                          </div>
-                      </div>
-                      <div 
-                        v-if="program.staff.email"
-                        class="program-email group mbl">
-                        <i class="fas fa-envelope fa-fw"></i>
-                          <div class="program-icon-content">
-                            <a :href="`mailto:${program.staff.email}`">{{ program.staff.email }}</a><br>
-                          </div>
-                      </div>
-                      <div 
-                        v-if="program.online.web"
-                        class="program-website group mbl">
-                        <i class="fas fa-globe fa-fw"></i>
-                          <div class="program-icon-content">
-                          <a :href="program.online.web" class="external" target="_blank">Website</a>
-                        </div>
-                      </div>
-                      <div class="social-media">
-                        <div 
-                          v-if="program.online.facebook"
-                          class="facebook"><a :href="program.online.facebook"><i class="fab fa-facebook fa-fw"></i></a></div>
-                        <div
-                          v-if="program.online.instagram"
-                          class="instagram"><a :href="program.online.instagram"><i class="fab fa-instagram fa-fw"></i></a></div>
-                        <div 
-                          v-if="program.online.twitter"
-                        class="twitter"><a :href="program.online.twitter"><i class="fab fa-twitter fa-fw"></i></a></div>
-                      </div>
-                    </div>
-                    <!-- <div class="ost-program-contact cell medium-8">
-                    </div> -->
-                    <div class="ost-registration-information cell medium-12">
-                      <div 
-                        v-if="program.registration.startDate"
-                        class="mbl"><b>Registration open:</b> {{ program.registration.startDate }} - {{ program.registration.endDate }}</div>
-                      <div 
-                        v-if="program.timeDetails.startDate"
-                        class="mbl"><b>Program runs from:</b> {{ program.timeDetails.startDate }} - {{ program.timeDetails.endDate}}</div>
-                      <div class="mbl"><b>Days offered: </b>  
-                        {{ program.daynames }}
-                        </div>
-                      <div 
-                        v-if="program.timeDetails.startTime"
-                        class="mbl"><b>Time offered:</b> {{ program.timeDetails.startTime }}<span v-if="program.timeDetails.Endtime"> - {{ program.timeDetails.Endtime }}</span></div>
+            <paginate
+              :ref="'resultsPagination'"
+              name="results"
+              :list="results"
+              :per="25"
+              >
+              <li
+                v-for="program in paginated('results')"
+                :key="program.id"
+              >
+                <!-- Program -->
+                <div class="ost-program mtl">
+                  <!-- Program Title -->
+                  <div class="ost-program-title-wrap bg-ghost-gray clearfix">
+                    <div class="ost-program-title h3 phs mas">
+                        <b>{{ program.name }}</b>  -  <span class="ost-program-agency">{{ program.agency }}</span>
                     </div>
                   </div>
-                </div>
-                <div class="phm">
-                  <div 
-                    v-if="program.focus_areas"
-                    class="ost-focus-areas mbm">
-                    <h3><b>Focus areas</b></h3>
-                    <span v-html="program.focus_areas"></span>
+                <!-- Program Body -->
+                  <div class="row phm">
+                    <div class="grid-x grid-margin-x grid-padding-x mtl">
+                      <div class="ost-contact cell medium-12">
+                        <div 
+                          v-if="program.address"
+                          class="program-address group mbl">
+                          <i class="fas fa-map-marker-alt fa-fw"></i>
+                          <div class="program-icon-content">{{ program.address }}<br>
+                            {{ program.city }}, {{ program.state }} {{ program.zip }}
+                          </div>
+                        </div>
+                        <div 
+                          v-if="program.phone"
+                          class="program-phone group mbl">
+                          <i class="fas fa-phone fa-fw"></i>
+                            <div class="program-icon-content">
+                            {{program.phone}}
+                          </div>
+                        </div>
+                        <div 
+                          v-if="program.staff.firstName"
+                          class="program-contact group mbl">
+                          <i class="fas fa-user fa-fw"></i>
+                            <div class="program-icon-content">
+                              <span v-if="program.staff.firstName">
+                              {{ program.staff.firstName }}
+                              {{ program.staff.lastName }}</span>
+                              <span v-if="program.staff.title">, {{ program.staff.title }}</span>
+                            </div>
+                        </div>
+                        <div 
+                          v-if="program.staff.email"
+                          class="program-email group mbl">
+                          <i class="fas fa-envelope fa-fw"></i>
+                            <div class="program-icon-content">
+                              <a :href="`mailto:${program.staff.email}`">{{ program.staff.email }}</a><br>
+                            </div>
+                        </div>
+                        <div 
+                          v-if="program.online.web"
+                          class="program-website group mbl">
+                          <i class="fas fa-globe fa-fw"></i>
+                            <div class="program-icon-content">
+                            <a :href="program.online.web" class="external" target="_blank">Website</a>
+                          </div>
+                        </div>
+                        <div class="social-media">
+                          <span 
+                            v-if="program.online.facebook"
+                            class="facebook"><a :href="program.online.facebook"><i class="fab fa-facebook fa-fw"></i></a></span>
+                          <span
+                            v-if="program.online.instagram"
+                            class="instagram"><a :href="program.online.instagram"><i class="fab fa-instagram fa-fw"></i></a></span>
+                          <span 
+                            v-if="program.online.twitter"
+                          class="twitter"><a :href="program.online.twitter"><i class="fab fa-twitter fa-fw"></i></a></span>
+                        </div>
+                      </div>
+                      <div class="ost-registration-information cell medium-12">
+                        <div 
+                          v-if="program.registration.startDate"
+                          class="mbl"><b>Registration open:</b> {{ program.registration.startDate }} - {{ program.registration.endDate }}</div>
+                        <div 
+                          v-if="program.timeDetails.startDate"
+                          class="mbl"><b>Program runs from:</b> {{ program.timeDetails.startDate }} - {{ program.timeDetails.endDate}}</div>
+                        <div class="mbl"><b>Days offered: </b>  
+                          {{ program.daynames }}
+                          </div>
+                        <div 
+                          v-if="program.timeDetails.startTime"
+                          class="mbl"><b>Time offered:</b> {{ program.timeDetails.startTime }}<span v-if="program.timeDetails.Endtime"> - {{ program.timeDetails.Endtime }}</span></div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="details">
-                    <h3><b>Details</b></h3>
-                    <b>Ages: </b> 
-                      <span v-if="program.age_isUnder5">Under 5</span> 
-                      <span v-if="program.age_is5to10">5 - 10</span> 
-                      <span v-if="program.age_is11to13">11 -13</span> 
-                      <span v-if="program.age_is14to18">14 - 18</span> 
-                      <span v-if="program.age_isAbove18">above 18</span> 
-                      <br>
-                    <b>Grades: </b>
-                      <span v-if="program.grade_prek">Pre-k</span>  
-                      <span v-if="program.grade_kto4">K -4 </span>  
-                      <span v-if="program.grade_5to8">5 - 8 </span>
-                      <span v-if="program.grade_9to12">9 - 12</span>
+                  <div class="phm mtm">
+                    <div 
+                      v-if="program.focus_areas"
+                      class="ost-focus-areas mbm">
+                      <h3><b>Focus areas</b></h3>
+                      <span v-html="program.focus_areas"></span>
+                    </div>
+                    <div class="details">
+                      <h3><b>Details</b></h3>
+                      <b>Ages: </b> 
+                        <span v-if="program.age_isUnder5">Under 5</span> 
+                        <span v-if="program.age_is5to10">5 - 10</span> 
+                        <span v-if="program.age_is11to13">11 -13</span> 
+                        <span v-if="program.age_is14to18">14 - 18</span> 
+                        <span v-if="program.age_isAbove18">above 18</span> 
+                        <br>
+                      <b>Grades: </b>
+                        <span v-if="program.grade_prek">Pre-k</span>  
+                        <span v-if="program.grade_kto4">K -4 </span>  
+                        <span v-if="program.grade_5to8">5 - 8 </span>
+                        <span v-if="program.grade_9to12">9 - 12</span>
 
-                    <div v-if="program.costs"><b>Costs:</b> {{ program.costs }}</div>
-                    <div v-if="program.term"><b>Term: </b> {{program.term}}</div>
-                    <div v-if="program.services"><b>Services:</b> {{ program.services }}</div>
-                    <div v-if="program.transport"><b>Transportation:</b> {{ program.transport }}</div>
-                    <div v-if="program.meals"><b>Meals:</b> {{ program.meals }}</div>
+                      <div v-if="program.costs"><b>Costs:</b> {{ program.costs }}</div>
+                      <div v-if="program.term"><b>Term: </b> {{program.term}}</div>
+                      <div v-if="program.services"><b>Services:</b> {{ program.services }}</div>
+                      <div v-if="program.transport"><b>Transportation:</b> {{ program.transport }}</div>
+                      <div v-if="program.meals"><b>Meals:</b> {{ program.meals }}</div>
 
+                    </div>
+                    <!-- {{ program }} -->
                   </div>
-                  <!-- {{ program }} -->
                 </div>
-              </div>
-            </li>
+              </li>
+            </paginate>
           </ul>
         </div>
       </div>
@@ -344,10 +363,11 @@ export default {
       },
       originalPrograms: [],
       allPrograms: [],
-      //departments: [],
-      //departmentsWithprograms: [],
-      //dept: '',
-      // featprograms: [],
+    paginate: [ 'results' ],
+      paginateStepLinks: {
+        next: 'Next',
+        prev: 'Previous',
+      },
       fuseSearchOptions: {
         defaultAll: false,
         keys: [
@@ -884,6 +904,8 @@ export default {
       program.age_is11to13 = (program.age_is11to13) ? 'age_is11to13' : null;
       program.age_is14to18 = (program.age_is14to18) ? 'age_is14to18' : null;
       program.age_isAbove18 = (program.age_isAbove18) ? 'age_isAbove18' : null;
+
+
 
       program.grade_prek = (program.grade_prek) ? 'grade_prek' : null;
       program.grade_kto4 = (program.grade_kto4) ? 'grade_kto4' : null;
@@ -1457,6 +1479,61 @@ export default {
       }
     }
   }
+
+  ul.paginate-links,
+  .pagination,
+  .pagination-wrapper{
+    display: inline-block;
+    margin:0;
+    padding:0;
+
+  li{
+    display: inline-block;
+    border-right: 2px solid white;
+    margin-bottom:1rem;
+    &.disabled{
+      display: none;
+    }
+  }
+  a{
+    display: block;
+    padding: 0 .5rem;
+    background: #0f4d90;
+    color:white;
+  }
+  a{
+    color:white;
+  }
+  li.active a{
+    background: white;
+    color: #444;
+  }
+}
+section ul.pagination-wrapper,
+section ul.pagination-wrapper ul {
+  overflow: initial;
+}
+
+[class*=" next-"]{
+  display: none;
+}
+[class*=" disabled"]{
+  display: none !important;
+}
+.pagination-wrapper{
+  float:right;
+  .next, .prev{
+    &.disabled{
+      display: none;
+    }
+  }
+}
+
+.no-results {
+  font-weight: bold;
+  display: none;
+}
+
   .app-footer.anchor{
     position: sticky;
     bottom:0;
