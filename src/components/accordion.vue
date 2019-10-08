@@ -5,21 +5,30 @@
       @keyup.enter="toggle"
       :class="{open : showContent}"
       class="accordion-title bg-ghost-gray"
-      tabindex="0">
-      <slot name="title">Title</slot>
+      tabindex="0"
+      role="region"
+      :aria-expanded="showContent"
+      :id="makeID(accordionTitle)">
+      <slot name="title">{{ accordionTitle }}</slot>
     </div>
     <div 
       v-show="showContent"
       class="accordion-content"
-      tabindex="0">
+      tabindex="0"
+      :aria-labelledby="makeID(accordionTitle)">
       <slot name="content">Content</slot>
     </div>
   </div>
 </template>
 
 <script>
-//TODO: add aria controls + make insides tabable + open on enter
 export default {
+  props: {
+    accordionTitle: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     return {
       showContent: false,
@@ -28,12 +37,18 @@ export default {
   methods: {
     toggle() {
       this.showContent = !this.showContent
+    },
+        makeID(){
+      return this.accordionTitle.replace(/\s+/g, '-').toLowerCase();;
     }
   },
+  computed: {
+
+  }
 }
 </script>
 <style lang="scss" scoped>
-.accordion-title{
+.accordion-title {
   cursor: pointer;
   text-transform: uppercase;
   color: #444;
@@ -42,7 +57,7 @@ export default {
   padding: 1.15rem 1rem;
   border-bottom: 1px solid #ccc;
   position: relative;
-  &:after{
+  &:after {
     content: '\f078';
     font-family: 'Font Awesome 5 Pro';
     font-weight: 900;
@@ -56,7 +71,7 @@ export default {
     }
   }
 }
-.accordion-content{
+.accordion-content {
   padding: 1rem;
 }
 </style>
