@@ -278,18 +278,15 @@
                   <div class="details">
                     <h3><b>Details</b></h3>
                     <b>Ages: </b> 
-                    <span v-if="program.age_isUnder5">Under 5</span> 
-                    <span v-if="program.age_is5to10">5 - 10</span> 
-                    <span v-if="program.age_is11to13">11 -13</span> 
-                    <span v-if="program.age_is14to18">14 - 18</span> 
-                    <span v-if="program.age_isAbove18">above 18</span> 
+                      <span 
+                        v-for="(age, index) in program.ages"
+                        :key="age"><span v-if="age != ''">{{ age }}<span v-if="index + 1 != program.ages.length">, </span></span> </span>
                     <br>
                     <b>Grades: </b>
-                    <span v-if="program.grade_prek">Pre-k</span>  
-                    <span v-if="program.grade_kto4">K -4 </span>  
-                    <span v-if="program.grade_5to8">5 - 8 </span>
-                    <span v-if="program.grade_9to12">9 - 12</span>
-
+                      <span 
+                        v-for="(grade, index) in program.grades"
+                        :key="grade"><span v-if="grade != ''">{{ grade }}<span v-if="index + 1 != program.grades.length">, </span></span> </span>
+                  
                     <div v-if="program.costs">
                       <b>Costs:</b> {{ program.costs }}
                     </div>
@@ -715,13 +712,6 @@ export default {
     },
   },
   watch: {
-    // dept (value) {
-    //   if (value.length > 0) {
-    //     this.updateRouterQuery('dept', value);
-    //   } else {
-    //     this.updateRouterQuery('dept');
-    //   }
-    // },
     programage (value) {
       if (value.length > 0) {
         this.updateRouterQuery('programage', value);
@@ -784,13 +774,6 @@ export default {
       },
       deep: true,
     },
-    // sort (value) {
-    //   if (value.length > 0 && value !== this.defaultSort) {
-    //     this.updateRouterQuery('sort', value);
-    //   } else {
-    //     this.updateRouterQuery('sort');
-    //   }
-    // },
   },
   created () {
     this.init();
@@ -837,6 +820,22 @@ export default {
             age_is13to14: program.is13to14,
             age_is14to18: program.is14to18,
             age_isAbove18: program.isAbove18,
+
+            ages: [
+              program.isUnder5 ? 'Under 5' : null,
+              program.is5to10 ? '5 - 10' : null,
+              program.is11to13 ? '11 - 13' : null,
+              program.is13to14 ? '13 - 14' : null,
+              program.is14to18 ? '14 - 18' : null,
+              program.isAbove18 ? 'Above 18' : null
+            ],
+            
+            grades: [
+              program.serviceGradeLevelPreK ? 'Pre-k' : null,
+              program.serviceGradeLevel1 || program.serviceGradeLeve2 || program.serviceGradeLevel3 || program.serviceGradeLevel4 ? 'K - 4' : null,
+              program.serviceGradeLevel5 || program.serviceGradeLevel6 || program.serviceGradeLevel7 || program.serviceGradeLevel8 ? '5 - 8' : null,
+              program.serviceGradeLevel9 || program.serviceGradeLevel10 || program.serviceGradeLevel11 || program.serviceGradeLevel12 ? '9 - 12' : null,
+            ],
 
             grade_prek: program.serviceGradeLevelPreK || null,
             grade_kto4: program.serviceGradeLevel1 || program.serviceGradeLeve2 || program.serviceGradeLevel3 || program.serviceGradeLevel4 || null,
@@ -934,8 +933,6 @@ export default {
       program.age_is14to18 = (program.age_is14to18) ? 'age_is14to18' : null;
       program.age_isAbove18 = (program.age_isAbove18) ? 'age_isAbove18' : null;
 
-
-
       program.grade_prek = (program.grade_prek) ? 'grade_prek' : null;
       program.grade_kto4 = (program.grade_kto4) ? 'grade_kto4' : null;
       program.grade_5to8 = (program.grade_5to8) ? 'grade_5to8' : null;
@@ -948,7 +945,6 @@ export default {
       program.day_fri = program.daynames.includes('F') ? 'day_fri' : null;
       program.day_sat = program.daynames.includes('Sa') ? 'day_sat' : null;
       program.day_sun = program.daynames.includes('Su') ? 'day_sun' : null;
-
 
       program.daynames = program.daynames.replace('M','Monday').replace('Tu', 'Tuesday').replace('W', 'Wednesday').replace('Th', 'Thursday').replace('F', 'Friday').replace('Sa', 'Saturday').replace('Su', 'Sunday');
 
@@ -963,6 +959,9 @@ export default {
       let registrationEnd = new Date(program.timeDetails.endDate);
 
       let options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+
+      program.ages = program.ages.filter(Boolean);
+      program.grades = program.grades.filter(Boolean);
 
       program.registration.startDate = registrationStart.toLocaleDateString('en-US', options);
       program.registration.endDate = registrationEnd.toLocaleDateString('en-US', options);
