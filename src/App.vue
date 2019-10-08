@@ -96,6 +96,35 @@
           @before-open="vModalBeforeOpen"
           @before-close="vModalBeforeClose"
         >
+        <div class="search">
+          <label 
+            for="search-bar"
+            aria-label="Search Bar"
+          >
+            <input
+              id="search-bar"
+              v-model="search"
+              class="search-field"
+              type="text"
+              placeholder="Search by keyword"
+              @keydown.enter="updateResultsList();"
+              @keyup.enter="hideMobileKeyboard($event); updateResultsList()"
+            ><input
+              ref="ost-search-bar"
+              type="submit"
+              class="search-submit"
+              value="Search"
+              @click="updateResultsList();"
+            >
+            <button
+              v-if="search.length > 0"
+              class="ost-clear-search-btn"
+              @click="clearSearchBar"
+            >
+              <i class="fal fa-times-square" />
+            </button>
+          </label>
+        </div>
           <program-filters
             :class="isMobile.Android() ? 'os-android' : ''"
             :update-results-list="updateResultsList"
@@ -1300,10 +1329,10 @@ export default {
       }
       .ost-sidebar-filters-wrap {
         min-height: auto;
-        max-height: calc(100vh - 85px);
+        max-height: calc(100vh - 12rem);
         overflow-y: scroll;
         overflow-x: hidden;
-        padding-bottom: 20px;
+        padding-bottom: 2rem;
       }
       &.os-android {
         .ost-sidebar-filters-wrap {
@@ -1496,6 +1525,7 @@ export default {
         div {
           display: inline-block;
           vertical-align: top;
+          padding: 0 0 0 1rem;
           max-width: calc(100% - 23px);
         }
       }
@@ -1567,8 +1597,29 @@ section ul.pagination-wrapper ul {
   display: none;
 }
 
-  .app-footer.anchor{
-    position: sticky;
-    bottom:0;
-  }
+.app-footer.anchor{
+  position: sticky;
+  bottom:0;
+}
+//TODO: move to phila-ui
+//add outline to checkboxes 
+input[type=checkbox]:focus + label::before {
+  outline: rgb(59, 153, 252) auto 5px;
+  padding: 0;
+}
+input[type=checkbox] + label::after {
+  padding: 0 0 0 1rem;
+}
+
+input[type=checkbox]:checked+label::before,
+input[type=checkbox]+label::before{
+  padding: 0
+}
+
+input[type=checkbox] {
+  display: block;
+  opacity: 0;
+  height: 0;
+  margin: 0;
+}
 </style>

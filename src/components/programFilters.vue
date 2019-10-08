@@ -21,7 +21,6 @@
             :key="filter.label"
             class="checkbox-wrap"
             role="checkbox"
-            tabindex="0"
             @keyup.space="$emit('it-happened', $event.target.value)"
           >
             <input
