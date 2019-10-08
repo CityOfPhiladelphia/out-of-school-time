@@ -4,11 +4,14 @@
   >
     <div class="ost-sidebar-filters-wrap">
       Refine by
-      <accordion>
+      <accordion
+        accordion-title="Age"
+      >
         <template v-slot:title>
           <h2 
+            class="ost-sidebar-header ost-first-sidebar-header accordion-header"
             @click="toggle"
-            class="ost-sidebar-header ost-first-sidebar-header accordion-header">
+          >
             Age
           </h2>
         </template>
@@ -17,24 +20,32 @@
             v-for="filter in programAgeFilters"
             :key="filter.label"
             class="checkbox-wrap"
+            role="checkbox"
+            tabindex="0"
+            @keyup.space="$emit('it-happened', $event.target.value)"
           >
             <input
               :id="filter.matchValue"
               type="checkbox"
               :value="filter.matchValue"
               :checked="isFilterChecked(filter.matchValue, 'programage')"
+              :aria-checked="isFilterChecked(filter.matchValue, 'programage')"
               @change="updateFilters('programage', $event)"
-              tabindex="0"
             >
-            <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
+            <label 
+              :for="filter.matchValue"
+            ><div>{{ filter.label }}</div></label>
           </div>
-          </template>
-        </accordion>
+        </template>
+      </accordion>
 
-      <accordion>
+      <accordion
+        accordion-title="Grade"
+      >
         <template v-slot:title>
           <h2 
-            class="ost-sidebar-header ost-sidebar-header">
+            class="ost-sidebar-header ost-sidebar-header"
+          >
             Grade
           </h2>
         </template>
@@ -49,20 +60,25 @@
               type="checkbox"
               :value="filter.matchValue"
               :checked="isFilterChecked(filter.matchValue, 'programgrade')"
+              :aria-checked="isFilterChecked(filter.matchValue, 'programage')"
               @change="updateFilters('programgrade', $event)"
             >
-            <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
+            <label 
+              :for="filter.matchValue"
+              tabindex="0"
+            ><div>{{ filter.label }}</div></label>
           </div>
         </template>
       </accordion>
-      <accordion>
+      <accordion 
+        accordion-title="Program term"
+      >
         <template v-slot:title>
           <h2 class="ost-sidebar-header ost-sidebar-header">
             Program term
           </h2>
         </template>
         <template v-slot:content>
-
           <div
             v-for="filter in programTermFilters"
             :key="filter.label"
@@ -88,42 +104,44 @@
         <template v-slot:content>
           <div
             v-for="filter in programZipFilters"
-            :key="filter.label">
+            :key="filter.label"
+          >
             <label 
               for="search-bar"
               :aria-label="filter.label"
             >
-            <v-select 
-              :options="zipcodes"
-              @input="updateFilters('programzip', $event, 'zip');"></v-select>
-          </label>
-        </div>
-      </template>
+              <v-select 
+                :options="zipcodes"
+                @input="updateFilters('programzip', $event, 'zip');"
+              />
+            </label>
+          </div>
+        </template>
       </accordion>
-        <accordion>
-          <template v-slot:title>
-            <h2 class="ost-sidebar-header ost-sidebar-header">
-              Focus Area
-            </h2>
-          </template>
-          <template v-slot:content>
-            <div
-              v-for="filter in programFocusFilters"
-              :key="filter.label"
-              class="checkbox-wrap"
+      <accordion>
+        <template v-slot:title>
+          <h2 class="ost-sidebar-header ost-sidebar-header">
+            Focus Area
+          </h2>
+        </template>
+        <template v-slot:content>
+          <div
+            v-for="filter in programFocusFilters"
+            :key="filter.label"
+            class="checkbox-wrap"
+          >
+            <input
+              :id="filter.matchValue"
+              type="checkbox"
+              :value="filter.matchValue"
+              :checked="isFilterChecked(filter.matchValue, 'programfocus')"
+              @change="updateFilters('programfocus', $event)"
             >
-              <input
-                :id="filter.matchValue"
-                type="checkbox"
-                :value="filter.matchValue"
-                :checked="isFilterChecked(filter.matchValue, 'programfocus')"
-                @change="updateFilters('programfocus', $event)"
-              >
-              <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
-            </div>
-          </template>
-        </accordion>
-        <accordion>
+            <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
+          </div>
+        </template>
+      </accordion>
+      <accordion>
         <template v-slot:title>
           <h2 class="ost-sidebar-header ost-sidebar-header">
             Days offered
@@ -216,18 +234,12 @@
 
 <script>
 import axios from 'axios';
-import vSelect from 'vue-select'
+import vSelect from 'vue-select';
 import accordion from './accordion';
 export default {
   components: {
     vSelect,
-    accordion
-  },
-  data() {
-    return {
-      zipcodes: [],
-      showSection: true,
-    }
+    accordion,
   },
   props: {
     programAgeFilters: {
@@ -353,19 +365,29 @@ export default {
       default: false,
     },
   },
+  data() {
+    return {
+      zipcodes: [],
+      showSection: true,
+    };
+  },
   created () {
     this.init();
   },
 
   methods: {
+    itHappened(e){
+      console.log(e);
+      console.log('it really did');
+    },
     async init () {
       await this.getOptions();
     },
     getOptions() {
       return axios.get('./zipcodes.json').then(async (result) => {
 
-        this.zipcodes = result.data
-        console.log(this.zipcodes)
+        this.zipcodes = result.data;
+        console.log(this.zipcodes);
         return true;
       }).catch((error) => {
         console.log(error);
@@ -373,11 +395,11 @@ export default {
       });
     },
     emptySearchBar(){
-      this.zipSearch = ''
-      return 
+      this.zipSearch = '';
+      return; 
     },
     toggle() {
-      this.showSection = !this.showSection
+      this.showSection = !this.showSection;
     },
     /**
     * @desc is checkbox checked
@@ -404,7 +426,7 @@ export default {
       //handle zip dropdown
       if (typeof e === 'number'){
 
-        let s = e.toString()
+        let s = e.toString();
         if (!this[filter].includes(e)) {
           newFilters = [ 'zip', s ];
         }
@@ -420,8 +442,8 @@ export default {
       this.updateResultsList();
     },
 
-  }
-}
+  },
+};
 </script>
 <style lang="scss">
   @import "vue-select/src/scss/vue-select.scss";

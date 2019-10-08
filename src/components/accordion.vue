@@ -1,22 +1,28 @@
 <template>
   <div class="accordion-wrap">
     <div 
-      @click="toggle"
-      @keyup.enter="toggle"
+      :id="makeID(accordionTitle)"
       :class="{open : showContent}"
       class="accordion-title bg-ghost-gray"
       tabindex="0"
       role="region"
       :aria-expanded="showContent"
-      :id="makeID(accordionTitle)">
-      <slot name="title">{{ accordionTitle }}</slot>
+      @click="toggle"
+      @keyup.enter="toggle"
+    >
+      <slot name="title">
+        {{ accordionTitle }}
+      </slot>
     </div>
     <div 
       v-show="showContent"
       class="accordion-content"
       tabindex="0"
-      :aria-labelledby="makeID(accordionTitle)">
-      <slot name="content">Content</slot>
+      :aria-labelledby="makeID(accordionTitle)"
+    >
+      <slot name="content">
+        Content
+      </slot>
     </div>
   </div>
 </template>
@@ -32,20 +38,20 @@ export default {
   data() {
     return {
       showContent: false,
-    }
-  },
-  methods: {
-    toggle() {
-      this.showContent = !this.showContent
-    },
-        makeID(){
-      return this.accordionTitle.replace(/\s+/g, '-').toLowerCase();;
-    }
+    };
   },
   computed: {
 
-  }
-}
+  },
+  methods: {
+    toggle() {
+      this.showContent = !this.showContent;
+    },
+    makeID(){
+      return this.accordionTitle.replace(/\s+/g, '-').toLowerCase();
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
 .accordion-title {

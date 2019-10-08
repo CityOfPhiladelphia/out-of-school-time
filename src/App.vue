@@ -1,287 +1,319 @@
 <template>
   <div id="ost-app">
     <div class="intro-text row">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit.          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   
     </div>
     <div
       v-if="ready"
       class="row"
     >
-        <!-- Filters -->
-        <template v-if="isMq(['md', 'lg'])">
-          <div class="columns small-24 medium-7 ost-sidebar-filters">
-            <div class="search">
-              <label 
-                for="search-bar"
-                aria-label="Search Bar"
-              >
-                <input
-                  id="search-bar"
-                  v-model="search"
-                  class="search-field"
-                  type="text"
-                  placeholder="Search by keyword"
-                  @keydown.enter="updateResultsList();"
-                  @keyup.enter="hideMobileKeyboard($event); updateResultsList()"
-                ><input
-                  ref="ost-search-bar"
-                  type="submit"
-                  class="search-submit"
-                  value="Search"
-                  @click="updateResultsList();"
-                >
-                <button
-                  v-if="search.length > 0"
-                  class="ost-clear-search-btn"
-                  @click="clearSearchBar"
-                >
-                  <i class="fal fa-times-square" />
-                </button>
-              </label>
-            </div>
-            <program-filters
-              :update-results-list="updateResultsList"
-              :clear-all-filters="clearAllFilters"
-              :programage.sync="programage"
-              :programgrade.sync="programgrade"
-              :programterm.sync="programterm"
-              :programzip.sync="programzip"
-              :programfocus.sync="programfocus"
-              :programdays.sync="programdays"
-              :programfees.sync="programfees"
-              :programtransit.sync="programtransit"
-              v-bind="{ 
-                programTransportationFilters, 
-                programAgeFilters, 
-                programGradeFilters,
-                programTermFilters,
-                programZipFilters,
-                programFocusFilters,
-                programDaysFilters,
-                programFeesFilters, 
-                hasFilters, 
-                vModal: false }"
-            />
-          </div>
-        </template>
-        <template v-if="isMq(['sm'])">
-          <div class="columns small-24">
-            <div class="grid-x align-middle">
-              <div class="cell small-12">
-                <button @click="$modal.show('program-filters')">
-                  <i
-                    class="fa-filter"
-                    :class="filterCount > 0 ? 'fas' : 'fal'"
-                  /> Filters {{ filterCount > 0 ? `(${filterCount})` : `` }}
-                </button>
-              </div>
-              <div class="cell small-12 text-right">
-                <button
-                  class="ost-clear-all-filters-btn-link"
-                  :disabled="!hasFilters"
-                  @click="clearAllFilters()"
-                >
-                  Clear All Filters
-                </button> &nbsp;
-              </div>
-            </div>
-          </div>
-          <modal
-            name="program-filters"
-            adaptive
-            click-to-close
-            height="auto"
-            @before-open="vModalBeforeOpen"
-            @before-close="vModalBeforeClose"
-          >
-            <program-filters
-              :class="isMobile.Android() ? 'os-android' : ''"
-              :update-results-list="updateResultsList"
-              :clear-all-filters="clearAllFilters"
-              :programage.sync="programage"
-              :programgrade.sync="programgrade"
-              :programterm.sync="programterm"
-              :programzip.sync="programzip"
-              :programfocus.sync="programfocus"
-              :programdays.sync="programdays"
-              :programfees.sync="programfees"
-              :programtransit.sync="programtransit"
-              v-bind="{ programAgeFilters,
-                programGradeFilters, 
-                programTermFilters,
-                programZipFilters,
-                programFocusFilters,
-                programDaysFilters,
-                programFeesFilters,
-                hasFilters, 
-                vModal: true }"
-            />
-          </modal>
-        </template>
-
-        <!-- Results -->
-        <div class="columns small-24 medium-17">
-          <div
-            v-if="!hasFilters"
-            class="row"
-          >
-          </div>
-          <div class="grid-x align-top">
-            <!-- Results Count -->
-            <div class="cell small-24 medium-12">
-              <div
-                class="ost-results-count"
-                v-html="programCount"
-              />
-            </div>
-            <div
-              v-if="results.length > 0"
-              class="pagination cell medium-12"
+      <!-- Filters -->
+      <template v-if="isMq(['md', 'lg'])">
+        <div class="columns small-24 medium-7 ost-sidebar-filters">
+          <div class="search">
+            <label 
+              for="search-bar"
+              aria-label="Search Bar"
             >
+              <input
+                id="search-bar"
+                v-model="search"
+                class="search-field"
+                type="text"
+                placeholder="Search by keyword"
+                @keydown.enter="updateResultsList();"
+                @keyup.enter="hideMobileKeyboard($event); updateResultsList()"
+              ><input
+                ref="ost-search-bar"
+                type="submit"
+                class="search-submit"
+                value="Search"
+                @click="updateResultsList();"
+              >
+              <button
+                v-if="search.length > 0"
+                class="ost-clear-search-btn"
+                @click="clearSearchBar"
+              >
+                <i class="fal fa-times-square" />
+              </button>
+            </label>
+          </div>
+          <program-filters
+            :update-results-list="updateResultsList"
+            :clear-all-filters="clearAllFilters"
+            :programage.sync="programage"
+            :programgrade.sync="programgrade"
+            :programterm.sync="programterm"
+            :programzip.sync="programzip"
+            :programfocus.sync="programfocus"
+            :programdays.sync="programdays"
+            :programfees.sync="programfees"
+            :programtransit.sync="programtransit"
+            v-bind="{ 
+              programTransportationFilters, 
+              programAgeFilters, 
+              programGradeFilters,
+              programTermFilters,
+              programZipFilters,
+              programFocusFilters,
+              programDaysFilters,
+              programFeesFilters, 
+              hasFilters, 
+              vModal: false }"
+          />
+        </div>
+      </template>
+      <template v-if="isMq(['sm'])">
+        <div class="columns small-24">
+          <div class="grid-x align-middle">
+            <div class="cell small-12">
+              <button @click="$modal.show('program-filters')">
+                <i
+                  class="fa-filter"
+                  :class="filterCount > 0 ? 'fas' : 'fal'"
+                /> Filters {{ filterCount > 0 ? `(${filterCount})` : `` }}
+              </button>
+            </div>
+            <div class="cell small-12 text-right">
+              <button
+                class="ost-clear-all-filters-btn-link"
+                :disabled="!hasFilters"
+                @click="clearAllFilters()"
+              >
+                Clear All Filters
+              </button> &nbsp;
+            </div>
+          </div>
+        </div>
+        <modal
+          name="program-filters"
+          adaptive
+          click-to-close
+          height="auto"
+          @before-open="vModalBeforeOpen"
+          @before-close="vModalBeforeClose"
+        >
+          <program-filters
+            :class="isMobile.Android() ? 'os-android' : ''"
+            :update-results-list="updateResultsList"
+            :clear-all-filters="clearAllFilters"
+            :programage.sync="programage"
+            :programgrade.sync="programgrade"
+            :programterm.sync="programterm"
+            :programzip.sync="programzip"
+            :programfocus.sync="programfocus"
+            :programdays.sync="programdays"
+            :programfees.sync="programfees"
+            :programtransit.sync="programtransit"
+            v-bind="{ programAgeFilters,
+                      programGradeFilters, 
+                      programTermFilters,
+                      programZipFilters,
+                      programFocusFilters,
+                      programDaysFilters,
+                      programFeesFilters,
+                      hasFilters, 
+                      vModal: true }"
+          />
+        </modal>
+      </template>
+
+      <!-- Results -->
+      <div class="columns small-24 medium-17">
+        <div
+          v-if="!hasFilters"
+          class="row"
+        />
+        <div class="grid-x align-top">
+          <!-- Results Count -->
+          <div class="cell small-24 medium-12">
+            <div
+              class="ost-results-count"
+              v-html="programCount"
+            />
+          </div>
+          <div
+            v-if="results.length > 0"
+            class="pagination cell medium-12"
+          >
             Showing page:
-              <paginate-links
-                for="results"
-                :show-step-links="true"
-                :async="true"
-                :limit="3"
-                :step-links="paginateStepLinks"
-                @change="scrollToTop"
-              />
+            <paginate-links
+              for="results"
+              :show-step-links="true"
+              :async="true"
+              :limit="3"
+              :step-links="paginateStepLinks"
+              @change="scrollToTop"
+            />
           </div>
-          </div>
-          <!-- Program List -->
-          <ul class="ost-programs no-bullet">
-            <paginate
-              :ref="'resultsPagination'"
-              name="results"
-              :list="results"
-              :per="25"
-              >
-              <li
-                v-for="program in paginated('results')"
-                :key="program.id"
-              >
-                <!-- Program -->
-                <div class="ost-program mtl">
-                  <!-- Program Title -->
-                  <div class="ost-program-title-wrap bg-ghost-gray clearfix">
-                    <div class="ost-program-title h3 phs mas">
-                        <b>{{ program.name }}</b>  -  <span class="ost-program-agency">{{ program.agency }}</span>
-                    </div>
-                  </div>
-                <!-- Program Body -->
-                  <div class="row phm">
-                    <div class="grid-x grid-margin-x grid-padding-x mtl">
-                      <div class="ost-contact cell medium-12">
-                        <div 
-                          v-if="program.address"
-                          class="program-address group mbl">
-                          <i class="fas fa-map-marker-alt fa-fw"></i>
-                          <div class="program-icon-content">{{ program.address }}<br>
-                            {{ program.city }}, {{ program.state }} {{ program.zip }}
-                          </div>
-                        </div>
-                        <div 
-                          v-if="program.phone"
-                          class="program-phone group mbl">
-                          <i class="fas fa-phone fa-fw"></i>
-                            <div class="program-icon-content">
-                            {{program.phone}}
-                          </div>
-                        </div>
-                        <div 
-                          v-if="program.staff.firstName"
-                          class="program-contact group mbl">
-                          <i class="fas fa-user fa-fw"></i>
-                            <div class="program-icon-content">
-                              <span v-if="program.staff.firstName">
-                              {{ program.staff.firstName }}
-                              {{ program.staff.lastName }}</span>
-                              <span v-if="program.staff.title">, {{ program.staff.title }}</span>
-                            </div>
-                        </div>
-                        <div 
-                          v-if="program.staff.email"
-                          class="program-email group mbl">
-                          <i class="fas fa-envelope fa-fw"></i>
-                            <div class="program-icon-content">
-                              <a :href="`mailto:${program.staff.email}`">{{ program.staff.email }}</a><br>
-                            </div>
-                        </div>
-                        <div 
-                          v-if="program.online.web"
-                          class="program-website group mbl">
-                          <i class="fas fa-globe fa-fw"></i>
-                            <div class="program-icon-content">
-                            <a :href="program.online.web" class="external" target="_blank">Website</a>
-                          </div>
-                        </div>
-                        <div class="social-media">
-                          <span 
-                            v-if="program.online.facebook"
-                            class="facebook"><a :href="program.online.facebook"><i class="fab fa-facebook fa-fw"></i></a></span>
-                          <span
-                            v-if="program.online.instagram"
-                            class="instagram"><a :href="program.online.instagram"><i class="fab fa-instagram fa-fw"></i></a></span>
-                          <span 
-                            v-if="program.online.twitter"
-                          class="twitter"><a :href="program.online.twitter"><i class="fab fa-twitter fa-fw"></i></a></span>
-                        </div>
-                      </div>
-                      <div class="ost-registration-information cell medium-12">
-                        <div 
-                          v-if="program.registration.startDate"
-                          class="mbl"><b>Registration open:</b> {{ program.registration.startDate }} - {{ program.registration.endDate }}</div>
-                        <div 
-                          v-if="program.timeDetails.startDate"
-                          class="mbl"><b>Program runs from:</b> {{ program.timeDetails.startDate }} - {{ program.timeDetails.endDate}}</div>
-                        <div class="mbl"><b>Days offered: </b>  
-                          {{ program.daynames }}
-                          </div>
-                        <div 
-                          v-if="program.timeDetails.startTime"
-                          class="mbl"><b>Time offered:</b> {{ program.timeDetails.startTime }}<span v-if="program.timeDetails.Endtime"> - {{ program.timeDetails.Endtime }}</span></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="phm mtm">
-                    <div 
-                      v-if="program.focus_areas"
-                      class="ost-focus-areas mbm">
-                      <h3><b>Focus areas</b></h3>
-                      <span v-html="program.focus_areas"></span>
-                    </div>
-                    <div class="details">
-                      <h3><b>Details</b></h3>
-                      <b>Ages: </b> 
-                        <span v-if="program.age_isUnder5">Under 5</span> 
-                        <span v-if="program.age_is5to10">5 - 10</span> 
-                        <span v-if="program.age_is11to13">11 -13</span> 
-                        <span v-if="program.age_is14to18">14 - 18</span> 
-                        <span v-if="program.age_isAbove18">above 18</span> 
-                        <br>
-                      <b>Grades: </b>
-                        <span v-if="program.grade_prek">Pre-k</span>  
-                        <span v-if="program.grade_kto4">K -4 </span>  
-                        <span v-if="program.grade_5to8">5 - 8 </span>
-                        <span v-if="program.grade_9to12">9 - 12</span>
-
-                      <div v-if="program.costs"><b>Costs:</b> {{ program.costs }}</div>
-                      <div v-if="program.term"><b>Term: </b> {{program.term}}</div>
-                      <div v-if="program.services"><b>Services:</b> {{ program.services }}</div>
-                      <div v-if="program.transport"><b>Transportation:</b> {{ program.transport }}</div>
-                      <div v-if="program.meals"><b>Meals:</b> {{ program.meals }}</div>
-
-                    </div>
-                    <!-- {{ program }} -->
+        </div>
+        <!-- Program List -->
+        <ul class="ost-programs no-bullet">
+          <paginate
+            :ref="'resultsPagination'"
+            name="results"
+            :list="results"
+            :per="25"
+          >
+            <li
+              v-for="program in paginated('results')"
+              :key="program.id"
+            >
+              <!-- Program -->
+              <div class="ost-program mtl">
+                <!-- Program Title -->
+                <div class="ost-program-title-wrap bg-ghost-gray clearfix">
+                  <div class="ost-program-title h3 phs mas">
+                    <b>{{ program.name }}</b>  -  <span class="ost-program-agency">{{ program.agency }}</span>
                   </div>
                 </div>
-              </li>
-            </paginate>
-          </ul>
-        </div>
+                <!-- Program Body -->
+                <div class="row phm">
+                  <div class="grid-x grid-margin-x grid-padding-x mtl">
+                    <div class="ost-contact cell medium-12">
+                      <div 
+                        v-if="program.address"
+                        class="program-address group mbl"
+                      >
+                        <i class="fas fa-map-marker-alt fa-fw" />
+                        <div class="program-icon-content">
+                          {{ program.address }}<br>
+                          {{ program.city }}, {{ program.state }} {{ program.zip }}
+                        </div>
+                      </div>
+                      <div 
+                        v-if="program.phone"
+                        class="program-phone group mbl"
+                      >
+                        <i class="fas fa-phone fa-fw" />
+                        <div class="program-icon-content">
+                          {{ program.phone }}
+                        </div>
+                      </div>
+                      <div 
+                        v-if="program.staff.firstName"
+                        class="program-contact group mbl"
+                      >
+                        <i class="fas fa-user fa-fw" />
+                        <div class="program-icon-content">
+                          <span v-if="program.staff.firstName">
+                            {{ program.staff.firstName }}
+                            {{ program.staff.lastName }}</span>
+                          <span v-if="program.staff.title">, {{ program.staff.title }}</span>
+                        </div>
+                      </div>
+                      <div 
+                        v-if="program.staff.email"
+                        class="program-email group mbl"
+                      >
+                        <i class="fas fa-envelope fa-fw" />
+                        <div class="program-icon-content">
+                          <a :href="`mailto:${program.staff.email}`">{{ program.staff.email }}</a><br>
+                        </div>
+                      </div>
+                      <div 
+                        v-if="program.online.web"
+                        class="program-website group mbl"
+                      >
+                        <i class="fas fa-globe fa-fw" />
+                        <div class="program-icon-content">
+                          <a
+                            :href="program.online.web"
+                            class="external"
+                            target="_blank"
+                          >Website</a>
+                        </div>
+                      </div>
+                      <div class="social-media">
+                        <span 
+                          v-if="program.online.facebook"
+                          class="facebook"
+                        ><a :href="program.online.facebook"><i class="fab fa-facebook fa-fw" /></a></span>
+                        <span
+                          v-if="program.online.instagram"
+                          class="instagram"
+                        ><a :href="program.online.instagram"><i class="fab fa-instagram fa-fw" /></a></span>
+                        <span 
+                          v-if="program.online.twitter"
+                          class="twitter"
+                        ><a :href="program.online.twitter"><i class="fab fa-twitter fa-fw" /></a></span>
+                      </div>
+                    </div>
+                    <div class="ost-registration-information cell medium-12">
+                      <div 
+                        v-if="program.registration.startDate"
+                        class="mbl"
+                      >
+                        <b>Registration open:</b> {{ program.registration.startDate }} - {{ program.registration.endDate }}
+                      </div>
+                      <div 
+                        v-if="program.timeDetails.startDate"
+                        class="mbl"
+                      >
+                        <b>Program runs from:</b> {{ program.timeDetails.startDate }} - {{ program.timeDetails.endDate }}
+                      </div>
+                      <div class="mbl">
+                        <b>Days offered: </b>  
+                        {{ program.daynames }}
+                      </div>
+                      <div 
+                        v-if="program.timeDetails.startTime"
+                        class="mbl"
+                      >
+                        <b>Time offered:</b> {{ program.timeDetails.startTime }}<span v-if="program.timeDetails.Endtime"> - {{ program.timeDetails.Endtime }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="phm mtm">
+                  <div 
+                    v-if="program.focus_areas"
+                    class="ost-focus-areas mbm"
+                  >
+                    <h3><b>Focus areas</b></h3>
+                    <span v-html="program.focus_areas" />
+                  </div>
+                  <div class="details">
+                    <h3><b>Details</b></h3>
+                    <b>Ages: </b> 
+                    <span v-if="program.age_isUnder5">Under 5</span> 
+                    <span v-if="program.age_is5to10">5 - 10</span> 
+                    <span v-if="program.age_is11to13">11 -13</span> 
+                    <span v-if="program.age_is14to18">14 - 18</span> 
+                    <span v-if="program.age_isAbove18">above 18</span> 
+                    <br>
+                    <b>Grades: </b>
+                    <span v-if="program.grade_prek">Pre-k</span>  
+                    <span v-if="program.grade_kto4">K -4 </span>  
+                    <span v-if="program.grade_5to8">5 - 8 </span>
+                    <span v-if="program.grade_9to12">9 - 12</span>
+
+                    <div v-if="program.costs">
+                      <b>Costs:</b> {{ program.costs }}
+                    </div>
+                    <div v-if="program.term">
+                      <b>Term: </b> {{ program.term }}
+                    </div>
+                    <div v-if="program.services">
+                      <b>Services:</b> {{ program.services }}
+                    </div>
+                    <div v-if="program.transport">
+                      <b>Transportation:</b> {{ program.transport }}
+                    </div>
+                    <div v-if="program.meals">
+                      <b>Meals:</b> {{ program.meals }}
+                    </div>
+                  </div>
+                  <!-- {{ program }} -->
+                </div>
+              </div>
+            </li>
+          </paginate>
+        </ul>
       </div>
+    </div>
     <div
       v-else
       class="row columns text-center"
@@ -334,7 +366,6 @@ Vue.use(VueMq, {
 * @desc pagination component
 */
 Vue.use(VuePaginate);
-// Vue.use(VTooltip)
 
 /**
 * @desc initializes search component; accessible via this.$search
@@ -344,7 +375,7 @@ Vue.prototype.$search = function (term, list, options) {
   return new Promise(function (resolve, reject) {
     var run = new Fuse(list, options);
     var results = run.search(term);
-    console.log(results)
+    console.log(results);
     resolve(results);
   });
 };
@@ -357,13 +388,11 @@ export default {
   data () {
     return {
       api: {
-        // featprograms: 'https://www.phila.gov/wp-json/programs/v1/featured',
-        // getAllDepartments: 'https://www.phila.gov/wp-json/departments/v1/list',
         getPrograms: 'https://api.cityspan.com/phillyost/service/getall',
       },
       originalPrograms: [],
       allPrograms: [],
-    paginate: [ 'results' ],
+      paginate: [ 'results' ],
       paginateStepLinks: {
         next: 'Next',
         prev: 'Previous',
@@ -477,7 +506,7 @@ export default {
           matchKey: 'zip',
           matchValue: 'zip',
           valueStore: 'programzip',
-        }
+        },
       ],
       programfocus: [],
       programFocusFilters: [
@@ -796,7 +825,7 @@ export default {
       let newProgram = {};
       return axios.get(self.api.getPrograms).then(async (result) => {
 
-        self.originalPrograms = result.data
+        self.originalPrograms = result.data;
 
         result.data.forEach((program) => {
           let newProgram = self.cleanPrograms({
@@ -861,17 +890,17 @@ export default {
               title: program.staffTitle,
               firstName: program.stafffirstname,
               lastName: program.stafflastname, 
-              email: program.staffemail
+              email: program.staffemail,
             },
             online: {
               web: program.WEBSITE_ADDRESS,
               facebook: program.FACEBOOK,
               instagram: program.INSTAGRAM,
-              twitter: program.TWITTER 
+              twitter: program.TWITTER, 
             },
             registration: {
               startDate: program.RegistrationPeriodStartDate,
-              endDate: program.RegistrationPeriodEndDate
+              endDate: program.RegistrationPeriodEndDate,
             },
             timeDetails: {
               startDate: program.begindate_str,
@@ -880,12 +909,12 @@ export default {
               endTime: program.endtime_str,
             },
             services: program.SERVICES,
-            meals: program.MEALS
+            meals: program.MEALS,
 
-          })
-          self.allPrograms.push(newProgram)
+          });
+          self.allPrograms.push(newProgram);
 
-        })
+        });
 
         self.results = self.allPrograms;
         self.programs = self.allPrograms;
@@ -928,23 +957,23 @@ export default {
       program.fee_has_fee =  (program.fee_has_fee.includes('based') )  ? 'fee_has_fee' : null;
       program.fee_scholarship =  (program.fee_scholarship.includes('Scholarships')) ? 'fee_scholarship' : null;
 
-      let startDate =  new Date(program.timeDetails.startDate)
-      let endDate =  new Date(program.timeDetails.endDate)
-      let registrationStart = new Date(program.timeDetails.startDate)
-      let registrationEnd = new Date(program.timeDetails.endDate)
+      let startDate =  new Date(program.timeDetails.startDate);
+      let endDate =  new Date(program.timeDetails.endDate);
+      let registrationStart = new Date(program.timeDetails.startDate);
+      let registrationEnd = new Date(program.timeDetails.endDate);
 
       let options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
 
-      program.registration.startDate = registrationStart.toLocaleDateString('en-US', options)
-      program.registration.endDate = registrationEnd.toLocaleDateString('en-US', options)
+      program.registration.startDate = registrationStart.toLocaleDateString('en-US', options);
+      program.registration.endDate = registrationEnd.toLocaleDateString('en-US', options);
 
-      program.timeDetails.startDate = startDate.toLocaleDateString('en-US', options)
-      program.timeDetails.endDate = endDate.toLocaleDateString('en-US', options)
+      program.timeDetails.startDate = startDate.toLocaleDateString('en-US', options);
+      program.timeDetails.endDate = endDate.toLocaleDateString('en-US', options);
 
   
 
 
-      return program
+      return program;
     },
 
     /**
@@ -1032,7 +1061,7 @@ export default {
         if (this[programFilter.valueStore].length > 0 && 
         this[programFilter.valueStore].includes(programFilter.matchValue)) {
           programs = programs.filter(program => {
-            return this[programFilter.valueStore].includes(program[programFilter.matchKey])
+            return this[programFilter.valueStore].includes(program[programFilter.matchKey]);
           });
         }
       });
