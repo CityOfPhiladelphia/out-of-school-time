@@ -219,7 +219,7 @@
         class="ost-apply-filters-btn button"
         type="button"
         value="Apply Filters"
-        @click="$modal.hide('job-filters')"
+        @click="$modal.hide('program-filters')"
       > &nbsp;
     </div>
     <input
@@ -227,7 +227,7 @@
       type="button"
       :disabled="!hasFilters"
       value="Clear All Filters"
-      @click="clearAllFilters(); $modal.hide('job-filters')"
+      @click="clearAllFilters(); $modal.hide('program-filters')"
     >
   </div>
 </template>
@@ -290,7 +290,7 @@ export default {
         return [];
       },
     }, 
-    jobCompetitionFilters: {
+    ostCompetitionFilters: {
       type: Array,
       default: () => {
         return [];

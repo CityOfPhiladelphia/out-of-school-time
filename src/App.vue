@@ -80,6 +80,7 @@
               <button
                 class="ost-clear-all-filters-btn-link"
                 :disabled="!hasFilters"
+                :aria-disabled="!hasFilters"
                 @click="clearAllFilters()"
               >
                 Clear All Filters
@@ -1291,20 +1292,22 @@ export default {
         font-size: 17px;
         font-weight: 700;
       }
-      @media screen and (max-width: 39.9375em) {
+    }
+    @media screen and (max-width: 39.9375em) {
+      .ost-sidebar-filters{
         position: relative;
         height: 100vh;
+      }
+      .ost-sidebar-filters-wrap {
+        min-height: auto;
+        max-height: calc(100vh - 85px);
+        overflow-y: scroll;
+        overflow-x: hidden;
+        padding-bottom: 20px;
+      }
+      &.os-android {
         .ost-sidebar-filters-wrap {
-          min-height: auto;
-          max-height: calc(100vh - 85px);
-          overflow-y: scroll;
-          overflow-x: hidden;
-          padding-bottom: 20px;
-        }
-        &.os-android {
-          .ost-sidebar-filters-wrap {
-            max-height: calc(100vh - 141px);
-          }
+          max-height: calc(100vh - 141px);
         }
       }
     }
