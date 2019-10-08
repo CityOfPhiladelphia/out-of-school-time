@@ -278,14 +278,16 @@
                   <div class="details">
                     <h3><b>Details</b></h3>
                     <b>Ages: </b> 
-                      <span 
-                        v-for="(age, index) in program.ages"
-                        :key="age"><span v-if="age != ''">{{ age }}<span v-if="index + 1 != program.ages.length">, </span></span> </span>
+                    <span 
+                      v-for="(age, index) in program.ages"
+                      :key="age"
+                    ><span v-if="age != ''">{{ age }}<span v-if="index + 1 != program.ages.length">, </span></span> </span>
                     <br>
                     <b>Grades: </b>
-                      <span 
-                        v-for="(grade, index) in program.grades"
-                        :key="grade"><span v-if="grade != ''">{{ grade }}<span v-if="index + 1 != program.grades.length">, </span></span> </span>
+                    <span 
+                      v-for="(grade, index) in program.grades"
+                      :key="grade"
+                    ><span v-if="grade != ''">{{ grade }}<span v-if="index + 1 != program.grades.length">, </span></span> </span>
                   
                     <div v-if="program.costs">
                       <b>Costs:</b> {{ program.costs }}
@@ -827,7 +829,7 @@ export default {
               program.is11to13 ? '11 - 13' : null,
               program.is13to14 ? '13 - 14' : null,
               program.is14to18 ? '14 - 18' : null,
-              program.isAbove18 ? 'Above 18' : null
+              program.isAbove18 ? 'Above 18' : null,
             ],
             
             grades: [
