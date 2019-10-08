@@ -1,7 +1,7 @@
 <template>
   <div id="ost-app">
     <div class="intro-text row">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit.          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   
     </div>
     <div
@@ -176,7 +176,6 @@
               :async="true"
               :limit="3"
               :step-links="paginateStepLinks"
-              @change="scrollToTop"
             />
           </div>
         </div>
@@ -679,23 +678,10 @@ export default {
           valueStore: 'programtransit',
         },
       ],
-      // paginate: [ 'results' ],
-      // paginateStepLinks: {
-      //   next: 'Next',
-      //   prev: 'Previous',
-      // },
       ready: false,
       results: [],
       routerQuery: {},
       search: '',
-      // sort: 'Most recent',
-      // sortByTypes: [
-      //   'Most recent',
-      //   'Alphabetical',
-      //   'Closing soon',
-      //   'Salary (high to low)',
-      //   'Salary (low to high)',
-      // ],
     };
   },
 
@@ -1027,9 +1013,7 @@ export default {
     */
     async init () {
       this.initFilterState();
-      //await this.getAllDepartments();
       await this.getPrograms();
-      //await this.getFeatprograms();
       await this.updateResultsList();
       this.ready = true;
     },
@@ -1043,24 +1027,16 @@ export default {
         case 'search':
           Vue.set(this, key, this.$route.query[key]);
           break;
+        case 'page':
+          if (this.$refs.resultsPagination) {
+            this.$refs.resultsPagination.goToPage(this.routerQuery.page)
+          }
+          break;
         default:
           Vue.set(this, key, this.returnArray(this.$route.query[key]));
           break;
         }
       }
-    },
-
-    /**
-    * @desc checks against Invalid Date string (bad output from Date)
-    * @param { String } date (from from Date Object in the backend
-    * which returns Invalid Date when date is not valid)
-    * @returns { Boolean }
-    */
-    isDateValid (date) {
-      if (date !== 'Invalid Date' && typeof date !== 'undefined') {
-        return true;
-      }
-      return false;
     },
 
     /**
@@ -1076,12 +1052,12 @@ export default {
     },
 
   /**
-    * @desc Strip HTML from source
-    */
-    stripBrTag(content) {
-      let regex = /(<(\/br>?)>)/i;
-      return content.replace(regex, '');
-    },
+  * @desc Strip HTML from source
+  */
+  stripBrTag(content) {
+    let regex = /(<(\/br>?)>)/i;
+    return content.replace(regex, '');
+  },
 
 
     /**
@@ -1152,8 +1128,6 @@ export default {
         return [ value ];
       } 
       return [];
-        
-      
     },
 
     /**
@@ -1244,11 +1218,9 @@ export default {
     }
   }
   //Scoped Css that depends on Phila.gov Standards
-  //@todo remove Standard on prod
   #ost-app {
     display:block;
     
-
     .intro-text{
       padding: 2rem 0;
     }
@@ -1387,130 +1359,6 @@ export default {
     .ost-results-count {
       @media screen and (max-width: 39.9375em) {
         line-height: 1.3;
-      }
-    }
-    .tooltip {
-      display: block !important;
-      z-index: 10000;
-      padding: 0;
-      border-radius: 5px;
-
-      .tooltip-inner {
-        color: white;
-        padding: 10px;
-      }
-
-      .tooltip-arrow {
-        width: 0;
-        height: 0;
-        border-style: solid;
-        position: absolute;
-        margin: 5px;
-        border-color: black;
-        z-index: 1;
-      }
-
-      &[x-placement^="top"] {
-        margin-bottom: 5px;
-
-        .tooltip-arrow {
-          border-width: 5px 5px 0 5px;
-          border-left-color: transparent !important;
-          border-right-color: transparent !important;
-          border-bottom-color: transparent !important;
-          bottom: -5px;
-          left: calc(50% - 5px);
-          margin-top: 0;
-          margin-bottom: 0;
-        }
-      }
-
-      &[x-placement^="bottom"] {
-        margin-top: 5px;
-
-        .tooltip-arrow {
-          border-width: 0 5px 5px 5px;
-          border-left-color: transparent !important;
-          border-right-color: transparent !important;
-          border-top-color: transparent !important;
-          top: -5px;
-          left: calc(50% - 5px);
-          margin-top: 0;
-          margin-bottom: 0;
-        }
-      }
-
-      &[x-placement^="right"] {
-        margin-left: 5px;
-
-        .tooltip-arrow {
-          border-width: 5px 5px 5px 0;
-          border-left-color: transparent !important;
-          border-top-color: transparent !important;
-          border-bottom-color: transparent !important;
-          left: -5px;
-          top: calc(50% - 5px);
-          margin-left: 0;
-          margin-right: 0;
-        }
-      }
-
-      &[x-placement^="left"] {
-        margin-right: 5px;
-
-        .tooltip-arrow {
-          border-width: 5px 0 5px 5px;
-          border-top-color: transparent !important;
-          border-right-color: transparent !important;
-          border-bottom-color: transparent !important;
-          right: -5px;
-          top: calc(50% - 5px);
-          margin-left: 0;
-          margin-right: 0;
-        }
-      }
-
-      &.popover {
-        $color: #f9f9f9;
-
-        .popover-inner {
-          background: $color;
-          color: black;
-          padding: 24px;
-          border-radius: 5px;
-          box-shadow: 0 5px 30px rgba(black, .1);
-        }
-
-        .popover-arrow {
-          border-color: $color;
-        }
-      }
-
-      &[aria-hidden='true'] {
-        visibility: hidden;
-        opacity: 0;
-        transition: opacity .15s, visibility .15s;
-      }
-
-      &[aria-hidden='false'] {
-        visibility: visible;
-        opacity: 1;
-        transition: opacity .15s;
-      }
-
-      &.info {
-        $color: #004499;
-        .tooltip-inner {
-          background: $color;
-          color: white;
-          border-radius: 5px;
-          box-shadow: 0 5px 30px rgba(black, .3);
-          max-width: 300px;
-          font-size: 14px;
-        }
-        .tooltip-arrow {
-          border-color: $color;
-        }
       }
     }
     input[type=checkbox] {

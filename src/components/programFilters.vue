@@ -104,15 +104,12 @@
             v-for="filter in programZipFilters"
             :key="filter.label"
           >
-            <label 
-              for="search-bar"
-              :aria-label="filter.label"
-            >
-              <v-select 
-                :options="zipcodes"
-                @input="updateFilters('programzip', $event, 'zip');"
-              />
-            </label>
+            <v-select 
+              :options="zipcodes"
+              @input="updateFilters('programzip', $event, 'zip');"
+              :clearable="false"
+              :clearSearchOnSelect="true"
+            />
           </div>
         </template>
       </accordion>
@@ -348,12 +345,6 @@ export default {
         return;
       },
     },
-    scrollToTop:{
-      type: Function, 
-      default: () => {
-        return;
-      },
-    },
     clearAllFilters: {
       type: Function,
       default: () => {
@@ -385,9 +376,7 @@ export default {
     },
     getOptions() {
       return axios.get('./zipcodes.json').then(async (result) => {
-
         this.zipcodes = result.data;
-        console.log(this.zipcodes);
         return true;
       }).catch((error) => {
         console.log(error);
@@ -441,7 +430,6 @@ export default {
       }
       this.$emit(`update:${filter}`, newFilters);
       this.updateResultsList();
-      this.scrollToTop();
     },
 
   },
@@ -449,7 +437,11 @@ export default {
 </script>
 <style lang="scss">
   @import "vue-select/src/scss/vue-select.scss";
-  .vs__clear{
-    display:none !important;
+  input[type="search"]{
+    height:auto;
+  }
+  input[type="search"]:focus{
+    border: none;
+    height: auto;
   }
 </style>
