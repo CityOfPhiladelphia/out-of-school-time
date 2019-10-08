@@ -96,35 +96,35 @@
           @before-open="vModalBeforeOpen"
           @before-close="vModalBeforeClose"
         >
-        <div class="search">
-          <label 
-            for="search-bar"
-            aria-label="Search Bar"
-          >
-            <input
-              id="search-bar"
-              v-model="search"
-              class="search-field"
-              type="text"
-              placeholder="Search by keyword"
-              @keydown.enter="updateResultsList();"
-              @keyup.enter="hideMobileKeyboard($event); updateResultsList()"
-            ><input
-              ref="ost-search-bar"
-              type="submit"
-              class="search-submit"
-              value="Search"
-              @click="updateResultsList();"
+          <div class="search">
+            <label 
+              for="search-bar"
+              aria-label="Search Bar"
             >
-            <button
-              v-if="search.length > 0"
-              class="ost-clear-search-btn"
-              @click="clearSearchBar"
-            >
-              <i class="fal fa-times-square" />
-            </button>
-          </label>
-        </div>
+              <input
+                id="search-bar"
+                v-model="search"
+                class="search-field"
+                type="text"
+                placeholder="Search by keyword"
+                @keydown.enter="updateResultsList();"
+                @keyup.enter="hideMobileKeyboard($event); updateResultsList()"
+              ><input
+                ref="ost-search-bar"
+                type="submit"
+                class="search-submit"
+                value="Search"
+                @click="updateResultsList();"
+              >
+              <button
+                v-if="search.length > 0"
+                class="ost-clear-search-btn"
+                @click="clearSearchBar"
+              >
+                <i class="fal fa-times-square" />
+              </button>
+            </label>
+          </div>
           <program-filters
             :class="isMobile.Android() ? 'os-android' : ''"
             :update-results-list="updateResultsList"
