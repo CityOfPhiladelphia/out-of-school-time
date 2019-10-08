@@ -33,7 +33,7 @@
             >
             <label 
               :for="filter.matchValue"
-            ><div>{{ filter.label }}</div></label>
+X            ><div>{{ filter.label }}</div></label>
           </div>
         </template>
       </accordion>
@@ -64,7 +64,6 @@
             >
             <label 
               :for="filter.matchValue"
-              tabindex="0"
             ><div>{{ filter.label }}</div></label>
           </div>
         </template>
