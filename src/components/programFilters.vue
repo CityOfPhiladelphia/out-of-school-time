@@ -33,7 +33,7 @@
             >
             <label 
               :for="filter.matchValue"
-X            ><div>{{ filter.label }}</div></label>
+            ><div>{{ filter.label }}</div></label>
           </div>
         </template>
       </accordion>
@@ -348,6 +348,12 @@ export default {
         return;
       },
     },
+    scrollToTop:{
+      type: Function, 
+      default: () => {
+        return;
+      },
+    },
     clearAllFilters: {
       type: Function,
       default: () => {
@@ -374,10 +380,6 @@ export default {
   },
 
   methods: {
-    itHappened(e){
-      console.log(e);
-      console.log('it really did');
-    },
     async init () {
       await this.getOptions();
     },
@@ -419,6 +421,7 @@ export default {
     */
 
     updateFilters (filter, e, name) {
+
       let newFilters = this[filter];
 
       //handle zip dropdown
@@ -438,6 +441,7 @@ export default {
       }
       this.$emit(`update:${filter}`, newFilters);
       this.updateResultsList();
+      this.scrollToTop();
     },
 
   },

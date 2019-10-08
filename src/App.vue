@@ -43,6 +43,7 @@
           <program-filters
             :update-results-list="updateResultsList"
             :clear-all-filters="clearAllFilters"
+            :scroll-to-top="scrollToTop"
             :programage.sync="programage"
             :programgrade.sync="programgrade"
             :programterm.sync="programterm"
@@ -404,7 +405,6 @@ Vue.prototype.$search = function (term, list, options) {
   return new Promise(function (resolve, reject) {
     var run = new Fuse(list, options);
     var results = run.search(term);
-    console.log(results);
     resolve(results);
   });
 };
@@ -430,6 +430,9 @@ export default {
         defaultAll: false,
         keys: [
           'name',
+          'agency',
+          'services',
+          'focus_areas',
         ],
         matchAllTokens: true,
         threshold: 0.2,
@@ -1180,7 +1183,7 @@ export default {
       filteredprograms = this.programFilters(filteredprograms);
 
       this.results = filteredprograms;
-
+      this.scrollToTop();
     },
 
     /**
