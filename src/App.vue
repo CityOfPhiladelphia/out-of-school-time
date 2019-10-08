@@ -304,7 +304,8 @@
                     class="ost-focus-areas mbm"
                   >
                     <h3><b>Focus areas</b></h3>
-                    <span v-html="program.focus_areas" />
+                    <span 
+                      v-html="stripBrTag(program.focus_areas)"/>
                   </div>
                   <div class="details">
                     <h3><b>Details</b></h3>
@@ -732,6 +733,7 @@ export default {
       return false;
     },
 
+
     /**
     * @desc generates available positions text
     * @returns { String }
@@ -746,6 +748,8 @@ export default {
       return `<p>Showing ${this.results.length} out of ${this.programs.length} programs.</p>`;
     },
   },
+
+  
   watch: {
     programage (value) {
       if (value.length > 0) {
@@ -1004,9 +1008,6 @@ export default {
       program.timeDetails.startDate = startDate.toLocaleDateString('en-US', options);
       program.timeDetails.endDate = endDate.toLocaleDateString('en-US', options);
 
-  
-
-
       return program;
     },
 
@@ -1073,6 +1074,15 @@ export default {
       }
       return sizes.includes(this.$mq);
     },
+
+  /**
+    * @desc Strip HTML from source
+    */
+    stripBrTag(content) {
+      let regex = /(<(\/br>?)>)/i;
+      return content.replace(regex, '');
+    },
+
 
     /**
     * @desc filters programs array. All sidebar checkboxes uses this filter
@@ -1171,7 +1181,6 @@ export default {
         behavior: 'smooth',
       });
     },
-
     /**
     * @desc Filters & sorts all programs.
     * Every filter and sort action runs through this method.
