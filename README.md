@@ -5,7 +5,7 @@ A lightweight vuejs application for viewing after school programs in the summer 
 ## Local development 
 `npm install`
 
-`npm run build`
+`npm run serve`
 
 ## Deploying
 Commits to staging and master branches trigger a travis deploy of the `/dist` directory to an AWS S3 bucket. 
