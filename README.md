@@ -4,6 +4,7 @@ A lightweight vuejs application for viewing after school programs in the summer 
  
 ## Local development 
 `npm install`
+
 `npm run build`
 
 ## Deploying
