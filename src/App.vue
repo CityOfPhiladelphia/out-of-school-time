@@ -67,7 +67,7 @@
         </div>
       </template>
       <template v-if="isMq(['sm'])">
-        <div class="columns small-24">
+        <div class="columns small-24 ost-mobile-filters">
           <div class="grid-x align-middle">
             <div class="cell small-12">
               <button @click="$modal.show('program-filters')">
@@ -152,14 +152,14 @@
       </template>
 
       <!-- Results -->
-      <div class="columns small-24 medium-17">
+      <div class="columns small-24 medium-17 ost-results">
         <div
           v-if="!hasFilters"
           class="row"
         />
         <div class="grid-x align-top">
           <!-- Results Count -->
-          <div class="cell small-24 medium-12">
+          <div class="cell small-24 medium-13">
             <div
               class="ost-results-count"
               v-html="programCount"
@@ -167,7 +167,7 @@
           </div>
           <div
             v-if="results.length > 0"
-            class="pagination cell medium-12"
+            class="pagination cell medium-10"
           >
             Showing page:
             <paginate-links
@@ -177,6 +177,9 @@
               :limit="3"
               :step-links="paginateStepLinks"
             />
+          </div>
+          <div class="cell medium-1 ost-print">
+            <a href="javascript:window.print()"><i class="fas fa-print"></i><span class="accessible">Print this page</span></a>
           </div>
         </div>
         <!-- Program List -->
@@ -1481,5 +1484,19 @@ input[type=checkbox] {
   opacity: 0;
   height: 0;
   margin: 0;
+}
+
+@media print{
+  .ost-sidebar-filters,
+  .ost-mobile-filters,
+  a[href]:after,
+  .pagination, 
+  .ost-print,
+  .app-footer{
+    display: none;
+  }
+  .ost-results{
+    width: 100%;
+  }
 }
 </style>
