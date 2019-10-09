@@ -316,18 +316,21 @@
                   </div>
                   <div class="details">
                     <h3><b>Details</b></h3>
+                    <div v-if="ages">
                     <b>Ages: </b> 
-                    <span 
-                      v-for="(age, index) in program.ages"
-                      :key="age"
-                    ><span v-if="age != ''">{{ age }}<span v-if="index + 1 != program.ages.length">, </span></span> </span>
-                    <br>
-                    <b>Grades: </b>
-                    <span 
-                      v-for="(grade, index) in program.grades"
-                      :key="grade"
-                    ><span v-if="grade != ''">{{ grade }}<span v-if="index + 1 != program.grades.length">, </span></span> </span>
-                  
+                      <span 
+                        v-for="(age, index) in program.ages"
+                        :key="age"
+                      ><span v-if="age != ''">{{ age }}<span v-if="index + 1 != program.ages.length">, </span></span> </span>
+                    </div>
+                    <div 
+                      v-if="grades">
+                      <b>Grades: </b>
+                      <span 
+                        v-for="(grade, index) in program.grades"
+                        :key="grade"
+                      ><span v-if="grade != ''">{{ grade }}<span v-if="index + 1 != program.grades.length">, </span></span> </span>
+                    </div>
                     <div v-if="program.costs">
                       <b>Costs:</b> {{ program.costs }}
                     </div>
