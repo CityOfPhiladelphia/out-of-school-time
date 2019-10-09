@@ -213,8 +213,12 @@
                       >
                         <i class="fas fa-map-marker-alt fa-fw" />
                         <div class="program-icon-content">
-                          {{ program.address }}<br>
-                          {{ program.city }}, {{ program.state }} {{ program.zip }}
+                          <a 
+                            :href="`https://www.google.com/maps/place/${program.address}+${program.city}+${program.zip}`"
+                            target="_blank"
+                            class="external"
+                            >{{ program.address }}<br>
+                          {{ program.city }}, {{ program.state }} {{ program.zip }}</a>
                         </div>
                       </div>
                       <div 
