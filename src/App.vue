@@ -1,5 +1,6 @@
 <template>
   <div id="ost-app">
+    <app-header/>
     <div class="intro-text row">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   
@@ -363,7 +364,8 @@ import Fuse from 'fuse.js';
 import VuePaginate from 'vue-paginate';
 //import VueAnalytics from 'vue-analytics';
 import VueMq from 'vue-mq';
-import programFilters from './components/programFilters.vue';
+import ProgramFilters from './components/ProgramFilters';
+import AppHeader from './components/AppHeader';
 import VModal from 'vue-js-modal';
 
 /**
@@ -415,7 +417,8 @@ Vue.prototype.$search = function (term, list, options) {
 export default {
   name: 'OST',
   components: {
-    programFilters,
+    AppHeader, 
+    ProgramFilters,
   },
   data () {
     return {
