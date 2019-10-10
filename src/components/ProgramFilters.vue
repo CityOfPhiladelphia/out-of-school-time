@@ -106,9 +106,9 @@
           >
             <v-select 
               :options="zipcodes"
-              @input="updateFilters('programzip', $event, 'zip');"
               :clearable="false"
-              :clearSearchOnSelect="true"
+              :clear-search-on-select="true"
+              @input="updateFilters('programzip', $event, 'zip');"
             />
           </div>
         </template>
@@ -230,11 +230,11 @@
 <script>
 import axios from 'axios';
 import vSelect from 'vue-select';
-import accordion from './accordion';
+import Accordion from './Accordion';
 export default {
   components: {
     vSelect,
-    accordion,
+    Accordion,
   },
   props: {
     programAgeFilters: {

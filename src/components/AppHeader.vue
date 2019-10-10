@@ -2,23 +2,31 @@
   <header class="site-header app group">
     <div class="row expanded">
       <div class="columns">
-        <a href="http://phila.gov/" class="logo">
-          <img src="https://standards.phila.gov/img/logo/city-of-philadelphia-yellow-white.png" alt="City of Philadelphia">
+        <a
+          href="http://phila.gov/"
+          class="logo"
+        >
+          <img
+            src="https://standards.phila.gov/img/logo/city-of-philadelphia-yellow-white.png"
+            alt="City of Philadelphia"
+          >
         </a>
-        <div class="app-divide"></div>
+        <div class="app-divide" />
         <div class="page-title-container">
           <a href="#/">
             <h1 class="page-title">Out of school time program locator</h1>
             <h2 class="page-subtitle">Find opportunities for children in grades 1-12 after the school day ends.</h2>
           </a>
-          <div class="beta-tag">Beta</div>
+          <div class="beta-tag">
+            Beta
+          </div>
         </div>
       </div>
     </div>
   </header>
 </template>
 <script>
-export default {} 
+export default {}; 
 </script>
 <style scoped>
 .beta-tag{

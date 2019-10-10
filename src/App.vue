@@ -1,6 +1,6 @@
 <template>
   <div id="ost-app">
-    <app-header/>
+    <app-header />
     <div class="intro-text row">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   Lorem ipsum dolor sit amet, consectetur adipiscing elit.   
@@ -180,7 +180,7 @@
             />
           </div>
           <div class="cell medium-1 ost-print">
-            <a href="javascript:window.print()"><i class="fas fa-print"></i><span class="accessible">Print this page</span></a>
+            <a href="javascript:window.print()"><i class="fas fa-print" /><span class="accessible">Print this page</span></a>
           </div>
         </div>
         <!-- Program List -->
@@ -217,8 +217,8 @@
                             :href="`https://www.google.com/maps/place/${program.address}+${program.city}+${program.zip}`"
                             target="_blank"
                             class="external"
-                            >{{ program.address }}<br>
-                          {{ program.city }}, {{ program.state }} {{ program.zip }}</a>
+                          >{{ program.address }}<br>
+                            {{ program.city }}, {{ program.state }} {{ program.zip }}</a>
                         </div>
                       </div>
                       <div 
@@ -312,19 +312,21 @@
                   >
                     <h3><b>Focus areas</b></h3>
                     <span 
-                      v-html="stripBrTag(program.focus_areas)"/>
+                      v-html="stripBrTag(program.focus_areas)"
+                    />
                   </div>
                   <div class="details">
                     <h3><b>Details</b></h3>
                     <div v-if="ages">
-                    <b>Ages: </b> 
+                      <b>Ages: </b> 
                       <span 
                         v-for="(age, index) in program.ages"
                         :key="age"
                       ><span v-if="age != ''">{{ age }}<span v-if="index + 1 != program.ages.length">, </span></span> </span>
                     </div>
                     <div 
-                      v-if="grades">
+                      v-if="grades"
+                    >
                       <b>Grades: </b>
                       <span 
                         v-for="(grade, index) in program.grades"
@@ -1042,7 +1044,7 @@ export default {
           break;
         case 'page':
           if (this.$refs.resultsPagination) {
-            this.$refs.resultsPagination.goToPage(this.routerQuery.page)
+            this.$refs.resultsPagination.goToPage(this.routerQuery.page);
           }
           break;
         default:
@@ -1064,13 +1066,13 @@ export default {
       return sizes.includes(this.$mq);
     },
 
-  /**
+    /**
   * @desc Strip HTML from source
   */
-  stripBrTag(content) {
-    let regex = /(<(\/br>?)>)/i;
-    return content.replace(regex, '');
-  },
+    stripBrTag(content) {
+      let regex = /(<(\/br>?)>)/i;
+      return content.replace(regex, '');
+    },
 
 
     /**
