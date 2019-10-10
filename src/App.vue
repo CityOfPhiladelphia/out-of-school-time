@@ -317,7 +317,7 @@
                   </div>
                   <div class="details">
                     <h3><b>Details</b></h3>
-                    <div v-if="ages">
+                    <div v-if="program.ages">
                       <b>Ages: </b> 
                       <span 
                         v-for="(age, index) in program.ages"
@@ -325,7 +325,7 @@
                       ><span v-if="age != ''">{{ age }}<span v-if="index + 1 != program.ages.length">, </span></span> </span>
                     </div>
                     <div 
-                      v-if="grades"
+                      v-if="program.grades"
                     >
                       <b>Grades: </b>
                       <span 
