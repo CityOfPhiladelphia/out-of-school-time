@@ -180,7 +180,7 @@
             />
           </div>
           <div class="cell medium-1 ost-print">
-            <a href="javascript:window.print()"><i class="fas fa-print" /><span class="accessible">Print this page</span></a>
+            <a href="javascript:window.print()"><i class="fas fa-print fa-lg" /><span class="accessible">Print this page</span></a>
           </div>
         </div>
         <!-- Program List -->
@@ -297,10 +297,15 @@
                         {{ program.daynames }}
                       </div>
                       <div 
-                        v-if="program.timeDetails.startTime"
+                        v-if="program.timeDetails.genericStartTime || program.timeDetails.startTime"
                         class="mbl"
-                      >
-                        <b>Time offered:</b> {{ program.timeDetails.startTime }}<span v-if="program.timeDetails.Endtime"> - {{ program.timeDetails.Endtime }}</span>
+                      >                       
+                        <b>Time offered:</b> 
+                        <span 
+                          v-if="program.timeDetails.genericStartTime && program.timeDetails.genericEndTime">
+                          {{ program.timeDetails.genericStartTime }} - {{ program.timeDetails.genericEndTime }}
+                        </span>
+                        <span v-else>{{ program.timeDetails.startTime }} - {{ program.timeDetails.endTime }} </span>
                       </div>
                     </div>
                   </div>
@@ -317,6 +322,10 @@
                   </div>
                   <div class="details">
                     <h3><b>Details</b></h3>
+                      <div 
+                        v-if="program.description">
+                        <b>Program description: </b> {{program.description}}
+                      </div>
                     <div v-if="program.ages">
                       <b>Ages: </b> 
                       <span 
@@ -335,6 +344,12 @@
                     </div>
                     <div v-if="program.costs">
                       <b>Costs:</b> {{ program.costs }}
+                      <div v-if="program.costs != 'Free' && program.fee_amount">
+                        <b>Fee amount:</b> ${{program.fee_amount}}
+                        <div v-if="program.fee_freq"><b>Fee frequencey: </b> {{program.fee_freq}}</div>
+                        <div v-if="program.fee_desc"><b>Fee description: </b> {{program.fee_desc}}</div>
+
+                      </div>
                     </div>
                     <div v-if="program.term">
                       <b>Term: </b> {{ program.term }}
@@ -347,6 +362,9 @@
                     </div>
                     <div v-if="program.meals">
                       <b>Meals:</b> {{ program.meals }}
+                    </div>
+                    <div v-if="program.special_pop">
+                      <b>Special populations: </b> {{program.special_pop}}
                     </div>
                   </div>
                   <!-- {{ program }} -->
@@ -564,7 +582,7 @@ export default {
           valueStore: 'programfocus',
         },
         {
-          label: 'Sports, heath, and wellness activities',
+          label: 'Sports, heath and wellness activities',
           matchKey: 'focus_isHealth',
           matchValue: 'focus_isHealth',
           valueStore: 'programfocus',
@@ -869,6 +887,8 @@ export default {
               program.is14to18 ? '14 - 18' : null,
               program.isAbove18 ? 'Above 18' : null,
             ],
+
+            description: program.programdescription,
             
             grades: [
               program.serviceGradeLevelPreK ? 'Pre-k' : null,
@@ -907,6 +927,9 @@ export default {
             fee_ccis:(program.COSTS) ? program.COSTS : '',
             fee_has_fee:(program.COSTS) ? program.COSTS : '',
             fee_scholarship: (program.COSTS) ? program.COSTS : '',
+            fee_amount: (program.FEE_AMOUNT),
+            fee_freq: (program.FEE_FREQUENCY),
+            fee_desc: (program.FEE_DESCRIPTION),
 
             transit_none: (program.TRANSPORTATION) ? program.TRANSPORTATION : '',
             transit_bus:(program.TRANSPORTATION) ? program.TRANSPORTATION : '',
@@ -915,6 +938,7 @@ export default {
 
             focus_areas: program.subcats,
 
+            special_pop: program.SPECIAL_POPULATION_SERVED,
             lat: program.latitude,
             long: program.longitude,
             name: program.programname,
@@ -946,6 +970,8 @@ export default {
               endDate: program.enddate_str,
               startTime: program.begintime_str,
               endTime: program.endtime_str,
+              genericStartTime: (program.ProgramDirectoryStartTimeSelect) ? program.ProgramDirectoryStartTimeSelect : '',
+              genericEndTime: (program.ProgramDirectoryEndTimeSelect) ? program.ProgramDirectoryEndTimeSelect : '',
             },
             services: program.SERVICES,
             meals: program.MEALS,

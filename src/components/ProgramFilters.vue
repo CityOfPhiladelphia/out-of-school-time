@@ -106,7 +106,6 @@
           >
             <v-select 
               :options="zipcodes"
-              :clearable="false"
               :clear-search-on-select="true"
               @input="updateFilters('programzip', $event, 'zip');"
             />
