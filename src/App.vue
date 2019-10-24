@@ -532,15 +532,15 @@ export default {
           valueStore: 'programgrade',
         },
         {
-          label: 'K - 4',
-          matchKey: 'grade_kto4',
-          matchValue: 'grade_kto4',
+          label: 'K - 5',
+          matchKey: 'grade_kto5',
+          matchValue: 'grade_kto5',
           valueStore: 'programgrade',
         },
         {
-          label: '5 - 8',
-          matchKey: 'grade_5to8',
-          matchValue: 'grade_5to8',
+          label: '6 - 8',
+          matchKey: 'grade_6to8',
+          matchValue: 'grade_6to8',
           valueStore: 'programgrade',
         },
         {
@@ -893,14 +893,14 @@ export default {
             
             grades: [
               program.serviceGradeLevelPreK ? 'Pre-k' : null,
-              program.serviceGradeLevel1 || program.serviceGradeLeve2 || program.serviceGradeLevel3 || program.serviceGradeLevel4 ? 'K - 4' : null,
-              program.serviceGradeLevel5 || program.serviceGradeLevel6 || program.serviceGradeLevel7 || program.serviceGradeLevel8 ? '5 - 8' : null,
+              program.serviceGradeLevel1 || program.serviceGradeLeve2 || program.serviceGradeLevel3 || program.serviceGradeLevel4 || program.serviceGradeLevel5 ? 'K - 5' : null,
+              program.serviceGradeLevel6 || program.serviceGradeLevel7 || program.serviceGradeLevel8 ? '6 - 8' : null,
               program.serviceGradeLevel9 || program.serviceGradeLevel10 || program.serviceGradeLevel11 || program.serviceGradeLevel12 ? '9 - 12' : null,
             ],
 
             grade_prek: program.serviceGradeLevelPreK || null,
-            grade_kto4: program.serviceGradeLevel1 || program.serviceGradeLeve2 || program.serviceGradeLevel3 || program.serviceGradeLevel4 || null,
-            grade_5to8: program.serviceGradeLevel5 || program.serviceGradeLevel6 || program.serviceGradeLevel7 || program.serviceGradeLevel8 || null,
+            grade_kto5: program.serviceGradeLevel1 || program.serviceGradeLeve2 || program.serviceGradeLevel3 || program.serviceGradeLevel4 || program.serviceGradeLevel5 || null,
+            grade_6to8: program.serviceGradeLevel6 || program.serviceGradeLevel7 || program.serviceGradeLevel8 || null,
             grade_9to12: program.serviceGradeLevel9 || program.serviceGradeLevel10 || program.serviceGradeLevel11 || program.serviceGradeLevel12 || null,
             
             term: program.SchoolYearOrSummer,
@@ -1001,8 +1001,8 @@ export default {
       program.age_isAbove18 = (program.age_isAbove18) ? 'age_isAbove18' : null;
 
       program.grade_prek = (program.grade_prek) ? 'grade_prek' : null;
-      program.grade_kto4 = (program.grade_kto4) ? 'grade_kto4' : null;
-      program.grade_5to8 = (program.grade_5to8) ? 'grade_5to8' : null;
+      program.grade_kto5 = (program.grade_kto5) ? 'grade_kto5' : null;
+      program.grade_6to8 = (program.grade_6to8) ? 'grade_6to8' : null;
       program.grade_9to12 = (program.grade_9to12) ? 'grade_9to12' : null;
 
       program.day_mon = program.daynames.includes('M') ? 'day_mon' : null;
