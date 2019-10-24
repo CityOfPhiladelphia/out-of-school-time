@@ -14,8 +14,8 @@
         <div class="app-divide" />
         <div class="page-title-container">
           <a href="#/">
-            <h1 class="page-title">Out of school time program locator</h1>
-            <h2 class="page-subtitle">Find opportunities for children in grades 1-12 after the school day ends.</h2>
+            <h1 class="page-title">After-school and summer program locator</h1>
+            <h2 class="page-subtitle">Find opportunities for children in grades pre-k through 12.</h2>
           </a>
           <div class="beta-tag">
             Beta
