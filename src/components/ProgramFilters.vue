@@ -419,7 +419,9 @@ export default {
         if (!this[filter].includes(e)) {
           newFilters = [ 'zip', s ];
         }
-
+      //clear zip filters when X is clicked
+      }else if (e === null) {
+        newFilters = [];
       }else if( e.target.checked )  {
         if (!this[filter].includes(e.target.value)) {
           newFilters.push(name, e.target.value);
@@ -427,6 +429,7 @@ export default {
       }else {
         newFilters = this[filter].filter(item => item !== e.target.value);
       }
+      console.log('newFilters', newFilters)
       this.$emit(`update:${filter}`, newFilters);
       this.updateResultsList();
     },
