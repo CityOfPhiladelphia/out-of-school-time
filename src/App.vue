@@ -3,9 +3,11 @@
     <app-header />
     <div class="row columns">
       <div class="intro-text">
-      <p><a href="https://www.phila.gov/programs/out-of-school-time-ost/">Out-of-School Time (OST)</a> (OST) programs are an important resource for child and youth development. In Philadelphia, a wide variety of quality programs are available before school, after school, and throughout the summer.</p><p> Use this tool to find programs near you. To apply to a particular program, use its contact information or visit its website.
-        </p></div>
-        </div>
+        <p><a href="https://www.phila.gov/programs/out-of-school-time-ost/">Out-of-School Time (OST)</a> (OST) programs are an important resource for child and youth development. In Philadelphia, a wide variety of quality programs are available before school, after school, and throughout the summer.</p><p>
+          Use this tool to find programs near you. To apply to a particular program, use its contact information or visit its website.
+        </p>
+      </div>
+    </div>
     <div
       v-if="ready"
       class="row"
@@ -303,7 +305,8 @@
                       >                       
                         <b>Time offered:</b> 
                         <span 
-                          v-if="program.timeDetails.genericStartTime && program.timeDetails.genericEndTime">
+                          v-if="program.timeDetails.genericStartTime && program.timeDetails.genericEndTime"
+                        >
                           {{ program.timeDetails.genericStartTime }} - {{ program.timeDetails.genericEndTime }}
                         </span>
                         <span v-else>{{ program.timeDetails.startTime }} - {{ program.timeDetails.endTime }} </span>
@@ -323,10 +326,11 @@
                   </div>
                   <div class="details">
                     <h3><b>Details</b></h3>
-                      <div 
-                        v-if="program.description">
-                        <b>Program description: </b> {{program.description}}
-                      </div>
+                    <div 
+                      v-if="program.description"
+                    >
+                      <b>Program description: </b> {{ program.description }}
+                    </div>
                     <div v-if="program.ages">
                       <b>Ages: </b> 
                       <span 
@@ -346,10 +350,13 @@
                     <div v-if="program.costs">
                       <b>Costs:</b> {{ program.costs }}
                       <div v-if="program.costs != 'Free' && program.fee_amount">
-                        <b>Fee amount:</b> ${{program.fee_amount}}
-                        <div v-if="program.fee_freq"><b>Fee frequencey: </b> {{program.fee_freq}}</div>
-                        <div v-if="program.fee_desc"><b>Fee description: </b> {{program.fee_desc}}</div>
-
+                        <b>Fee amount:</b> ${{ program.fee_amount }}
+                        <div v-if="program.fee_freq">
+                          <b>Fee frequencey: </b> {{ program.fee_freq }}
+                        </div>
+                        <div v-if="program.fee_desc">
+                          <b>Fee description: </b> {{ program.fee_desc }}
+                        </div>
                       </div>
                     </div>
                     <div v-if="program.term">
@@ -365,7 +372,7 @@
                       <b>Meals:</b> {{ program.meals }}
                     </div>
                     <div v-if="program.special_pop">
-                      <b>Special populations: </b> {{program.special_pop}}
+                      <b>Special populations: </b> {{ program.special_pop }}
                     </div>
                   </div>
                   <!-- {{ program }} -->

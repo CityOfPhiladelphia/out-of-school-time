@@ -429,7 +429,7 @@ export default {
       }else {
         newFilters = this[filter].filter(item => item !== e.target.value);
       }
-      console.log('newFilters', newFilters)
+      console.log('newFilters', newFilters);
       this.$emit(`update:${filter}`, newFilters);
       this.updateResultsList();
     },
