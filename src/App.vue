@@ -1,11 +1,11 @@
 <template>
   <div id="ost-app">
     <app-header />
-    <div class="intro-text row">
-      <p><a href="https://www.phila.gov/programs/out-of-school-time-ost/">Out-of-School Time (OST)</a> programs – before school, after school, and summer – are an important resource for child and youth development. 
-        Philadelphia offers a wide variety of quality OST programs for children and youth in neighborhoods across the city. 
-        Use this tool to locate a program near you. Apply to programs directly by using the contact information in the program listing.
+    <div class="row columns">
+      <div class="intro-text">
+      <p><a href="https://www.phila.gov/programs/out-of-school-time-ost/">Out-of-School Time (OST)</a> (OST) programs are an important resource for child and youth development. In Philadelphia, a wide variety of quality programs are available before school, after school, and throughout the summer.</p><p> Use this tool to find programs near you. To apply to a particular program, use its contact information or visit its website.
         </p></div>
+        </div>
     <div
       v-if="ready"
       class="row"
@@ -180,7 +180,7 @@
               :step-links="paginateStepLinks"
             />
           </div>
-          <div class="cell medium-1 ost-print">
+          <div class="cell medium-1 ost-print hide-for-small-only">
             <a href="javascript:window.print()"><i class="fas fa-print fa-lg" /><span class="accessible">Print this page</span></a>
           </div>
         </div>
