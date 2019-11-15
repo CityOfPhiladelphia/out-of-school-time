@@ -163,27 +163,31 @@
         />
         <div class="grid-x align-top">
           <!-- Results Count -->
-          <div class="cell small-24 medium-13">
+          <div class="cell small-24 medium-10">
             <div
               class="ost-results-count"
               v-html="programCount"
             />
           </div>
-          <div
-            v-if="results.length > 0"
-            class="pagination cell medium-10"
-          >
-            Showing page:
-            <paginate-links
-              for="results"
-              :show-step-links="true"
-              :async="true"
-              :limit="3"
-              :step-links="paginateStepLinks"
-            />
-          </div>
-          <div class="cell medium-1 ost-print hide-for-small-only">
-            <a href="javascript:window.print()"><i class="fas fa-print fa-lg" /><span class="accessible">Print this page</span></a>
+          <div class="cell medium-14">
+            <div class="cost-print float-right">
+              <div
+                v-if="results.length > 0"
+                class="pagination"
+              >
+                Showing page:
+                <paginate-links
+                  for="results"
+                  :show-step-links="true"
+                  :async="true"
+                  :limit="3"
+                  :step-links="paginateStepLinks"
+                />
+              </div>
+              <span class="mlm hide-for-small-only">
+                <a href="javascript:window.print()"><i class="fas fa-print fa-lg" /><span class="accessible">Print this page</span></a>
+              </span>
+            </div>
           </div>
         </div>
         <!-- Program List -->
