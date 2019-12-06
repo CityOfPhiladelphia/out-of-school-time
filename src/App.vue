@@ -401,7 +401,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import Fuse from 'fuse.js';
 import VuePaginate from 'vue-paginate';
-//import VueAnalytics from 'vue-analytics';
+import VueAnalytics from 'vue-analytics';
 import VueMq from 'vue-mq';
 import ProgramFilters from './components/ProgramFilters';
 import AppHeader from './components/AppHeader';
@@ -428,13 +428,13 @@ Vue.use(VueMq, {
 /**
 * @desc google analytics, only enabled in production
 */
-// Vue.use(VueAnalytics, {
-//   id: 'UA-860026-1',
-//   debug: {
-//     enabled: process.env.NODE_ENV === 'development',
-//     sendHitTask: process.env.NODE_ENV === 'production',
-//   },
-// });
+Vue.use(VueAnalytics, {
+  id: 'UA-860026-1',
+  debug: {
+    enabled: process.env.NODE_ENV === 'development',
+    sendHitTask: process.env.NODE_ENV === 'production',
+  },
+});
 
 /**
 * @desc pagination component
@@ -854,7 +854,7 @@ export default {
     * Triggered by clear filters button
     */
     clearAllFilters () {
-      //this.$ga.event('ost-prgrams', 'click', 'Clear All Filters');
+      this.$ga.event('ost-prgrams', 'click', 'Clear All Filters');
       this.resetFilters();
       this.resetRouterQuery();
       this.updateResultsList();
@@ -1231,7 +1231,7 @@ export default {
       if (typeof value === 'undefined') {
         Vue.delete(this.routerQuery, key);
       } else {
-        //this.$ga.event('ost-programs', key, this.returnArray(value).join('|'));
+        this.$ga.event('ost-programs', key, this.returnArray(value).join('|'));
         Vue.set(this.routerQuery, key, value);
       }
     },
