@@ -500,7 +500,7 @@ export default {
         next: 'Next',
         prev: 'Previous',
       },
-      disclaimerCheck: false,
+      disclaimerCheck: localStorage.disclaimer,
       fuseSearchOptions: {
         defaultAll: false,
         keys: [
@@ -811,8 +811,9 @@ export default {
   },
   
   watch: {
-    disclaimer(checked) {
-      localStorage.disclaimer = checked;
+    disclaimerCheck(checkedValue) {
+      console.log(`checkedvalue`, checkedValue);
+      localStorage.disclaimer = checkedValue;
     },
     programage (value) {
       if (value.length > 0) {
@@ -878,20 +879,28 @@ export default {
     },
   },
 
-  mounted:{
-    disclaimer (){
-      if (localStorage.disclaimer) {
-        this.disclaimer = localStorage.disclaimer;
-      }
-    },
+  mounted() {
+    console.log(`localstorage item`, localStorage.getItem('disclaimer') );
+    //if ( localStorage.getItem('disclaimer') )  {
+    this.disclaimerCheck = localStorage.getItem('disclaimer');
+    console.log(this.disclaimerCheck);
+    //}
   },
 
   created () {
+    this.forceDislaimer();
     this.init();
   },
   methods: {
-    /**
-    * @desc clears all filters.
+    
+    forceDislaimer() {
+      console.log(localStorage.disclaimer);
+      if (!localStorage.disclaimer) {
+        console.log('show')
+        this.$modal.show('disclaimer');
+      }
+    },
+    /* @desc clears all filters.
     * Triggered by clear filters button
     */
     clearAllFilters () {
