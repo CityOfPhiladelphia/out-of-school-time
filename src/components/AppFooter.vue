@@ -11,7 +11,7 @@
               <li>
                 <a 
                   href="#"
-                  @click="$modal.show('disclaimer')"
+                  @click="$modal.show('disclaimerModal')"
                 >
                   Disclaimer</a>
               </li>

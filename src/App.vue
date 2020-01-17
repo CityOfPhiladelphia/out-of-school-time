@@ -394,7 +394,8 @@
       <i class="fas fa-spinner fa-spin fa-3x loadingdir" />
     </div>
     <modal
-      name="disclaimer"
+      class="disclaimer-modal"
+      name="disclaimerModal"
       adaptive
       height="auto"
       @before-open="vModalBeforeOpen"
@@ -413,11 +414,16 @@
       <label for="disclaimer">
         I have read and agree to the above disclaimer. 
       </label>
-      <button         
-        @click="$modal.hide('disclaimer')"
-      >
-        Close
-      </button>
+      <div>
+        <input
+          type="button"         
+          :disabled="!disclaimerCheck"
+          :aria-disabled="!disclaimerCheck"
+          value="Close"
+          class="ost-clear-all-btn button"
+          @click="$modal.hide('disclaimerModal')"
+        >
+      </div>
     </modal>
     <AppFooter />
   </div>
@@ -500,7 +506,7 @@ export default {
         next: 'Next',
         prev: 'Previous',
       },
-      disclaimerCheck: localStorage.disclaimer,
+      disclaimerCheck: '',
       fuseSearchOptions: {
         defaultAll: false,
         keys: [
@@ -812,8 +818,11 @@ export default {
   
   watch: {
     disclaimerCheck(checkedValue) {
-      console.log(`checkedvalue`, checkedValue);
-      localStorage.disclaimer = checkedValue;
+      if (checkedValue){
+        localStorage.disclaimer = 'checked';
+      }else {
+        localStorage.disclaimer = '';
+      }
     },
     programage (value) {
       if (value.length > 0) {
@@ -880,24 +889,17 @@ export default {
   },
 
   mounted() {
-    console.log(`localstorage item`, localStorage.getItem('disclaimer') );
-    //if ( localStorage.getItem('disclaimer') )  {
     this.disclaimerCheck = localStorage.getItem('disclaimer');
-    console.log(this.disclaimerCheck);
-    //}
+    this.forceDislaimer();
   },
 
   created () {
-    this.forceDislaimer();
     this.init();
   },
   methods: {
-    
     forceDislaimer() {
-      console.log(localStorage.disclaimer);
-      if (!localStorage.disclaimer) {
-        console.log('show')
-        this.$modal.show('disclaimer');
+      if (localStorage.disclaimer != 'checked') {
+        this.$modal.show('disclaimerModal');
       }
     },
     /* @desc clears all filters.
@@ -1599,4 +1601,7 @@ input[type=checkbox] {
     width: 100%;
   }
 }
+  .disclaimer-modal .v--modal {
+    padding: 2rem;
+  }
 </style>
