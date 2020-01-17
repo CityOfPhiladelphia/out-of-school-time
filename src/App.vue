@@ -393,6 +393,39 @@
     >
       <i class="fas fa-spinner fa-spin fa-3x loadingdir" />
     </div>
+    <modal
+      class="disclaimer-modal"
+      name="disclaimerModal"
+      adaptive
+      height="auto"
+      @before-open="vModalBeforeOpen"
+      @before-close="vModalBeforeClose"
+    >
+      <h2>Disclaimer:</h2>
+
+      <p><i><b>The Out-of-School-Time programs (“OST Program(s)”) below are NOT operated, endorsed, or controlled by the City of Philadelphia (“City”). The City is providing this list of OST Programs for your convenience only. By clicking any of the OST Program links below you will be leaving the City’s website and directed to a website for that particular OST Program.</b> The City provides no warranties, promises and/or representations of any kind, expressed or implied, as to the nature, standard, or accuracy of the information provided by these OST Programs, nor to the suitability or otherwise of the information to your particular circumstances. The City does not endorse, approve or control the information contained in the websites linked below. The information is provided only on an “as is” and “with all faults” basis. By clicking on the links below, you acknowledge that in no event shall the City be liable to you or to any other person or entity for any direct, indirect, special, incidental, or consequential or other damage, cost, or expense arising out of or in relation to the enrollment in these OST Programs or use of any of the OST Programs’ websites.</i></p>
+
+      <p><i>The preceding paragraph above does not apply to programs or websites labeled “DHS Programs” below.</i></p>
+      <input 
+        id="disclaimer" 
+        v-model="disclaimerCheck"
+        type="checkbox"
+      >
+      <label for="disclaimer">
+        I have read and agree to the above disclaimer. 
+      </label>
+      <div>
+        <input
+          type="button"         
+          :disabled="!disclaimerCheck"
+          :aria-disabled="!disclaimerCheck"
+          value="Close"
+          class="ost-clear-all-btn button"
+          @click="$modal.hide('disclaimerModal')"
+        >
+      </div>
+    </modal>
+    <AppFooter />
   </div>
 </template>
 
@@ -405,6 +438,7 @@ import VueAnalytics from 'vue-analytics';
 import VueMq from 'vue-mq';
 import ProgramFilters from './components/ProgramFilters';
 import AppHeader from './components/AppHeader';
+import AppFooter from './components/AppFooter';
 import VModal from 'vue-js-modal';
 
 /**
@@ -457,6 +491,7 @@ export default {
   name: 'OST',
   components: {
     AppHeader, 
+    AppFooter,
     ProgramFilters,
   },
   data () {
@@ -471,6 +506,7 @@ export default {
         next: 'Next',
         prev: 'Previous',
       },
+      disclaimerCheck: '',
       fuseSearchOptions: {
         defaultAll: false,
         keys: [
@@ -779,9 +815,15 @@ export default {
       return `<p>Showing ${this.results.length} out of ${this.programs.length} programs.</p>`;
     },
   },
-
   
   watch: {
+    disclaimerCheck(checkedValue) {
+      if (checkedValue){
+        localStorage.disclaimer = 'checked';
+      }else {
+        localStorage.disclaimer = '';
+      }
+    },
     programage (value) {
       if (value.length > 0) {
         this.updateRouterQuery('programage', value);
@@ -845,12 +887,22 @@ export default {
       deep: true,
     },
   },
+
+  mounted() {
+    this.disclaimerCheck = localStorage.getItem('disclaimer');
+    this.forceDislaimer();
+  },
+
   created () {
     this.init();
   },
   methods: {
-    /**
-    * @desc clears all filters.
+    forceDislaimer() {
+      if (localStorage.disclaimer != 'checked') {
+        this.$modal.show('disclaimerModal');
+      }
+    },
+    /* @desc clears all filters.
     * Triggered by clear filters button
     */
     clearAllFilters () {
@@ -1549,4 +1601,7 @@ input[type=checkbox] {
     width: 100%;
   }
 }
+  .disclaimer-modal .v--modal {
+    padding: 2rem;
+  }
 </style>
