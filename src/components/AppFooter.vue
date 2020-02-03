@@ -23,7 +23,7 @@
                 <a 
                   href="https://www.phila.gov/programs/out-of-school-time-ost/"
                 >
-                  Learn about Out-of-School Tine</a>
+                  Learn about Out-of-School Time</a>
               </li>
             </ul>
           </nav>
