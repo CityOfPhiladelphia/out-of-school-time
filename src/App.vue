@@ -1349,6 +1349,10 @@ export default {
 
 <style lang="scss">
   //override maxwidth on app 
+
+.disclaimer-modal {
+  overflow-y: scroll;
+}
   .row {
     max-width:90rem;
   }
@@ -1640,6 +1644,7 @@ input[type=checkbox] {
   height: 0;
   margin: 0;
 }
+
 
 @media print{
   .ost-sidebar-filters,
