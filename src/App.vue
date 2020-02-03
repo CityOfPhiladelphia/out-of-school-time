@@ -3,9 +3,14 @@
     <app-header />
     <div class="row columns">
       <div class="intro-text">
-        <p><a href="https://www.phila.gov/programs/out-of-school-time-ost/">Out-of-School Time (OST)</a> programs are an important resource for child and youth development. In Philadelphia, a wide variety of quality programs are available before school, after school, and throughout the summer.</p><p>
-          Use this tool to find programs near you. To apply to a particular program, use its contact information or visit its website.
-        </p>
+        <div class="callout">
+          The City of Philadelphia does not operate, endorse, or control the programs available in this tool. 
+          <a 
+            href="#"
+            @click="$modal.show('disclaimerModal')"
+          >
+            Read our full disclaimer</a>
+        </div>
       </div>
     </div>
     <div
@@ -287,6 +292,12 @@
                       </div>
                     </div>
                     <div class="ost-registration-information cell medium-12">
+                      <div
+                        v-if="program.registration.registrationType"
+                        class="mbl"
+                      >
+                        <b>Registration: </b> {{ program.registration.registrationType }}
+                      </div>
                       <div 
                         v-if="program.registration.startDate"
                         class="mbl"
@@ -385,6 +396,37 @@
             </li>
           </paginate>
         </ul>
+        <div class="grid-x">
+          <hr>
+          <!-- Results Count -->
+          <div class="cell small-24 medium-10">
+            <div
+              class="ost-results-count"
+              v-html="programCount"
+            />
+          </div>
+          <div class="cell medium-14">
+            <div class="cost-print float-right">
+              <div
+                v-if="results.length > 0"
+                class="pagination"
+              >
+                Showing page:
+                <paginate-links
+                  for="results"
+                  :show-step-links="true"
+                  :async="true"
+                  :limit="3"
+                  :step-links="paginateStepLinks"
+                  @change="scrollToTop()"
+                />
+              </div>
+              <span class="mlm hide-for-small-only">
+                <a href="javascript:window.print()"><i class="fas fa-print fa-lg" /><span class="accessible">Print this page</span></a>
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -401,25 +443,28 @@
       @before-open="vModalBeforeOpen"
       @before-close="vModalBeforeClose"
     >
-      <h2>Disclaimer:</h2>
-
-      <p><i><b>The Out-of-School-Time programs (“OST Program(s)”) below are NOT operated, endorsed, or controlled by the City of Philadelphia (“City”). The City is providing this list of OST Programs for your convenience only. By clicking any of the OST Program links below you will be leaving the City’s website and directed to a website for that particular OST Program.</b> The City provides no warranties, promises and/or representations of any kind, expressed or implied, as to the nature, standard, or accuracy of the information provided by these OST Programs, nor to the suitability or otherwise of the information to your particular circumstances. The City does not endorse, approve or control the information contained in the websites linked below. The information is provided only on an “as is” and “with all faults” basis. By clicking on the links below, you acknowledge that in no event shall the City be liable to you or to any other person or entity for any direct, indirect, special, incidental, or consequential or other damage, cost, or expense arising out of or in relation to the enrollment in these OST Programs or use of any of the OST Programs’ websites.</i></p>
-
-      <p><i>The preceding paragraph above does not apply to programs or websites labeled “DHS Programs” below.</i></p>
-      <input 
-        id="disclaimer" 
-        v-model="disclaimerCheck"
-        type="checkbox"
-      >
-      <label for="disclaimer">
-        I have read and agree to the above disclaimer. 
-      </label>
+      <div>
+        <h2>Disclaimer</h2>
+        <button
+          class="hide-disclaimer-btn"
+          @click="$modal.hide('disclaimerModal')"
+        >
+          <i class="fal fa-times" />
+        </button>
+      </div>
+      <p>
+        <b>The Out-of-School programs (“OST Program(s)”) are not operated, endorsed, or controlled by the City of Philadelphia (“City”). The City is providing this list of programs for your convenience only. If you use any program links, you will leave the City’s website and be directed to a website for that particular OST Program.</b>
+        <br>
+        <br>
+        The City provides no warranties, promises, and/or representations of any kind, expressed or implied, as to the nature, standard, or accuracy provided by these OST Programs, nor to the suitability or otherwise information to your particular circumstances. The City does not endorse, approve, or control the information contained in the program websites. The information is provided only on an “as is” and “with all faults” basis.
+        <br>
+        <br>
+        By clicking on any external links, you acknowledge that in no event shall the City be liable to you or to any other person or entity for any direct, indirect, special, incidental, or consequential or other damage, cost, or expense arising out of or in relation to the enrollment in these OST Programs or use of any of the OST Programs’ websites. 
+      </p>
       <div>
         <input
           type="button"         
-          :disabled="!disclaimerCheck"
-          :aria-disabled="!disclaimerCheck"
-          value="Close"
+          value=" Use the program locator"
           class="ost-clear-all-btn button"
           @click="$modal.hide('disclaimerModal')"
         >
@@ -506,7 +551,6 @@ export default {
         next: 'Next',
         prev: 'Previous',
       },
-      disclaimerCheck: '',
       fuseSearchOptions: {
         defaultAll: false,
         keys: [
@@ -817,13 +861,6 @@ export default {
   },
   
   watch: {
-    disclaimerCheck(checkedValue) {
-      if (checkedValue){
-        localStorage.disclaimer = 'checked';
-      }else {
-        localStorage.disclaimer = '';
-      }
-    },
     programage (value) {
       if (value.length > 0) {
         this.updateRouterQuery('programage', value);
@@ -889,7 +926,6 @@ export default {
   },
 
   mounted() {
-    this.disclaimerCheck = localStorage.getItem('disclaimer');
     this.forceDislaimer();
   },
 
@@ -1026,6 +1062,7 @@ export default {
               twitter: program.TWITTER, 
             },
             registration: {
+              registrationType: program.REGISTRATION,
               startDate: program.RegistrationPeriodStartDate,
               endDate: program.RegistrationPeriodEndDate,
             },
@@ -1093,6 +1130,7 @@ export default {
       program.ages = program.ages.filter(Boolean);
       program.grades = program.grades.filter(Boolean);
 
+      // console.log(program.registration.registrationType);
       program.registration.startDate = registrationStart.toLocaleDateString('en-US', options);
       program.registration.endDate = registrationEnd.toLocaleDateString('en-US', options);
 
@@ -1350,6 +1388,7 @@ export default {
       opacity: 0.8;
       z-index: 999;
       cursor: pointer;
+      
       &:hover{
         color: #444;
       }
@@ -1475,9 +1514,23 @@ export default {
     }
     .v--modal-overlay {
       z-index: 999999 !important;
-      // overflow: auto;
-      // background-color: #fff;
     }
+     .hide-disclaimer-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 0;
+      font-size: 20px;
+      background-color: #fff;
+      opacity: 0.8;
+      z-index: 999;
+      cursor: pointer;
+      
+      &:hover{
+        color: #444;
+      }
+    }
+
     .v-modal-btns {
       background-color: #fff;
       z-index: 999;

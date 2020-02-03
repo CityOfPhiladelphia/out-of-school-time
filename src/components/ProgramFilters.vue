@@ -3,7 +3,9 @@
     :class="{ 'in-modal': vModal }"
   >
     <div class="ost-sidebar-filters-wrap">
-      <div class="mbm">Refine by</div>
+      <div class="mbm">
+        Refine by
+      </div>
       <accordion
         accordion-title="Age"
       >
