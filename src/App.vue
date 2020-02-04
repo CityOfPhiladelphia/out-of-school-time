@@ -9,7 +9,7 @@
             href="#"
             @click="$modal.show('disclaimerModal')"
           >
-            Read our full disclaimer</a>
+            Read our full disclaimer.</a>
         </div>
       </div>
     </div>
