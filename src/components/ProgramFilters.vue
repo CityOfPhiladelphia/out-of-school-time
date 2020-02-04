@@ -39,7 +39,6 @@
           </div>
         </template>
       </accordion>
-
       <accordion
         accordion-title="Grade"
       >
@@ -183,6 +182,39 @@
           </div>
         </template>
       </accordion>
+      <accordion
+        accordion-title="Age"
+      >
+        <template v-slot:title>
+          <h2 
+            class="ost-sidebar-header ost-first-sidebar-header accordion-header"
+            @click="toggle"
+          >
+            Registration
+          </h2>
+        </template>
+        <template v-slot:content>
+          <div
+            v-for="filter in programRegistrationFilters"
+            :key="filter.label"
+            class="checkbox-wrap"
+            role="checkbox"
+            @keyup.space="$emit('it-happened', $event.target.value)"
+          >
+            <input
+              :id="filter.matchValue"
+              type="checkbox"
+              :value="filter.matchValue"
+              :checked="isFilterChecked(filter.matchValue, 'programregistration')"
+              :aria-checked="isFilterChecked(filter.matchValue, 'programregistration')"
+              @change="updateFilters('programregistration', $event)"
+            >
+            <label 
+              :for="filter.matchValue"
+            ><div>{{ filter.label }}</div></label>
+          </div>
+        </template>
+      </accordion>
       <accordion>
         <template v-slot:title>
           <h2 class="ost-sidebar-header">
@@ -238,6 +270,12 @@ export default {
     Accordion,
   },
   props: {
+    programRegistrationFilters: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
     programAgeFilters: {
       type: Array,
       default: () => {
@@ -293,6 +331,12 @@ export default {
       },
     },
     programage: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    programregistration: {
       type: Array,
       default: () => {
         return [];

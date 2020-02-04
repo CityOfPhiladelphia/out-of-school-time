@@ -53,6 +53,7 @@
             :update-results-list="updateResultsList"
             :clear-all-filters="clearAllFilters"
             :scroll-to-top="scrollToTop"
+            :programregistration.sync="programregistration"
             :programage.sync="programage"
             :programgrade.sync="programgrade"
             :programterm.sync="programterm"
@@ -63,6 +64,7 @@
             :programtransit.sync="programtransit"
             v-bind="{ 
               programTransportationFilters, 
+              programRegistrationFilters,
               programAgeFilters, 
               programGradeFilters,
               programTermFilters,
@@ -140,6 +142,7 @@
             :update-results-list="updateResultsList"
             :clear-all-filters="clearAllFilters"
             :programage.sync="programage"
+            :programregistration.sync="programregistration"
             :programgrade.sync="programgrade"
             :programterm.sync="programterm"
             :programzip.sync="programzip"
@@ -148,6 +151,7 @@
             :programfees.sync="programfees"
             :programtransit.sync="programtransit"
             v-bind="{ programAgeFilters,
+                      programRegistrationFilters,
                       programGradeFilters, 
                       programTermFilters,
                       programZipFilters,
@@ -581,6 +585,27 @@ export default {
         },
       },
       programs: [],
+      programregistration : [],
+      programRegistrationFilters: [
+        {
+          label: 'Required',
+          matchKey: 'reg_req',
+          matchValue: 'reg_req',
+          valueStore: 'programregistration',
+        },
+        {
+          label: 'Drop-in',
+          matchKey: 'reg_drop_in',
+          matchValue: 'reg_drop_in',
+          valueStore: 'programregistration',
+        },
+        {
+          label: 'Other',
+          matchKey: 'reg_other',
+          matchValue: 'reg_other',
+          valueStore: 'programregistration',
+        },
+      ],
       programage: [],
       programAgeFilters: [
         {
@@ -826,7 +851,7 @@ export default {
     filterCount () {
       let count = 0;
       for (let key in this.routerQuery) {
-        if ([ 'programage', 'programgrade', 'programterm', 'programzip', 'programfocus', 'programdays', 'programfees', 'programtransit' ].includes(key)) {
+        if ([ 'programage', 'programgrade', 'programterm', 'programzip', 'programfocus', 'programdays', 'programfees', 'programtransit', 'programregistration' ].includes(key)) {
           count = parseInt(count) + this.returnArray(this.routerQuery[key]).length;
         }
       }
@@ -861,6 +886,13 @@ export default {
   },
   
   watch: {
+    programregistration (value) {
+      if (value.length > 0) {
+        this.updateRouterQuery('programregistration', value);
+      } else {
+        this.updateRouterQuery('programregistration');
+      }
+    },
     programage (value) {
       if (value.length > 0) {
         this.updateRouterQuery('programage', value);
@@ -1061,8 +1093,11 @@ export default {
               instagram: program.INSTAGRAM,
               twitter: program.TWITTER, 
             },
+            reg_req: (program.REGISTRATION) ? program.REGISTRATION : '',
+            reg_drop_in: (program.REGISTRATION) ? program.REGISTRATION : '',
+            reg_other: (program.REGISTRATION) ? program.REGISTRATION : '',
             registration: {
-              registrationType: program.REGISTRATION,
+              registrationType : program.REGISTRATION,
               startDate: program.RegistrationPeriodStartDate,
               endDate: program.RegistrationPeriodEndDate,
             },
@@ -1130,7 +1165,10 @@ export default {
       program.ages = program.ages.filter(Boolean);
       program.grades = program.grades.filter(Boolean);
 
-      // console.log(program.registration.registrationType);
+      program.reg_req =  (program.reg_req.includes('Registration required')) ? 'reg_req' : null;
+      program.reg_drop_in =  (program.reg_drop_in.includes('Drop-in')) ? 'reg_drop_in' : null;
+      program.reg_other =  (program.reg_other.includes('Other')) ? 'reg_other' : null;
+
       program.registration.startDate = registrationStart.toLocaleDateString('en-US', options);
       program.registration.endDate = registrationEnd.toLocaleDateString('en-US', options);
 
@@ -1218,6 +1256,7 @@ export default {
         ...this.programDaysFilters,
         ...this.programFeesFilters,
         ...this.programTransportationFilters,
+        ...this.programRegistrationFilters,
       ];
 
       programFilters.forEach(programFilter => {
@@ -1239,6 +1278,7 @@ export default {
       //this.dept = '';
       this.programtransit = [];
       this.programage = [];
+      this.programregistration = [],
       this.programgrade = [],
       this.programterm = [],
       this.programzip = [],
