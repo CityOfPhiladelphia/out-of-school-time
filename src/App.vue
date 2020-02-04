@@ -402,7 +402,8 @@
         </ul>
         <div 
           v-if="results.length > 5"
-          class="grid-x">
+          class="grid-x"
+        >
           <!-- Results Count -->
           <div class="cell small-24 medium-10">
             <div
