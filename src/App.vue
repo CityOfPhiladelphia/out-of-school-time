@@ -325,8 +325,7 @@
                         <b>Time offered:</b> 
                         <span 
                           v-if="program.timeDetails.genericStartTime && program.timeDetails.genericEndTime"
-                        >
-                          {{ program.timeDetails.genericStartTime }} - {{ program.timeDetails.genericEndTime }}
+                        > {{ program.timeDetails.genericStartTime }} - {{ program.timeDetails.genericEndTime }}
                         </span>
                         <span v-else>{{ program.timeDetails.startTime }} - {{ program.timeDetails.endTime }} </span>
                       </div>
@@ -356,6 +355,14 @@
                         v-for="(age, index) in program.ages"
                         :key="age"
                       ><span v-if="age != ''">{{ age }}<span v-if="index + 1 != program.ages.length">, </span></span> </span>
+                    </div>
+                    <div 
+                      v-if="program.gender_specific"
+                    >
+                      <b>Gender specific: </b>
+                      <span>
+                        {{ program.gender_specific }}
+                      </span>
                     </div>
                     <div 
                       v-if="program.grades"
@@ -605,6 +612,12 @@ export default {
           label: 'Other',
           matchKey: 'reg_other',
           matchValue: 'reg_other',
+          valueStore: 'programregistration',
+        },
+        {
+          label: 'Program only open to students attending this school',
+          matchKey: 'reg_student',
+          matchValue: 'reg_student',
           valueStore: 'programregistration',
         },
       ],
@@ -1003,6 +1016,7 @@ export default {
         self.originalPrograms = result.data;
 
         result.data.forEach((program) => {
+          // console.log(program.GENDER_SPECIFIC);
           let newProgram = self.cleanPrograms({
             id: program.serviceid,
 
@@ -1023,6 +1037,9 @@ export default {
             ],
 
             description: program.programdescription,
+
+            
+            gender_specific: program.GENDER_SPECIFIC,
             
             grades: [
               program.serviceGradeLevelPreK ? 'Pre-k' : null,
@@ -1098,6 +1115,7 @@ export default {
             reg_req: (program.REGISTRATION) ? program.REGISTRATION : '',
             reg_drop_in: (program.REGISTRATION) ? program.REGISTRATION : '',
             reg_other: (program.REGISTRATION) ? program.REGISTRATION : '',
+            reg_student: (program.REGISTRATION) ? program.REGISTRATION : '',
             registration: {
               registrationType : program.REGISTRATION,
               startDate: program.RegistrationPeriodStartDate,
@@ -1159,8 +1177,8 @@ export default {
 
       let startDate =  new Date(program.timeDetails.startDate);
       let endDate =  new Date(program.timeDetails.endDate);
-      let registrationStart = new Date(program.timeDetails.startDate);
-      let registrationEnd = new Date(program.timeDetails.endDate);
+      let registrationStart = new Date(program.registration.startDate);
+      let registrationEnd = new Date(program.registration.endDate);
 
       let options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
 
@@ -1170,6 +1188,7 @@ export default {
       program.reg_req =  (program.reg_req.includes('Registration required')) ? 'reg_req' : null;
       program.reg_drop_in =  (program.reg_drop_in.includes('Drop-in')) ? 'reg_drop_in' : null;
       program.reg_other =  (program.reg_other.includes('Other')) ? 'reg_other' : null;
+      program.reg_student =  (program.reg_student.includes('Program only open to students attending this school')) ? 'reg_student' : null;
 
       program.registration.startDate = registrationStart.toLocaleDateString('en-US', options);
       program.registration.endDate = registrationEnd.toLocaleDateString('en-US', options);
