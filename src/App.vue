@@ -1016,7 +1016,7 @@ export default {
         self.originalPrograms = result.data;
 
         result.data.forEach((program) => {
-          console.log(program.RegistrationPeriodStartDate);
+          // console.log(program.RegistrationPeriodStartDate);
           // console.log(program.begindate_str);
           let newProgram = self.cleanPrograms({
             id: program.serviceid,
@@ -1181,7 +1181,7 @@ export default {
       let endDate =  new Date(program.timeDetails.endDate);
       let registrationStart = new Date(program.registration.startDate);
       let registrationEnd = new Date(program.registration.endDate);
-      console.log(registrationStart);
+      // console.log(registrationStart);
 
       let options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
 
