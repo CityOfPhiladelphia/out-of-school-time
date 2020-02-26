@@ -1016,7 +1016,8 @@ export default {
         self.originalPrograms = result.data;
 
         result.data.forEach((program) => {
-          // console.log(program.GENDER_SPECIFIC);
+          console.log(program.RegistrationPeriodStartDate);
+          // console.log(program.begindate_str);
           let newProgram = self.cleanPrograms({
             id: program.serviceid,
 
@@ -1116,10 +1117,11 @@ export default {
             reg_drop_in: (program.REGISTRATION) ? program.REGISTRATION : '',
             reg_other: (program.REGISTRATION) ? program.REGISTRATION : '',
             reg_student: (program.REGISTRATION) ? program.REGISTRATION : '',
+
             registration: {
               registrationType : program.REGISTRATION,
-              startDate: program.RegistrationPeriodStartDate,
-              endDate: program.RegistrationPeriodEndDate,
+              startDate: program.RegistrationPeriodStartDate ? program.RegistrationPeriodStartDate : program.begindate_str,
+              endDate: program.RegistrationPeriodEndDate ? program.RegistrationPeriodEndDate: program.enddate_str,
             },
             timeDetails: {
               startDate: program.begindate_str,
@@ -1179,6 +1181,7 @@ export default {
       let endDate =  new Date(program.timeDetails.endDate);
       let registrationStart = new Date(program.registration.startDate);
       let registrationEnd = new Date(program.registration.endDate);
+      console.log(registrationStart);
 
       let options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
 

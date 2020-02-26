@@ -420,7 +420,7 @@ export default {
       await this.getOptions();
     },
     getOptions() {
-      return axios.get('./zipcodes.json').then(async (result) => {
+      return axios.get('../zipcodes.json').then(async (result) => {
         this.zipcodes = result.data;
         return true;
       }).catch((error) => {
