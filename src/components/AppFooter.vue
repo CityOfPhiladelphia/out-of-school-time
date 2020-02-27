@@ -7,7 +7,7 @@
             <ul class="inline-list">
               <li>
                 <a
-                  href="https://docs.google.com/forms/d/1w_AV3r0DsIpIl-qGmHmcdhiYIbbfPbOZo32i4IHopRM/edit" 
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSehlWKBdFmfhox8bXzU8UD7pCfiIaCUXjuHGg1k6imWmn1CvA/viewform" 
                   class="external"
                   target="_blank"
                 >Give us feedback</a>
