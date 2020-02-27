@@ -1120,8 +1120,8 @@ export default {
 
             registration: {
               registrationType : program.REGISTRATION,
-              startDate: program.RegistrationPeriodStartDate ? program.RegistrationPeriodStartDate : program.begindate_str,
-              endDate: program.RegistrationPeriodEndDate ? program.RegistrationPeriodEndDate: program.enddate_str,
+              startDate: program.RegistrationPeriodStartDate ? program.RegistrationPeriodStartDate : 'none',
+              endDate: program.RegistrationPeriodEndDate ? program.RegistrationPeriodEndDate: '' ,
             },
             timeDetails: {
               startDate: program.begindate_str,
@@ -1179,7 +1179,8 @@ export default {
 
       let startDate =  new Date(program.timeDetails.startDate);
       let endDate =  new Date(program.timeDetails.endDate);
-      let registrationStart = new Date(program.registration.startDate);
+
+      let registrationStart = (program.registration.startDate == 'none') ? 'none' : new Date(program.registration.startDate);
       let registrationEnd = new Date(program.registration.endDate);
       // console.log(registrationStart);
 
@@ -1193,7 +1194,7 @@ export default {
       program.reg_other =  (program.reg_other.includes('Other')) ? 'reg_other' : null;
       program.reg_student =  (program.reg_student.includes('Program only open to students attending this school')) ? 'reg_student' : null;
 
-      program.registration.startDate = registrationStart.toLocaleDateString('en-US', options);
+      program.registration.startDate = (registrationStart === 'none') ? null : registrationStart.toLocaleDateString('en-US', options);
       program.registration.endDate = registrationEnd.toLocaleDateString('en-US', options);
 
       program.timeDetails.startDate = startDate.toLocaleDateString('en-US', options);
