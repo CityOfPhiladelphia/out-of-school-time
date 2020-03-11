@@ -3,7 +3,7 @@
     <div class="row expanded">
       <div class="columns">
         <a
-          href="http://phila.gov/"
+          href="http://www.phila.gov/"
           class="logo"
         >
           <img
