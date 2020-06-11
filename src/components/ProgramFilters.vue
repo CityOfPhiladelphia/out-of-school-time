@@ -69,6 +69,29 @@
           </div>
         </template>
       </accordion>
+      <accordion>
+        <template v-slot:title>
+          <h2 class="ost-sidebar-header ost-sidebar-header">
+            Remote
+          </h2>
+        </template>
+        <template v-slot:content>
+          <div
+            v-for="filter in programRemoteFilters"
+            :key="filter.label"
+            class="checkbox-wrap"
+          >
+            <input
+              :id="filter.matchValue"
+              type="checkbox"
+              :value="filter.matchValue"
+              :checked="isFilterChecked(filter.matchValue, 'programremote')"
+              @change="updateFilters('programremote', $event)"
+            >
+            <label :for="filter.matchValue"><div>{{ filter.label }}</div></label>
+          </div>
+        </template>
+      </accordion>
       <accordion 
         accordion-title="Program term"
       >
@@ -276,6 +299,12 @@ export default {
         return [];
       },
     },
+    programRemoteFilters: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
     programAgeFilters: {
       type: Array,
       default: () => {
@@ -373,6 +402,12 @@ export default {
       },
     },
     programfees: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    programremote: {
       type: Array,
       default: () => {
         return [];

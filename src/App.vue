@@ -62,6 +62,7 @@
             :programdays.sync="programdays"
             :programfees.sync="programfees"
             :programtransit.sync="programtransit"
+            :programremote.sync="programremote"
             v-bind="{ 
               programTransportationFilters, 
               programRegistrationFilters,
@@ -71,7 +72,8 @@
               programZipFilters,
               programFocusFilters,
               programDaysFilters,
-              programFeesFilters, 
+              programFeesFilters,
+              programRemoteFilters, 
               hasFilters, 
               vModal: false }"
           />
@@ -150,6 +152,7 @@
             :programdays.sync="programdays"
             :programfees.sync="programfees"
             :programtransit.sync="programtransit"
+            :programremote.sync="programremote"
             v-bind="{ programAgeFilters,
                       programRegistrationFilters,
                       programGradeFilters, 
@@ -158,6 +161,7 @@
                       programFocusFilters,
                       programDaysFilters,
                       programFeesFilters,
+                      programRemoteFilters,
                       hasFilters, 
                       vModal: true }"
           />
@@ -296,6 +300,13 @@
                       </div>
                     </div>
                     <div class="ost-registration-information cell medium-12">
+                      <div
+                        v-if="program.remote"
+                        class="mbl"
+                      >
+                        <b>Remote programming offered: </b> 
+                        {{ program.remote }} 
+                      </div>
                       <div
                         v-if="program.registration.registrationType"
                         class="mbl"
@@ -594,6 +605,27 @@ export default {
         },
       },
       programs: [],
+      programremote: [],
+      programRemoteFilters: [
+        {
+          label: 'Yes',
+          matchKey: 'remote',
+          matchValue: 'Yes',
+          valueStore: 'programremote',
+        },
+        {
+          label: 'No',
+          matchKey: 'remote',
+          matchValue: 'No',
+          valueStore: 'programremote',
+        },
+        {
+          label: 'Both in person and remote',
+          matchKey: 'remote',
+          matchValue: 'both',
+          valueStore: 'programremote',
+        },
+      ],
       programregistration : [],
       programRegistrationFilters: [
         {
@@ -866,7 +898,7 @@ export default {
     filterCount () {
       let count = 0;
       for (let key in this.routerQuery) {
-        if ([ 'programage', 'programgrade', 'programterm', 'programzip', 'programfocus', 'programdays', 'programfees', 'programtransit', 'programregistration' ].includes(key)) {
+        if ([ 'programage', 'programgrade', 'programterm', 'programzip', 'programfocus', 'programdays', 'programfees', 'programtransit', 'programregistration', 'programremote' ].includes(key)) {
           count = parseInt(count) + this.returnArray(this.routerQuery[key]).length;
         }
       }
@@ -929,6 +961,14 @@ export default {
         this.updateRouterQuery('programterm');
       }
     },
+    programremote (value) {
+      if (value.length > 0) {
+        this.updateRouterQuery('programremote', value);
+      } else {
+        this.updateRouterQuery('programremote');
+      }
+    },
+
     programzip (value) {
       if (value.length > 0) {
         this.updateRouterQuery('programzip', value);
@@ -1018,6 +1058,8 @@ export default {
         result.data.forEach((program) => {
           // console.log(program.RegistrationPeriodStartDate);
           // console.log(program.begindate_str);
+          // console.log(program.RemoteProgrammingSelect);
+
           let newProgram = self.cleanPrograms({
             id: program.serviceid,
 
@@ -1073,6 +1115,8 @@ export default {
             day_sun: null,
 
             costs: program.COSTS,
+
+            remote: program.RemoteProgrammingSelect ? program.RemoteProgrammingSelect : "No",
             
             //check for null values
             fee_free: (program.COSTS) ? program.COSTS : '',
@@ -1282,6 +1326,7 @@ export default {
         ...this.programFeesFilters,
         ...this.programTransportationFilters,
         ...this.programRegistrationFilters,
+        ...this.programRemoteFilters,
       ];
 
       programFilters.forEach(programFilter => {
@@ -1311,6 +1356,7 @@ export default {
       this.programdays = [],
       this.programfees = [],
       this.programzip = [],
+      this.programremote = [];
       this.search = '';
     },
 
