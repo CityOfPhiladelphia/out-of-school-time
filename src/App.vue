@@ -1063,6 +1063,8 @@ export default {
           let newProgram = self.cleanPrograms({
             id: program.serviceid,
 
+            access_center: program.Access_Center ? true : null,
+
             age_isUnder5: program.isUnder5,
             age_is5to10: program.is5to10,
             age_is11to13: program.is11to13,
@@ -1179,7 +1181,10 @@ export default {
             meals: program.MEALS,
 
           });
-          self.allPrograms.push(newProgram);
+
+          if (!newProgram["access_center"]) {
+            self.allPrograms.push(newProgram);
+          }
 
         });
 
