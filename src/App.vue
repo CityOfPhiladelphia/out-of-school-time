@@ -3,6 +3,23 @@
     <app-header />
     <div class="row columns">
       <div class="intro-text">
+        <div class="cell panel mbl cta">
+          <div class="cta-text">
+            <h4>Get help with digital learning</h4>
+            Access Centers provide supervised, connected spaces for children during digital learning in the fall.
+          </div>
+          <div class="cta-button">
+            <a
+              href="https://phila.gov/access-center-finder"
+              class="button icon"
+            >
+              <div class="valign">
+                <i class="fas fa-bullhorn valign-cell" />
+                <div class="button-label valign-cell">find an access center</div>
+              </div>
+            </a>
+          </div>
+        </div>
         <div class="callout">
           The City of Philadelphia does not operate, endorse, or control the programs available in this tool. 
           <a 
@@ -1466,6 +1483,15 @@ export default {
 <style lang="scss">
   //override maxwidth on app 
 
+.cta {
+  display: flex;
+  .cta-text {
+    width: 70%;
+  }
+  .cta-button {
+    width: 30%;
+  }
+}
 .disclaimer-modal {
   overflow-y: scroll;
 }
