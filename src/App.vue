@@ -1080,7 +1080,7 @@ export default {
           let newProgram = self.cleanPrograms({
             id: program.serviceid,
 
-            access_center: program.Access_Center ? true : null,
+            access_center: (program.Access_Center),
 
             age_isUnder5: program.isUnder5,
             age_is5to10: program.is5to10,
@@ -1135,7 +1135,7 @@ export default {
 
             costs: program.COSTS,
 
-            remote: program.RemoteProgrammingSelect ? program.RemoteProgrammingSelect : "No",
+            remote: program.RemoteProgrammingSelect ? program.RemoteProgrammingSelect : true,
             
             //check for null values
             fee_free: (program.COSTS) ? program.COSTS : '',
@@ -1198,8 +1198,8 @@ export default {
             meals: program.MEALS,
 
           });
-
-          if (!newProgram["access_center"]) {
+          console.log( newProgram["access_center"].includes( "Yes" ));
+          if ( newProgram["access_center"].includes( "No" ) ) {
             self.allPrograms.push(newProgram);
           }
 
