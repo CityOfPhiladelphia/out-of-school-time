@@ -792,6 +792,12 @@ export default {
           matchValue: 'focus_isCommunityService',
           valueStore: 'programfocus',
         },
+        {
+          label: 'STEM/STEAM',
+          matchKey: 'focus_isSTEM',
+          matchValue: 'focus_isSTEM',
+          valueStore: 'programfocus',
+        },
       ],
       programdays: [],
       programDaysFilters: [
@@ -1075,7 +1081,7 @@ export default {
         result.data.forEach((program) => {
           // console.log(program.RegistrationPeriodStartDate);
           // console.log(program.begindate_str);
-          // console.log(program.RemoteProgrammingSelect);
+          // console.log(program.focusAreas);
 
           let newProgram = self.cleanPrograms({
             id: program.serviceid,
@@ -1123,6 +1129,7 @@ export default {
             focus_isArt: (program.isArt) ? 'focus_isArt' : null,
             focus_isHealth: (program.isHealth) ? 'focus_isHealth' : null,
             focus_isAcademic: (program.isAcademic) ? 'focus_isAcademic' : null,
+            focus_isSTEM: (program.isSTEM) ? 'focus_isSTEM' : null,
 
             daynames: program.daynames, 
             day_mon: null,
@@ -1198,7 +1205,7 @@ export default {
             meals: program.MEALS,
 
           });
-          console.log( newProgram["access_center"].includes( "Yes" ));
+          // console.log( newProgram["access_center"].includes( "Yes" ));
           if ( newProgram["access_center"].includes( "No" ) ) {
             self.allPrograms.push(newProgram);
           }
