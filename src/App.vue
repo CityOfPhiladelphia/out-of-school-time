@@ -14,7 +14,6 @@
               class="button icon"
             >
               <div class="valign">
-                <i class="fas fa-bullhorn valign-cell" />
                 <div class="button-label valign-cell">find an access center</div>
               </div>
             </a>
