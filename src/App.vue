@@ -1072,7 +1072,7 @@ export default {
     */
     getPrograms () {
       let self = this;
-      let newProgram = {};
+      // let newProgram = {};
       return axios.get(self.api.getPrograms).then(async (result) => {
 
         self.originalPrograms = result.data;
@@ -1204,8 +1204,8 @@ export default {
             meals: program.MEALS,
 
           });
-          // console.log( newProgram["access_center"].includes( "Yes" ));
-          if ( newProgram["access_center"].includes( "No" ) ) {
+          // console.log( newProgram["access_center"] );
+          if ( newProgram["access_center"] === null || newProgram["access_center"].includes( "No" ) ) {
             self.allPrograms.push(newProgram);
           }
 
