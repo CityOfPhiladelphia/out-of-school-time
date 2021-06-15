@@ -405,7 +405,7 @@
                       <div v-if="program.costs != 'Free' && program.fee_amount">
                         <b>Fee amount:</b> ${{ program.fee_amount }}
                         <div v-if="program.fee_freq">
-                          <b>Fee frequencey: </b> {{ program.fee_freq }}
+                          <b>Fee frequency: </b> {{ program.fee_freq }}
                         </div>
                         <div v-if="program.fee_desc">
                           <b>Fee description: </b> {{ program.fee_desc }}
@@ -418,8 +418,8 @@
                     <div v-if="program.services">
                       <b>Services:</b> {{ program.services }}
                     </div>
-                    <div v-if="program.transport">
-                      <b>Transportation:</b> {{ program.transport }}
+                    <div v-if="program.transit">
+                      <b>Transportation:</b> {{ program.transit }}
                     </div>
                     <div v-if="program.meals">
                       <b>Meals:</b> {{ program.meals }}
@@ -598,6 +598,7 @@ export default {
           'agency',
           'services',
           'focus_areas',
+          'description',
         ],
         matchAllTokens: true,
         threshold: 0.2,
@@ -874,26 +875,26 @@ export default {
       programTransportationFilters: [
         {
           label: 'No transportation provided',
-          matchKey: 'transport',
-          matchValue: 'No transportation provided',
+          matchKey: 'transit_none',
+          matchValue: 'transit_none',
           valueStore: 'programtransit',
         },
         {
           label: 'Accesible bus/Subway Stops',
-          matchKey: 'transport',
-          matchValue: 'Accesible bus/Subway Stops',
+          matchKey: 'transit_bus',
+          matchValue: 'transit_bus',
           valueStore: 'programtransit',
         },
         {
           label: 'Transportation provided to site',
-          matchKey: 'transport',
-          matchValue: 'Transportation Provided to Site',
+          matchKey: 'transit_to_site',
+          matchValue: 'transit_to_site',
           valueStore: 'programtransit',
         },
         {
           label: 'Transportation provided from site to home',
-          matchKey: 'transport',
-          matchValue: 'Transportation Provided from Site to Home',
+          matchKey: 'transit_from_home',
+          matchValue: 'transit_from_home',
           valueStore: 'programtransit',
         },
       ],
@@ -1081,6 +1082,7 @@ export default {
           // console.log(program.RegistrationPeriodStartDate);
           // console.log(program.begindate_str);
           // console.log(program.focusAreas);
+          console.log(program.TRANSPORTATION)
 
           let newProgram = self.cleanPrograms({
             id: program.serviceid,
@@ -1152,10 +1154,12 @@ export default {
             fee_freq: (program.FEE_FREQUENCY),
             fee_desc: (program.FEE_DESCRIPTION),
 
-            transit_none: (program.TRANSPORTATION) ? program.TRANSPORTATION : '',
-            transit_bus:(program.TRANSPORTATION) ? program.TRANSPORTATION : '',
-            transit_to_site:(program.TRANSPORTATION) ? program.TRANSPORTATION : '',
-            transit_from_home: (program.TRANSPORTATION) ? program.TRANSPORTATION : '',
+            transit: program.TRANSPORTATION,
+
+            transit_none: (program.TRANSPORTATION) ? (program.TRANSPORTATION): '',
+            transit_bus:(program.TRANSPORTATION) ? (program.TRANSPORTATION) : '',
+            transit_to_site:(program.TRANSPORTATION) ? (program.TRANSPORTATION) : '',
+            transit_from_home: (program.TRANSPORTATION) ? (program.TRANSPORTATION) : '',
 
             focus_areas: program.subcats,
 
@@ -1163,7 +1167,6 @@ export default {
             lat: program.latitude,
             long: program.longitude,
             name: program.programname,
-            transport: program.TRANSPORTATION,
             agency: program.agencyname, 
             address: program.address, 
             city: program.city, 
@@ -1265,6 +1268,11 @@ export default {
       program.reg_drop_in =  (program.reg_drop_in.includes('Drop-in')) ? 'reg_drop_in' : null;
       program.reg_other =  (program.reg_other.includes('Other')) ? 'reg_other' : null;
       program.reg_student =  (program.reg_student.includes('Program only open to students attending this school')) ? 'reg_student' : null;
+
+      program.transit_none = (program.transit_none.includes('No transportation provided')) ? 'transit_none' : null;
+      program.transit_bus = (program.transit_bus.includes('Accesible bus/Subway Stops')) ? 'transit_bus' : null;
+      program.transit_to_site = (program.transit_to_site.includes('Transportation Provided to Site')) ? 'transit_to_site' : null;
+      program.transit_from_home = (program.transit_from_home.includes('Transportation Provided from Site to Home')) ? 'transit_from_home' : null;
 
       program.registration.startDate = (registrationStart === 'none') ? null : registrationStart.toLocaleDateString('en-US', options);
       program.registration.endDate = registrationEnd.toLocaleDateString('en-US', options);
