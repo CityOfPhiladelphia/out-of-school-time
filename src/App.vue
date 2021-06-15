@@ -405,7 +405,7 @@
                       <div v-if="program.costs != 'Free' && program.fee_amount">
                         <b>Fee amount:</b> ${{ program.fee_amount }}
                         <div v-if="program.fee_freq">
-                          <b>Fee frequencey: </b> {{ program.fee_freq }}
+                          <b>Fee frequency: </b> {{ program.fee_freq }}
                         </div>
                         <div v-if="program.fee_desc">
                           <b>Fee description: </b> {{ program.fee_desc }}
@@ -598,6 +598,7 @@ export default {
           'agency',
           'services',
           'focus_areas',
+          'description',
         ],
         matchAllTokens: true,
         threshold: 0.2,
