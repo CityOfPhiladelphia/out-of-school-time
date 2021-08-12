@@ -3,7 +3,7 @@
     <app-header />
     <div class="row columns">
       <div class="intro-text">
-        <div class="cell panel mbl cta">
+        <!-- <div class="cell panel mbl cta">
           <div class="cta-text">
             <h4>Get help with digital learning</h4>
             Access Centers provide supervised, connected spaces for children during digital learning in the fall.
@@ -18,7 +18,7 @@
               </div>
             </a>
           </div>
-        </div>
+        </div> -->
         <div class="callout">
           The City of Philadelphia does not operate, endorse, or control the programs available in this tool. 
           <a 
