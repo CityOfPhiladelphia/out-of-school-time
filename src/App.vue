@@ -1082,7 +1082,7 @@ export default {
           // console.log(program.RegistrationPeriodStartDate);
           // console.log(program.begindate_str);
           // console.log(program.focusAreas);
-          console.log(program.TRANSPORTATION)
+          // console.log(program.TRANSPORTATION)
 
           let newProgram = self.cleanPrograms({
             id: program.serviceid,
