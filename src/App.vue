@@ -519,7 +519,6 @@ import Vue from 'vue';
 import axios from 'axios';
 import Fuse from 'fuse.js';
 import VuePaginate from 'vue-paginate';
-import VueAnalytics from 'vue-analytics';
 import VueMq from 'vue-mq';
 import ProgramFilters from './components/ProgramFilters';
 import AppHeader from './components/AppHeader';
@@ -544,16 +543,6 @@ Vue.use(VueMq, {
   defaultBreakpoint: 'sm',
 });
 
-/**
-* @desc google analytics, only enabled in production
-*/
-Vue.use(VueAnalytics, {
-  id: 'UA-860026-1',
-  debug: {
-    enabled: process.env.NODE_ENV === 'development',
-    sendHitTask: process.env.NODE_ENV === 'production',
-  },
-});
 
 /**
 * @desc pagination component
