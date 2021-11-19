@@ -1041,7 +1041,7 @@ export default {
     * Triggered by clear filters button
     */
     clearAllFilters () {
-      this.$ga.event('ost-prgrams', 'click', 'Clear All Filters');
+      this.$gtag.event('ost-prgrams', 'click', 'Clear All Filters');
       this.resetFilters();
       this.resetRouterQuery();
       this.updateResultsList();
@@ -1457,7 +1457,7 @@ export default {
       if (typeof value === 'undefined') {
         Vue.delete(this.routerQuery, key);
       } else {
-        this.$ga.event('ost-programs', key, this.returnArray(value).join('|'));
+        this.$gtag.event('ost-programs', key, this.returnArray(value).join('|'));
         Vue.set(this.routerQuery, key, value);
       }
     },
